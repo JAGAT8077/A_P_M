@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Smart Print System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root {
+  --ink:#0f0f0f; --paper:#faf8f4; --cream:#f0ece3; --press:#1a1612;
+  --orange:#e8621a; --orange-d:#c95115; --orange-pale:#fdf0e8;
+  --rule:#d4cfc6; --muted:#7a7570;
+  --green:#2d7d46; --green-pale:#eaf4ee;
+  --red:#c0392b; --red-pale:#fbeaea;
+  --purple:#7c3aed; --purple-pale:#f5f3ff;
+  --fd:'Playfair Display',Georgia,serif;
+  --fb:'Source Serif 4',Georgia,serif;
+  --fm:'Courier New',monospace;
+  --r:6px; --rl:10px;
+  --sh:0 2px 12px rgba(0,0,0,.10);
+  --shl:0 8px 32px rgba(0,0,0,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fb);background:var(--cream);color:var(--ink);min-height:100vh;}
+
+/* HEADER */
+header{background:var(--press);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:60px;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:200;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:34px;height:34px;background:var(--orange);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-icon svg{width:18px;height:18px;fill:white;}
+.logo-name{font-family:var(--fd);font-size:1.15rem;font-weight:700;color:var(--paper);}
+.logo-sub{font-size:.6rem;color:#a09890;letter-spacing:.15em;text-transform:uppercase;}
+.hbadge{font-size:.68rem;color:#f5883f;border:1px solid var(--orange);padding:3px 10px;border-radius:20px;}
+
+/* CONTAINER & SCREENS */
+.wrap{max-width:860px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.scr{display:none;}
+.scr.on{display:block;animation:fi .25s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOME */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2rem;}
+@media(max-width:560px){.home-grid{grid-template-columns:1fr;}}
+.hcard{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.75rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.hcard::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange);transform:scaleX(0);transition:transform .2s;}
+.hcard:hover{border-color:var(--orange);box-shadow:var(--sh);transform:translateY(-2px);}
+.hcard:hover::after{transform:scaleX(1);}
+.hcard-ico{width:48px;height:48px;background:var(--orange-pale);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
+.hcard-ico svg{width:24px;height:24px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.hcard h2{font-family:var(--fd);font-size:1.25rem;font-weight:700;color:var(--press);margin-bottom:.4rem;}
+.hcard p{font-size:.875rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;}
+.hcard-link{font-size:.78rem;font-weight:600;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.hcard-link svg{width:13px;height:13px;stroke:var(--orange);fill:none;stroke-width:2;}
+
+/* SECTION HEADER */
+.shead{display:flex;align-items:center;gap:.75rem;border-bottom:1px solid var(--rule);padding-bottom:1rem;margin-bottom:1.5rem;}
+.back{background:none;border:1px solid var(--rule);border-radius:var(--r);padding:5px 11px;font-size:.78rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s;font-family:var(--fb);}
+.back:hover{border-color:var(--ink);color:var(--ink);}
+.back svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+.stitle{font-family:var(--fd);font-size:1.4rem;font-weight:700;color:var(--press);}
+
+/* STEPS */
+.steps{display:flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;background:var(--paper);}
+.step{flex:1;padding:.5rem .25rem;text-align:center;font-size:.65rem;color:var(--muted);border-right:1px solid var(--rule);letter-spacing:.02em;}
+.step:last-child{border-right:none;}
+.step.done{background:var(--cream);color:var(--press);}
+.step.active{background:var(--orange);color:white;font-weight:600;}
+.step-n{display:block;font-family:var(--fm);font-size:.6rem;margin-bottom:1px;opacity:.7;}
+
+/* UPLOAD */
+.real-inp{position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;}
+.dropzone{border:2px dashed var(--rule);border-radius:var(--rl);padding:2.5rem 1.5rem;text-align:center;background:var(--paper);transition:border-color .2s,background .2s;}
+.dropzone.over{border-color:var(--orange);background:var(--orange-pale);}
+.dz-icon{width:60px;height:60px;background:var(--cream);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border:1px solid var(--rule);}
+.dz-icon svg{width:26px;height:26px;stroke:var(--orange);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.dropzone h3{font-family:var(--fd);font-size:1.05rem;color:var(--press);margin-bottom:.35rem;}
+.dz-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.25rem;}
+.up-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;}
+.up-lbl{display:inline-flex;align-items:center;gap:7px;padding:.65rem 1.4rem;border-radius:var(--r);font-size:.875rem;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .15s;-webkit-tap-highlight-color:transparent;user-select:none;line-height:1;}
+.up-lbl svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.up-pri{background:var(--orange);color:white;}
+.up-pri:hover,.up-pri:active{background:var(--orange-d);}
+.up-sec{background:transparent;color:var(--ink);border:1.5px solid var(--rule);}
+.up-sec:hover,.up-sec:active{border-color:var(--ink);background:var(--cream);}
+.drag-hint{font-size:.72rem;color:var(--muted);margin-bottom:.5rem;}
+@media(pointer:coarse){.drag-hint{display:none;}.up-lbl{padding:.8rem 1.6rem;font-size:.95rem;}}
+.tbadges{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:1rem;}
+.tb{font-size:.68rem;background:var(--cream);border:1px solid var(--rule);padding:3px 9px;border-radius:20px;color:var(--muted);font-family:var(--fm);}
+
+/* PROGRESS */
+.prog-wrap{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.75rem;text-align:center;margin-top:1rem;}
+.prog-wrap h4{font-size:.875rem;color:var(--press);margin-bottom:1rem;}
+.prog-bar{height:4px;background:var(--rule);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--orange);border-radius:2px;transition:width .3s ease;}
+
+/* CODE SUCCESS */
+.code-box{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2.25rem;text-align:center;margin-top:1rem;box-shadow:var(--sh);}
+.ck-ico{width:52px;height:52px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
+.ck-ico svg{width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.code-box h3{font-family:var(--fd);font-size:1.05rem;color:var(--press);margin-bottom:.4rem;}
+.code-box .csub{font-size:.84rem;color:var(--muted);margin-bottom:1.25rem;}
+.code-disp{display:inline-flex;align-items:center;gap:6px;background:var(--press);color:var(--paper);font-family:var(--fm);font-size:2.4rem;font-weight:500;letter-spacing:.22em;padding:.7rem 1.75rem;border-radius:var(--r);margin-bottom:1.25rem;}
+.cd{display:inline-block;animation:pop .3s ease backwards;}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+.code-note{background:var(--cream);border:1px solid var(--rule);border-radius:var(--r);padding:.65rem 1rem;font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;}
+.code-note svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+
+/* ERROR */
+.err{background:var(--red-pale);border:1px solid #e8a5a0;border-radius:var(--r);padding:.7rem 1rem;font-size:.84rem;color:var(--red);display:flex;align-items:center;gap:8px;margin-top:.75rem;}
+.err svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+
+/* CODE ENTRY */
+.code-form{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2.25rem;max-width:420px;margin:0 auto;box-shadow:var(--sh);}
+.code-form h3{font-family:var(--fd);font-size:1.1rem;color:var(--press);margin-bottom:.4rem;}
+.code-form .cfsub{font-size:.84rem;color:var(--muted);margin-bottom:1.4rem;}
+.digits{display:flex;gap:10px;justify-content:center;margin-bottom:1.25rem;}
+.dig{width:58px;height:66px;text-align:center;font-size:1.75rem;font-family:var(--fm);font-weight:500;border:2px solid var(--rule);border-radius:var(--r);background:var(--cream);color:var(--press);outline:none;transition:border-color .15s;}
+.dig:focus{border-color:var(--orange);background:var(--paper);}
+.dig.bad{border-color:var(--red);background:var(--red-pale);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:.65rem 1.4rem;border-radius:var(--r);font-size:.875rem;font-weight:600;cursor:pointer;border:none;font-family:var(--fb);transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.btn-pri{background:var(--orange);color:white;}
+.btn-pri:hover{background:var(--orange-d);transform:translateY(-1px);}
+.btn-pri:active{transform:none;}
+.btn-pri:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.btn-out{background:transparent;color:var(--ink);border:1.5px solid var(--rule);}
+.btn-out:hover{border-color:var(--ink);background:var(--cream);}
+.btn-full{width:100%;}
+
+/* FILE BAR */
+.fbar{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1rem 1.25rem;display:flex;align-items:center;gap:.875rem;margin-bottom:1.25rem;box-shadow:var(--sh);}
+.fbar-ico{width:42px;height:42px;background:var(--orange-pale);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fbar-ico svg{width:20px;height:20px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.fbar-name{font-weight:600;font-size:.875rem;color:var(--press);margin-bottom:2px;}
+.fbar-meta{font-size:.75rem;color:var(--muted);}
+.fbar-code{margin-left:auto;font-family:var(--fm);font-size:1rem;font-weight:500;background:var(--press);color:#f5883f;padding:4px 11px;border-radius:var(--r);letter-spacing:.1em;white-space:nowrap;}
+
+/* SELECTION PANEL */
+.sel-panel{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);overflow:hidden;margin-bottom:1.25rem;}
+.sel-head{background:var(--press);color:var(--paper);padding:.65rem 1.1rem;display:flex;align-items:center;justify-content:space-between;}
+.sel-head-title{font-size:.84rem;font-weight:600;letter-spacing:.03em;}
+.sel-head-count{font-size:.75rem;color:#a09080;}
+.page-grid{display:flex;flex-wrap:wrap;gap:7px;padding:.875rem 1.1rem;}
+.pchip{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--rule);border-radius:var(--r);font-size:.82rem;font-family:var(--fm);cursor:pointer;transition:all .12s;background:var(--cream);color:var(--muted);user-select:none;-webkit-tap-highlight-color:transparent;}
+.pchip:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-pale);}
+.pchip.sel{background:var(--orange);border-color:var(--orange);color:white;font-weight:600;}
+.sel-btns{padding:.5rem 1.1rem .75rem;display:flex;gap:7px;border-top:1px solid var(--rule);}
+.sbtn{display:inline-flex;align-items:center;padding:.35rem .85rem;border-radius:var(--r);font-size:.75rem;font-weight:600;cursor:pointer;background:transparent;color:var(--ink);border:1.5px solid var(--rule);font-family:var(--fb);transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.sbtn:hover{border-color:var(--ink);background:var(--cream);}
+
+/* PRINT MODE */
+.mode-panel{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);overflow:hidden;margin-bottom:1.25rem;}
+.mode-head{background:var(--press);color:var(--paper);padding:.65rem 1.1rem;display:flex;align-items:center;justify-content:space-between;}
+.mode-head-title{font-size:.84rem;font-weight:600;letter-spacing:.03em;}
+.mode-head-rate{font-size:.75rem;color:#a09080;}
+.mode-cards{display:flex;gap:.875rem;padding:1rem 1.1rem;}
+@media(max-width:460px){.mode-cards{flex-direction:column;}}
+.mcard{flex:1;border:2px solid var(--rule);border-radius:var(--rl);padding:.95rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.875rem;background:var(--cream);transition:all .18s;-webkit-tap-highlight-color:transparent;user-select:none;}
+.mcard:hover{border-color:var(--muted);background:var(--paper);}
+.mcard.bw-on{border-color:var(--orange);background:var(--orange-pale);}
+.mcard.col-on{border-color:var(--purple);background:var(--purple-pale);}
+.mico{width:42px;height:42px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.mico.bw{background:#e0e0e0;}
+.mico.col{background:linear-gradient(135deg,#f87171,#fbbf24,#34d399,#60a5fa);}
+.minfo{flex:1;}
+.mname{font-weight:600;font-size:.875rem;color:var(--press);margin-bottom:2px;}
+.mrate{font-size:.75rem;color:var(--muted);}
+.mrate strong{color:var(--press);}
+.mcheck{width:20px;height:20px;border-radius:50%;border:2px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
+.mcard.bw-on .mcheck{border-color:var(--orange);background:var(--orange);}
+.mcard.col-on .mcheck{border-color:var(--purple);background:var(--purple);}
+.mcheck svg{width:10px;height:10px;stroke:white;fill:none;stroke-width:3;display:none;}
+.mcard.bw-on .mcheck svg,.mcard.col-on .mcheck svg{display:block;}
+
+/* PDF VIEWER */
+.viewer{background:#3a3530;border-radius:var(--rl);overflow:hidden;margin-bottom:1.25rem;}
+.viewer-bar{background:#2a2520;padding:.55rem 1rem;display:flex;align-items:center;gap:7px;}
+.viewer-bar svg{width:13px;height:13px;stroke:#a09080;fill:none;stroke-width:2;}
+.viewer-bar span{color:#a09080;font-size:.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.viewer-pages{padding:1.25rem;max-height:460px;overflow-x:auto;overflow-y:hidden;display:flex;gap:1rem;scroll-behavior:smooth;}
+.viewer-pages::-webkit-scrollbar{height:5px;}
+.viewer-pages::-webkit-scrollbar-track{background:#2a2520;}
+.viewer-pages::-webkit-scrollbar-thumb{background:#5a5046;border-radius:3px;}
+.pg-wrap{position:relative;cursor:pointer;border:3px solid transparent;border-radius:var(--r);transition:border-color .15s;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.pg-wrap.sel{border-color:var(--orange);}
+.pg-wrap canvas,.pg-wrap img{display:block;border-radius:2px;}
+.pg-badge{position:absolute;bottom:0;left:50%;transform:translateX(-50%);background:var(--press);color:var(--paper);font-size:.65rem;padding:2px 7px;border-radius:0 0 3px 3px;font-family:var(--fm);white-space:nowrap;}
+.pg-check{position:absolute;top:5px;right:5px;width:19px;height:19px;background:var(--orange);border-radius:50%;display:none;align-items:center;justify-content:center;}
+.pg-wrap.sel .pg-check{display:flex;}
+.pg-check svg{width:10px;height:10px;stroke:white;fill:none;stroke-width:3;}
+.spin-wrap{display:flex;flex-direction:column;align-items:center;padding:2.5rem;color:#a09080;gap:.875rem;}
+.spinner{width:28px;height:28px;border:2px solid #5a5046;border-top-color:var(--orange);border-radius:50%;animation:sp .8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* PRICE PANEL */
+.price-panel{background:var(--press);color:var(--paper);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
+.price-row{display:flex;justify-content:space-between;align-items:center;font-size:.84rem;padding:.35rem 0;}
+.price-row .lbl{color:#a09080;}
+.price-row .val{font-family:var(--fm);}
+.price-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #3a3530;margin-top:.65rem;padding-top:.65rem;}
+.price-total .lbl{font-size:.84rem;color:#d0c8c0;font-weight:600;}
+.price-total .amt{font-family:var(--fd);font-size:1.9rem;font-weight:700;color:#f5883f;}
+.price-total .amt small{font-size:.95rem;vertical-align:super;margin-right:2px;font-family:var(--fb);}
+
+/* PAYMENT */
+.pay-card{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.75rem;max-width:460px;margin:0 auto;text-align:center;box-shadow:var(--shl);}
+.pay-card h3{font-family:var(--fd);font-size:1.2rem;color:var(--press);margin-bottom:.3rem;}
+.pay-sub{font-size:.84rem;color:var(--muted);margin-bottom:1.25rem;}
+.amt-badge{background:var(--press);color:#f5883f;font-family:var(--fm);font-size:1.4rem;font-weight:500;padding:.45rem 1.4rem;border-radius:var(--r);display:inline-block;margin-bottom:1.1rem;letter-spacing:.05em;}
+.qr-box{background:white;border:1.5px solid var(--rule);border-radius:var(--r);padding:1rem;display:inline-block;margin-bottom:1rem;}
+.upi-line{font-size:.78rem;color:var(--muted);margin-bottom:1.1rem;}
+.upi-line strong{color:var(--press);font-family:var(--fm);}
+.divider{display:flex;align-items:center;gap:.875rem;margin-bottom:1.1rem;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--rule);}
+.divider span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+.timer-row{display:flex;align-items:center;justify-content:center;gap:5px;font-size:.78rem;color:var(--muted);margin-bottom:1rem;}
+.timer-row svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+.tc{font-family:var(--fm);color:var(--orange);font-weight:600;}
+
+/* SUCCESS */
+.success-scr{text-align:center;padding:2.5rem 1.5rem;}
+.s-anim{width:72px;height:72px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;animation:pulse .5s ease;}
+@keyframes pulse{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.s-anim svg{width:32px;height:32px;stroke:var(--green);fill:none;stroke-width:2;}
+.success-scr h2{font-family:var(--fd);font-size:1.65rem;color:var(--press);margin-bottom:.65rem;}
+.success-scr .ssub{font-size:.9rem;color:var(--muted);max-width:340px;margin:0 auto 1.75rem;line-height:1.7;}
+.ps-card{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.25rem 1.5rem;max-width:360px;margin:0 auto 1.75rem;text-align:left;}
+.ps-row{display:flex;align-items:center;gap:.65rem;font-size:.84rem;padding:.35rem 0;}
+.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.sdot.done{background:var(--green);}
+.sdot.active{background:var(--orange);animation:blink 1s ease-in-out infinite;}
+.sdot.wait{background:var(--rule);}
+@keyframes blink{50%{opacity:.25}}
+.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{background:var(--press);color:#6a6460;text-align:center;padding:1rem;font-size:.72rem;border-top:1px solid #3a3530;letter-spacing:.04em;}
+footer span{color:var(--orange);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+    </div>
+    <div>
+      <div class="logo-name">SmartPrint</div>
+      <div class="logo-sub">Document Print System</div>
+    </div>
+  </div>
+  <div class="hbadge">v3.0 · Secure Print</div>
+</header>
+
+<div class="wrap">
+
+  <!-- ═══ HOME ═══ -->
+  <div class="scr on" id="scr-home">
+    <div style="padding-top:1.5rem;"></div>
+    <div class="home-grid">
+      <div class="hcard" onclick="show('scr-upload')">
+        <div class="hcard-ico">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <h2>Upload a File</h2>
+        <p>Upload your PDF, document or image and get a unique 4-digit print code.</p>
+        <div class="hcard-link">Upload now <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+      <div class="hcard" onclick="show('scr-code')">
+        <div class="hcard-ico">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10h3v7M7 10v1M14 10h3v3h-3v4h3M10 14h1"/></svg>
+        </div>
+        <h2>Enter a Code</h2>
+        <p>Already have a 4-digit print code? Enter it to retrieve and print your file.</p>
+        <div class="hcard-link">Enter code <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ UPLOAD ═══ -->
+  <div class="scr" id="scr-upload">
+    <div class="shead">
+      <button class="back" onclick="goHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+      <div class="stitle">Upload Your File</div>
+    </div>
+
+    <!-- Hidden real inputs — triggered ONLY by their <label> -->
+    <input type="file" id="fi-main" class="real-inp"
+      accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.bmp,.webp,.tiff,.tif,.heic,.heif"/>
+    <input type="file" id="fi-cam" class="real-inp"
+      accept="image/*" capture="environment"/>
+
+    <div class="dropzone" id="dropzone">
+      <div class="dz-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <h3>Upload your file</h3>
+      <p class="dz-sub">Tap a button below to choose a file from your device</p>
+      <div class="up-btns">
+        <label for="fi-main" class="up-lbl up-pri">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Choose File
+        </label>
+        <label for="fi-cam" class="up-lbl up-sec">
+          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Camera
+        </label>
+      </div>
+      <div class="drag-hint">or drag &amp; drop here (desktop only)</div>
+      <div class="tbadges">
+        <span class="tb">PDF</span><span class="tb">DOC</span><span class="tb">DOCX</span>
+        <span class="tb">TXT</span><span class="tb">JPG</span><span class="tb">PNG</span>
+        <span class="tb">WEBP</span><span class="tb">GIF</span>
+      </div>
+    </div>
+
+    <div id="upload-result"></div>
+  </div>
+
+  <!-- ═══ CODE ENTRY ═══ -->
+  <div class="scr" id="scr-code">
+    <div class="shead">
+      <button class="back" onclick="goHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+      <div class="stitle">Enter Print Code</div>
+    </div>
+    <div class="code-form">
+      <h3>Enter your 4-digit code</h3>
+      <p class="cfsub">Enter the code you received after uploading your file.</p>
+      <div class="digits">
+        <input class="dig" id="d0" type="text" inputmode="numeric" maxlength="1" autocomplete="off"/>
+        <input class="dig" id="d1" type="text" inputmode="numeric" maxlength="1" autocomplete="off"/>
+        <input class="dig" id="d2" type="text" inputmode="numeric" maxlength="1" autocomplete="off"/>
+        <input class="dig" id="d3" type="text" inputmode="numeric" maxlength="1" autocomplete="off"/>
+      </div>
+      <div id="code-err"></div>
+      <button class="btn btn-pri btn-full" onclick="validateCode()" style="margin-top:.5rem;">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Retrieve Document
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ PREVIEW ═══ -->
+  <div class="scr" id="scr-preview">
+    <div class="shead">
+      <button class="back" onclick="goHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Home</button>
+      <div class="stitle">Select Pages</div>
+    </div>
+    <div class="steps">
+      <div class="step done"><span class="step-n">01</span>Upload</div>
+      <div class="step done"><span class="step-n">02</span>Retrieve</div>
+      <div class="step active"><span class="step-n">03</span>Select Pages</div>
+      <div class="step"><span class="step-n">04</span>Payment</div>
+      <div class="step"><span class="step-n">05</span>Print</div>
+    </div>
+
+    <div id="fbar"></div>
+
+    <div class="sel-panel">
+      <div class="sel-head">
+        <div class="sel-head-title">Page Selection</div>
+        <span class="sel-head-count" id="sel-count">No pages selected</span>
+      </div>
+      <div class="page-grid" id="page-grid"></div>
+      <div class="sel-btns">
+        <button class="sbtn" onclick="selAll()">Select All</button>
+        <button class="sbtn" onclick="selNone()">Clear</button>
+      </div>
+    </div>
+
+    <div class="mode-panel">
+      <div class="mode-head">
+        <div class="mode-head-title">Print Type</div>
+        <span class="mode-head-rate" id="mode-rate-lbl">₹4 / page</span>
+      </div>
+      <div class="mode-cards">
+        <div class="mcard bw-on" id="mc-bw" onclick="setMode('bw')">
+          <div class="mico bw">⬛</div>
+          <div class="minfo">
+            <div class="mname">Black &amp; White</div>
+            <div class="mrate">Rate: <strong>₹4</strong> per page</div>
+          </div>
+          <div class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div class="mcard" id="mc-col" onclick="setMode('color')">
+          <div class="mico col">🎨</div>
+          <div class="minfo">
+            <div class="mname">Colour Print</div>
+            <div class="mrate">Rate: <strong>₹8</strong> per page</div>
+          </div>
+          <div class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="viewer" id="viewer">
+      <div class="viewer-bar">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span id="viewer-name">Document Preview</span>
+      </div>
+      <div class="viewer-pages" id="viewer-pages">
+        <div class="spin-wrap"><div class="spinner"></div><span style="font-size:.78rem;">Loading…</span></div>
+      </div>
+    </div>
+
+    <div class="price-panel">
+      <div class="price-row"><span class="lbl">Pages selected</span><span class="val" id="pp-pages">0</span></div>
+      <div class="price-row"><span class="lbl">Print type</span><span class="val" id="pp-mode">Black &amp; White</span></div>
+      <div class="price-row"><span class="lbl">Rate per page</span><span class="val" id="pp-rate">₹4.00</span></div>
+      <div class="price-total">
+        <span class="lbl">Total</span>
+        <span class="amt"><small>₹</small><span id="pp-total">0</span></span>
+      </div>
+    </div>
+
+    <button class="btn btn-pri btn-full" id="pay-btn" onclick="goPayment()" disabled>
+      <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Proceed to Payment
+    </button>
+  </div>
+
+  <!-- ═══ PAYMENT ═══ -->
+  <div class="scr" id="scr-pay">
+    <div class="shead">
+      <button class="back" onclick="show('scr-preview')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+      <div class="stitle">Payment</div>
+    </div>
+    <div class="steps">
+      <div class="step done"><span class="step-n">01</span>Upload</div>
+      <div class="step done"><span class="step-n">02</span>Retrieve</div>
+      <div class="step done"><span class="step-n">03</span>Select Pages</div>
+      <div class="step active"><span class="step-n">04</span>Payment</div>
+      <div class="step"><span class="step-n">05</span>Print</div>
+    </div>
+    <div class="pay-card">
+      <h3>Scan &amp; Pay via UPI</h3>
+      <p class="pay-sub">Use GPay, PhonePe, Paytm, or any UPI app to scan and pay</p>
+      <div class="amt-badge" id="pay-amt">₹0</div><br/>
+      <div class="qr-box"><div id="qr-div"></div></div>
+      <div class="upi-line">Pay to: <strong>8077271230@pthdfc</strong></div>
+      <div class="timer-row" id="timer-row">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Session expires in <span class="tc" id="tc">05:00</span>
+      </div>
+      <div class="divider"><span>or confirm manually below</span></div>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:.875rem;">After paying, click Confirm Payment</p>
+      <button class="btn btn-pri btn-full" onclick="confirmPay()">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Confirm Payment
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ SUCCESS ═══ -->
+  <div class="scr" id="scr-done">
+    <div class="steps">
+      <div class="step done"><span class="step-n">01</span>Upload</div>
+      <div class="step done"><span class="step-n">02</span>Retrieve</div>
+      <div class="step done"><span class="step-n">03</span>Select Pages</div>
+      <div class="step done"><span class="step-n">04</span>Payment</div>
+      <div class="step active"><span class="step-n">05</span>Print</div>
+    </div>
+    <div class="success-scr">
+      <div class="s-anim"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h2>Payment Successful!</h2>
+      <p class="ssub">Your payment is confirmed. Document is being sent to the printer.</p>
+      <div class="ps-card">
+        <div class="ps-row"><div class="sdot done"></div><span>Payment verified</span></div>
+        <div class="ps-row"><div class="sdot done"></div><span>Pages: <strong id="done-pages"></strong></span></div>
+        <div class="ps-row"><div class="sdot done"></div><span>Type: <strong id="done-mode"></strong></span></div>
+        <div class="ps-row"><div class="sdot active"></div><span id="ps-txt">Sending to printer…</span></div>
+        <div class="ps-row"><div class="sdot wait" id="sdot-last"></div><span id="ps-last" style="color:var(--muted)">Awaiting completion</span></div>
+      </div>
+      <div class="act-row">
+        <button class="btn btn-pri" onclick="window.print()">
+          <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+          Print Now
+        </button>
+        <button class="btn btn-out" onclick="goHome()">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Back to Home
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<footer>SmartPrint System &copy; 2025 &nbsp;·&nbsp; <span>Files stored in session memory — do not refresh</span></footer>
+
+<script>
+// ── PDF.js worker ──
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ── Constants ──
+const RATE_BW = 4, RATE_COL = 8;
+const UPI_ID  = '8077271230@pthdfc';
+const MAX_MB  = 20;
+
+// ── In-memory file store ──
+const STORE = {};
+
+// ── App state ──
+let fileData = null, fileName = null, fileCode = null;
+let totalPgs = 0, selPgs = new Set(), printMode = 'bw';
+let pdfDoc = null, payTimer = null, printTimer = null;
+
+// ════════════════════════════════════
+//  Navigation
+// ════════════════════════════════════
+function show(id) {
+  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() {
+  clearInterval(payTimer);
+  clearInterval(printTimer);
+  printMode = 'bw';
+  fileData = null; fileName = null; fileCode = null;
+  document.getElementById('upload-result').innerHTML = '';
+  ['d0','d1','d2','d3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('bad'); }
+  });
+  document.getElementById('code-err').innerHTML = '';
+  show('scr-home');
+}
+
+// ════════════════════════════════════
+//  Helpers
+// ════════════════════════════════════
+function mkCode() {
+  let c, t = 0;
+  do { c = String(Math.floor(1000 + Math.random() * 9000)); t++; }
+  while (STORE[c] && t < 200);
+  return c;
+}
+
+function errHtml(msg) {
+  return `<div class="err">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>${msg}</span>
+  </div>`;
+}
+
+// ════════════════════════════════════
+//  File Upload
+// ════════════════════════════════════
+const dropzone = document.getElementById('dropzone');
+const fiMain   = document.getElementById('fi-main');
+const fiCam    = document.getElementById('fi-cam');
+
+// Drag & drop (desktop)
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('over'); });
+dropzone.addEventListener('dragleave', e => { if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('over'); });
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('over');
+  const f = e.dataTransfer && e.dataTransfer.files[0];
+  if (f) processFile(f);
+});
+
+// File picker (mobile + desktop) — triggered by <label for="fi-main">
+fiMain.addEventListener('change', function() {
+  if (this.files && this.files[0]) {
+    processFile(this.files[0]);
+    this.value = '';
+  }
+});
+
+// Camera (mobile) — triggered by <label for="fi-cam">
+fiCam.addEventListener('change', function() {
+  if (this.files && this.files[0]) {
+    processFile(this.files[0]);
+    this.value = '';
+  }
+});
+
+const ALLOWED_TYPES = new Set([
+  'application/pdf','application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'text/plain',
+  'image/jpeg','image/jpg','image/png','image/gif',
+  'image/bmp','image/webp','image/tiff','image/heic','image/heif'
+]);
+const ALLOWED_EXT = /\.(pdf|doc|docx|txt|jpg|jpeg|png|gif|bmp|webp|tiff|tif|heic|heif)$/i;
+
+function processFile(file) {
+  const res = document.getElementById('upload-result');
+
+  if (!ALLOWED_TYPES.has(file.type) && !ALLOWED_EXT.test(file.name)) {
+    res.innerHTML = errHtml('Unsupported file type. Please upload PDF, DOC, DOCX, TXT, or an image.');
+    return;
+  }
+  if (file.size > MAX_MB * 1024 * 1024) {
+    res.innerHTML = errHtml('File too large. Maximum size is ' + MAX_MB + ' MB.');
+    return;
+  }
+
+  // Show progress bar
+  res.innerHTML = `<div class="prog-wrap">
+    <h4>Uploading your file…</h4>
+    <div class="prog-bar"><div class="prog-fill" id="pbar" style="width:0%"></div></div>
+  </div>`;
+
+  let w = 0;
+  const iv = setInterval(() => {
+    w = Math.min(w + Math.random() * 22, 88);
+    const b = document.getElementById('pbar');
+    if (b) b.style.width = w + '%';
+    if (w >= 88) clearInterval(iv);
+  }, 80);
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    clearInterval(iv);
+    const bar = document.getElementById('pbar');
+    if (bar) bar.style.width = '100%';
+
+    fileData = e.target.result;
+    fileName = file.name;
+    const code = mkCode();
+    fileCode = code;
+    STORE[code] = { data: fileData, name: fileName, at: Date.now() };
+
+    setTimeout(function() { showUploadSuccess(code, file.name, file.size); }, 500);
+  };
+  reader.onerror = function() {
+    clearInterval(iv);
+    res.innerHTML = errHtml('Could not read the file. Please try again.');
+  };
+  reader.readAsDataURL(file);
+}
+
+function showUploadSuccess(code, name, size) {
+  const digits = code.split('').map(function(d, i) {
+    return '<span class="cd" style="animation-delay:' + (i * 0.1) + 's">' + d + '</span>';
+  }).join('');
+  const kb = (size / 1024).toFixed(1);
+  document.getElementById('upload-result').innerHTML =
+    '<div class="code-box">' +
+      '<div class="ck-ico"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+      '<h3>File uploaded successfully!</h3>' +
+      '<p class="csub">Save this code — you need it to print your file.</p>' +
+      '<div class="code-disp">' + digits + '</div>' +
+      '<p style="font-size:.78rem;color:var(--muted);margin-bottom:1rem;">' +
+        '<strong style="color:var(--press);">' + name + '</strong> &middot; ' + kb + ' KB' +
+      '</p>' +
+      '<div class="code-note">' +
+        '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+        'Code works in this tab only — do not refresh the page.' +
+      '</div>' +
+      '<div style="margin-top:1.1rem;">' +
+        '<button class="btn btn-pri" onclick="openPreview(\'' + code + '\')">' +
+          '<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+          'Continue to Print' +
+        '</button>' +
+      '</div>' +
+    '</div>';
+}
+
+// ════════════════════════════════════
+//  Code Entry
+// ════════════════════════════════════
+var digIds = ['d0','d1','d2','d3'];
+
+digIds.forEach(function(id, i) {
+  var el = document.getElementById(id);
+  el.addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(-1);
+    if (this.value && i < 3) document.getElementById(digIds[i + 1]).focus();
+  });
+  el.addEventListener('keydown', function(e) {
+    if (e.key === 'Backspace' && !this.value && i > 0) document.getElementById(digIds[i - 1]).focus();
+    if (e.key === 'Enter') validateCode();
+  });
+  el.addEventListener('paste', function(e) {
+    e.preventDefault();
+    var pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 4);
+    pasted.split('').forEach(function(ch, j) {
+      var t = document.getElementById(digIds[j]);
+      if (t) t.value = ch;
+    });
+    if (pasted.length === 4) document.getElementById(digIds[3]).focus();
+  });
+});
+
+function validateCode() {
+  var code = digIds.map(function(id) { return document.getElementById(id).value; }).join('');
+  var errEl = document.getElementById('code-err');
+  digIds.forEach(function(id) { document.getElementById(id).classList.remove('bad'); });
+  errEl.innerHTML = '';
+
+  if (code.length < 4) {
+    digIds.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el.value) el.classList.add('bad');
+    });
+    errEl.innerHTML = errHtml('Please enter all 4 digits.');
+    return;
+  }
+
+  var rec = STORE[code];
+  if (!rec) {
+    digIds.forEach(function(id) { document.getElementById(id).classList.add('bad'); });
+    errEl.innerHTML = errHtml('Code <strong>' + code + '</strong> not found. Upload and enter code in the same tab — do not refresh.');
+    return;
+  }
+
+  fileData = rec.data;
+  fileName = rec.name;
+  fileCode = code;
+  openPreview(code);
+}
+
+// ════════════════════════════════════
+//  Preview Screen
+// ════════════════════════════════════
+function openPreview(code) {
+  var rec = STORE[code];
+  if (!rec) { alert('File not found. Please upload again.'); return; }
+
+  fileData = rec.data;
+  fileName = rec.name;
+  fileCode = code;
+  selPgs = new Set();
+  totalPgs = 0;
+  pdfDoc = null;
+  printMode = 'bw';
+
+  // Reset mode buttons
+  document.getElementById('mc-bw').className  = 'mcard bw-on';
+  document.getElementById('mc-col').className = 'mcard';
+  document.getElementById('mode-rate-lbl').textContent = '₹4 / page';
+
+  // File info bar
+  document.getElementById('fbar').innerHTML =
+    '<div class="fbar">' +
+      '<div class="fbar-ico">' +
+        '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+      '</div>' +
+      '<div>' +
+        '<div class="fbar-name">' + fileName + '</div>' +
+        '<div class="fbar-meta">Ready to print</div>' +
+      '</div>' +
+      '<div class="fbar-code">' + fileCode + '</div>' +
+    '</div>';
+
+  show('scr-preview');
+  buildPageGrid(1);
+  updatePrice();
+
+  var isPDF = fileData.startsWith('data:application/pdf') ||
+              fileData.startsWith('data:application/octet-stream') ||
+              fileName.toLowerCase().endsWith('.pdf');
+
+  var isImg = fileData.startsWith('data:image/') ||
+              /\.(jpg|jpeg|png|gif|bmp|webp|tiff|tif|heic|heif)$/i.test(fileName);
+
+  document.getElementById('viewer-name').textContent = fileName;
+  var vp = document.getElementById('viewer-pages');
+  vp.innerHTML = '<div class="spin-wrap"><div class="spinner"></div><span style="font-size:.78rem;">Loading preview…</span></div>';
+
+  if (isPDF) {
+    renderPDF();
+  } else if (isImg) {
+    renderImage();
+  } else {
+    vp.innerHTML =
+      '<div class="spin-wrap" style="color:#a09080;">' +
+        '<svg style="width:26px;height:26px;stroke:#a09080;fill:none;stroke-width:1.5;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>' +
+        '<span style="font-size:.78rem;">No preview available.<br/>Use the page numbers above to select pages.</span>' +
+      '</div>';
+    totalPgs = 5;
+    buildPageGrid(5);
+  }
+}
+
+// ── PDF Rendering ──
+async function renderPDF() {
+  var vp = document.getElementById('viewer-pages');
+  try {
+    var b64  = fileData.split(',')[1];
+    var bin  = atob(b64);
+    var u8   = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+
+    var task = pdfjsLib.getDocument({ data: u8 });
+    pdfDoc   = await task.promise;
+    totalPgs = pdfDoc.numPages;
+    buildPageGrid(totalPgs);
+    vp.innerHTML = '';
+
+    for (var p = 1; p <= totalPgs; p++) {
+      // Placeholder
+      var ph = document.createElement('div');
+      ph.className = 'pg-wrap';
+      ph.style.cssText = 'min-width:160px;min-height:220px;display:flex;align-items:center;justify-content:center;';
+      ph.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;"></div>';
+      vp.appendChild(ph);
+
+      var page = await pdfDoc.getPage(p);
+      var viewport = page.getViewport({ scale: 0.62 });
+      var canvas = document.createElement('canvas');
+      canvas.width  = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
+
+      var wrap = makePgWrap(p, canvas, null);
+      vp.replaceChild(wrap, ph);
+    }
+  } catch(err) {
+    console.error('PDF render error:', err);
+    vp.innerHTML =
+      '<div class="spin-wrap" style="color:var(--orange);">' +
+        '<svg style="width:26px;height:26px;stroke:var(--orange);fill:none;stroke-width:1.5;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>' +
+        '<span style="font-size:.78rem;">PDF preview failed. Use the page chips above to select pages.<br/><small style="color:#6a6460;">' + (err.message || '') + '</small></span>' +
+      '</div>';
+    if (!totalPgs) { totalPgs = 10; buildPageGrid(10); }
+  }
+}
+
+// ── Image Rendering ──
+function renderImage() {
+  var vp = document.getElementById('viewer-pages');
+  vp.innerHTML = '';
+  var img = document.createElement('img');
+  img.src = fileData;
+  img.style.cssText = 'max-width:320px;max-height:420px;width:auto;height:auto;border-radius:2px;';
+  img.alt = fileName;
+  var wrap = makePgWrap(1, null, img);
+  vp.appendChild(wrap);
+  // Auto-select page 1 for images
+  selPgs.add(1);
+  wrap.classList.add('sel');
+  totalPgs = 1;
+  buildPageGrid(1);
+  updatePrice();
+}
+
+// ── Page Wrapper ──
+function makePgWrap(n, canvas, img) {
+  var w = document.createElement('div');
+  w.className = 'pg-wrap';
+  w.dataset.page = n;
+
+  if (canvas) w.appendChild(canvas);
+  if (img)    w.appendChild(img);
+
+  var chk = document.createElement('div');
+  chk.className = 'pg-check';
+  chk.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  var badge = document.createElement('div');
+  badge.className = 'pg-badge';
+  badge.textContent = 'Page ' + n;
+
+  w.appendChild(chk);
+  w.appendChild(badge);
+
+  if (selPgs.has(n)) w.classList.add('sel');
+
+  w.addEventListener('click', function() { togglePgWrap(n, w); });
+  return w;
+}
+
+function togglePgWrap(n, w) {
+  if (selPgs.has(n)) { selPgs.delete(n); w.classList.remove('sel'); }
+  else               { selPgs.add(n);    w.classList.add('sel'); }
+  syncChips();
+  updatePrice();
+}
+
+// ════════════════════════════════════
+//  Page Grid
+// ════════════════════════════════════
+function buildPageGrid(count) {
+  totalPgs = count;
+  var g = document.getElementById('page-grid');
+  g.innerHTML = '';
+  for (var i = 1; i <= count; i++) {
+    (function(n) {
+      var c = document.createElement('div');
+      c.className = 'pchip' + (selPgs.has(n) ? ' sel' : '');
+      c.textContent = n;
+      c.dataset.page = n;
+      c.addEventListener('click', function() { toggleChip(n, c); });
+      g.appendChild(c);
+    })(i);
+  }
+  updateSelLabel();
+}
+
+function toggleChip(n, c) {
+  if (selPgs.has(n)) { selPgs.delete(n); c.classList.remove('sel'); }
+  else               { selPgs.add(n);    c.classList.add('sel'); }
+  syncWrappers();
+  updatePrice();
+}
+
+function syncChips() {
+  document.querySelectorAll('.pchip').forEach(function(c) {
+    c.classList.toggle('sel', selPgs.has(Number(c.dataset.page)));
+  });
+  updateSelLabel();
+}
+
+function syncWrappers() {
+  document.querySelectorAll('.pg-wrap').forEach(function(w) {
+    w.classList.toggle('sel', selPgs.has(Number(w.dataset.page)));
+  });
+}
+
+function selAll() {
+  for (var i = 1; i <= totalPgs; i++) selPgs.add(i);
+  syncChips(); syncWrappers(); updatePrice();
+}
+
+function selNone() {
+  selPgs.clear(); syncChips(); syncWrappers(); updatePrice();
+}
+
+function updateSelLabel() {
+  var n = selPgs.size;
+  document.getElementById('sel-count').textContent =
+    n === 0 ? 'No pages selected' : n === 1 ? '1 page selected' : n + ' pages selected';
+}
+
+// ════════════════════════════════════
+//  Print Mode
+// ════════════════════════════════════
+function setMode(m) {
+  printMode = m;
+  document.getElementById('mc-bw').className  = 'mcard' + (m === 'bw'    ? ' bw-on'  : '');
+  document.getElementById('mc-col').className = 'mcard' + (m === 'color' ? ' col-on' : '');
+  document.getElementById('mode-rate-lbl').textContent = m === 'color' ? '₹8 / page' : '₹4 / page';
+  updatePrice();
+}
+
+// ════════════════════════════════════
+//  Price Panel
+// ════════════════════════════════════
+function updatePrice() {
+  var n    = selPgs.size;
+  var rate = printMode === 'color' ? RATE_COL : RATE_BW;
+  document.getElementById('pp-pages').textContent = n;
+  document.getElementById('pp-mode').textContent  = printMode === 'color' ? 'Colour Print' : 'Black & White';
+  document.getElementById('pp-rate').textContent  = '₹' + rate + '.00';
+  document.getElementById('pp-total').textContent = n * rate;
+  updateSelLabel();
+  document.getElementById('pay-btn').disabled = (n === 0);
+}
+
+// ════════════════════════════════════
+//  Payment
+// ════════════════════════════════════
+function goPayment() {
+  if (selPgs.size === 0) return;
+  var rate  = printMode === 'color' ? RATE_COL : RATE_BW;
+  var total = selPgs.size * rate;
+
+  document.getElementById('pay-amt').textContent = '₹' + total;
+
+  var upiUrl = 'upi://pay?pa=' + UPI_ID + '&pn=SmartPrint&am=' + total +
+               '&cu=INR&tn=Print-' + fileCode + '-' + (printMode === 'color' ? 'COL' : 'BW');
+  var qDiv = document.getElementById('qr-div');
+  qDiv.innerHTML = '';
+  new QRCode(qDiv, {
+    text: upiUrl, width: 156, height: 156,
+    colorDark: '#1a1612', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+
+  var secs = 300;
+  clearInterval(payTimer);
+  payTimer = setInterval(function() {
+    secs--;
+    var m = String(Math.floor(secs / 60)).padStart(2, '0');
+    var s = String(secs % 60).padStart(2, '0');
+    var el = document.getElementById('tc');
+    if (el) el.textContent = m + ':' + s;
+    if (secs <= 0) {
+      clearInterval(payTimer);
+      var tr = document.getElementById('timer-row');
+      if (tr) tr.innerHTML = '<span style="color:var(--red);font-size:.78rem;">Session expired. Please go back and try again.</span>';
+    }
+  }, 1000);
+
+  show('scr-pay');
+}
+
+function confirmPay() {
+  clearInterval(payTimer);
+  var pages = Array.from(selPgs).sort(function(a, b) { return a - b; }).join(', ');
+  document.getElementById('done-pages').textContent = pages;
+  document.getElementById('done-mode').textContent  = printMode === 'color' ? 'Colour Print' : 'Black & White';
+  show('scr-done');
+
+  var steps = ['Sending to printer…', 'Processing pages…', 'Printing in progress…'];
+  var si = 0;
+  clearInterval(printTimer);
+  printTimer = setInterval(function() {
+    var pst  = document.getElementById('ps-txt');
+    var psl  = document.getElementById('ps-last');
+    var sdot = document.getElementById('sdot-last');
+    if (si < steps.length) {
+      if (pst) pst.textContent = steps[si];
+      si++;
+    } else {
+      clearInterval(printTimer);
+      if (pst)  { pst.textContent = 'Print job completed!'; pst.style.color = 'var(--green)'; }
+      if (sdot) { sdot.className = 'sdot done'; }
+      if (psl)  { psl.textContent = 'Collect your printout'; psl.style.color = 'var(--green)'; }
+    }
+  }, 1800);
+}
+</script>
+</body>
+</html>
