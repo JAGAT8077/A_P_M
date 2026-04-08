@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Smart Print System</title>
+<title>SmartPrint System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -19,228 +19,299 @@
   --fd:'Playfair Display',Georgia,serif;
   --fb:'Source Serif 4',Georgia,serif;
   --fm:'Courier New',monospace;
-  --r:6px; --rl:10px;
-  --sh:0 2px 12px rgba(0,0,0,.10);
-  --shl:0 8px 32px rgba(0,0,0,.14);
+  --r:8px; --rl:14px;
+  --sh:0 2px 16px rgba(0,0,0,.09);
+  --shl:0 8px 40px rgba(0,0,0,.16);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--fb);background:var(--cream);color:var(--ink);min-height:100vh;}
 
-/* HEADER */
-header{background:var(--press);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:60px;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:200;}
+/* ── HEADER ── */
+header{background:var(--press);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:64px;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:200;}
 .logo{display:flex;align-items:center;gap:10px;}
-.logo-icon{width:34px;height:34px;background:var(--orange);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-icon{width:36px;height:36px;background:var(--orange);border-radius:7px;display:flex;align-items:center;justify-content:center;}
 .logo-icon svg{width:18px;height:18px;fill:white;}
-.logo-name{font-family:var(--fd);font-size:1.15rem;font-weight:700;color:var(--paper);}
-.logo-sub{font-size:.6rem;color:#a09890;letter-spacing:.15em;text-transform:uppercase;}
+.logo-name{font-family:var(--fd);font-size:1.18rem;font-weight:700;color:var(--paper);}
+.logo-sub{font-size:.58rem;color:#a09890;letter-spacing:.16em;text-transform:uppercase;}
+.header-right{display:flex;align-items:center;gap:.75rem;}
 .hbadge{font-size:.68rem;color:#f5883f;border:1px solid var(--orange);padding:3px 10px;border-radius:20px;}
 
-/* CONTAINER & SCREENS */
-.wrap{max-width:860px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+/* ── PAGE COUNTER BADGE ── */
+.page-counter{display:flex;align-items:center;gap:8px;background:#2a2218;border:1.5px solid #4a3f30;border-radius:10px;padding:6px 14px;cursor:default;position:relative;overflow:hidden;}
+.page-counter::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(232,98,26,.08),transparent);animation:shimmer 3s ease-in-out infinite;}
+@keyframes shimmer{0%,100%{opacity:0}50%{opacity:1}}
+.pc-icon{width:28px;height:28px;background:var(--orange);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pc-icon svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.pc-info{display:flex;flex-direction:column;}
+.pc-label{font-size:.52rem;color:#8a7f75;letter-spacing:.12em;text-transform:uppercase;line-height:1;}
+.pc-num{font-family:var(--fm);font-size:1.05rem;font-weight:700;color:#f5883f;line-height:1.2;letter-spacing:.04em;}
+.pc-num.bump{animation:bump .35s ease;}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+.pc-sub{font-size:.52rem;color:#6a6460;margin-top:1px;}
+.pc-bar-wrap{position:absolute;bottom:0;left:0;right:0;height:2px;background:#3a3028;}
+.pc-bar{height:100%;background:var(--orange);transition:width .6s ease;border-radius:0 2px 2px 0;}
+@media(max-width:520px){.pc-label,.pc-sub{display:none;}.page-counter{padding:5px 9px;gap:5px;}.pc-num{font-size:.9rem;}}
+
+/* ── CONTAINER & SCREENS ── */
+.wrap{max-width:880px;margin:0 auto;padding:1.5rem 1rem 4rem;}
 .scr{display:none;}
-.scr.on{display:block;animation:fi .25s ease;}
-@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.scr.on{display:block;animation:fi .28s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* HOME */
-.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2rem;}
+/* ── HOME ── */
+.home-hero{text-align:center;padding:2.5rem 1rem 1.5rem;}
+.home-hero h1{font-family:var(--fd);font-size:2rem;color:var(--press);margin-bottom:.5rem;line-height:1.25;}
+.home-hero p{color:var(--muted);font-size:.92rem;max-width:360px;margin:0 auto;}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.75rem;}
 @media(max-width:560px){.home-grid{grid-template-columns:1fr;}}
-.hcard{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.75rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
-.hcard::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange);transform:scaleX(0);transition:transform .2s;}
-.hcard:hover{border-color:var(--orange);box-shadow:var(--sh);transform:translateY(-2px);}
+.hcard{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.85rem;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
+.hcard::before{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:linear-gradient(180deg,transparent,rgba(232,98,26,.04));transition:height .22s;}
+.hcard::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange);transform:scaleX(0);transition:transform .22s;transform-origin:left;}
+.hcard:hover{border-color:var(--orange);box-shadow:var(--sh);transform:translateY(-3px);}
 .hcard:hover::after{transform:scaleX(1);}
-.hcard-ico{width:48px;height:48px;background:var(--orange-pale);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
-.hcard-ico svg{width:24px;height:24px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-.hcard h2{font-family:var(--fd);font-size:1.25rem;font-weight:700;color:var(--press);margin-bottom:.4rem;}
-.hcard p{font-size:.875rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;}
-.hcard-link{font-size:.78rem;font-weight:600;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
-.hcard-link svg{width:13px;height:13px;stroke:var(--orange);fill:none;stroke-width:2;}
+.hcard:hover::before{height:100%;}
+.hcard-ico{width:52px;height:52px;background:var(--orange-pale);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem;}
+.hcard-ico svg{width:26px;height:26px;stroke:var(--orange);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.hcard h2{font-family:var(--fd);font-size:1.3rem;font-weight:700;color:var(--press);margin-bottom:.4rem;}
+.hcard p{font-size:.875rem;color:var(--muted);line-height:1.65;margin-bottom:1.3rem;}
+.hcard-link{font-size:.78rem;font-weight:600;color:var(--orange);letter-spacing:.07em;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.hcard-link svg{width:13px;height:13px;stroke:var(--orange);fill:none;stroke-width:2.2;transition:transform .2s;}
+.hcard:hover .hcard-link svg{transform:translateX(4px);}
 
-/* SECTION HEADER */
-.shead{display:flex;align-items:center;gap:.75rem;border-bottom:1px solid var(--rule);padding-bottom:1rem;margin-bottom:1.5rem;}
-.back{background:none;border:1px solid var(--rule);border-radius:var(--r);padding:5px 11px;font-size:.78rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s;font-family:var(--fb);}
-.back:hover{border-color:var(--ink);color:var(--ink);}
-.back svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
-.stitle{font-family:var(--fd);font-size:1.4rem;font-weight:700;color:var(--press);}
+/* ── SECTION HEADER ── */
+.shead{display:flex;align-items:center;gap:.75rem;border-bottom:1px solid var(--rule);padding-bottom:1.1rem;margin-bottom:1.6rem;}
+.back{background:none;border:1px solid var(--rule);border-radius:var(--r);padding:6px 13px;font-size:.78rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s;font-family:var(--fb);}
+.back:hover{border-color:var(--ink);color:var(--ink);background:var(--paper);}
+.back svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;}
+.stitle{font-family:var(--fd);font-size:1.45rem;font-weight:700;color:var(--press);}
 
-/* STEPS */
-.steps{display:flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;background:var(--paper);}
-.step{flex:1;padding:.5rem .25rem;text-align:center;font-size:.65rem;color:var(--muted);border-right:1px solid var(--rule);letter-spacing:.02em;}
+/* ── STEPS ── */
+.steps{display:flex;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin-bottom:1.6rem;background:var(--paper);box-shadow:var(--sh);}
+.step{flex:1;padding:.55rem .25rem;text-align:center;font-size:.63rem;color:var(--muted);border-right:1px solid var(--rule);letter-spacing:.03em;transition:background .2s;}
 .step:last-child{border-right:none;}
 .step.done{background:var(--cream);color:var(--press);}
-.step.active{background:var(--orange);color:white;font-weight:600;}
-.step-n{display:block;font-family:var(--fm);font-size:.6rem;margin-bottom:1px;opacity:.7;}
+.step.active{background:var(--orange);color:white;font-weight:700;}
+.step-n{display:block;font-family:var(--fm);font-size:.58rem;margin-bottom:1px;opacity:.7;}
 
-/* UPLOAD */
+/* ── UPLOAD ── */
 .real-inp{position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;}
-.dropzone{border:2px dashed var(--rule);border-radius:var(--rl);padding:2.5rem 1.5rem;text-align:center;background:var(--paper);transition:border-color .2s,background .2s;}
-.dropzone.over{border-color:var(--orange);background:var(--orange-pale);}
-.dz-icon{width:60px;height:60px;background:var(--cream);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border:1px solid var(--rule);}
-.dz-icon svg{width:26px;height:26px;stroke:var(--orange);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-.dropzone h3{font-family:var(--fd);font-size:1.05rem;color:var(--press);margin-bottom:.35rem;}
-.dz-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.25rem;}
+.dropzone{border:2px dashed var(--rule);border-radius:var(--rl);padding:2.75rem 1.5rem;text-align:center;background:var(--paper);transition:border-color .2s,background .2s,box-shadow .2s;}
+.dropzone.over{border-color:var(--orange);background:var(--orange-pale);box-shadow:inset 0 0 0 4px rgba(232,98,26,.08);}
+.dz-icon{width:68px;height:68px;background:linear-gradient(135deg,var(--orange-pale),#fbe8d5);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;border:1.5px solid rgba(232,98,26,.25);box-shadow:0 4px 16px rgba(232,98,26,.1);}
+.dz-icon svg{width:28px;height:28px;stroke:var(--orange);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.dropzone h3{font-family:var(--fd);font-size:1.1rem;color:var(--press);margin-bottom:.4rem;}
+.dz-sub{font-size:.84rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.5;}
 .up-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;}
-.up-lbl{display:inline-flex;align-items:center;gap:7px;padding:.65rem 1.4rem;border-radius:var(--r);font-size:.875rem;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .15s;-webkit-tap-highlight-color:transparent;user-select:none;line-height:1;}
+.up-lbl{display:inline-flex;align-items:center;gap:8px;padding:.7rem 1.6rem;border-radius:var(--r);font-size:.9rem;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .18s;-webkit-tap-highlight-color:transparent;user-select:none;line-height:1;}
 .up-lbl svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.up-pri{background:var(--orange);color:white;}
-.up-pri:hover,.up-pri:active{background:var(--orange-d);}
+.up-pri{background:var(--orange);color:white;box-shadow:0 3px 12px rgba(232,98,26,.3);}
+.up-pri:hover,.up-pri:active{background:var(--orange-d);box-shadow:0 5px 18px rgba(232,98,26,.35);}
 .up-sec{background:transparent;color:var(--ink);border:1.5px solid var(--rule);}
 .up-sec:hover,.up-sec:active{border-color:var(--ink);background:var(--cream);}
 .drag-hint{font-size:.72rem;color:var(--muted);margin-bottom:.5rem;}
-@media(pointer:coarse){.drag-hint{display:none;}.up-lbl{padding:.8rem 1.6rem;font-size:.95rem;}}
+@media(pointer:coarse){.drag-hint{display:none;}.up-lbl{padding:.85rem 1.75rem;font-size:1rem;}}
 .tbadges{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:1rem;}
-.tb{font-size:.68rem;background:var(--cream);border:1px solid var(--rule);padding:3px 9px;border-radius:20px;color:var(--muted);font-family:var(--fm);}
+.tb{font-size:.68rem;background:var(--cream);border:1px solid var(--rule);padding:4px 10px;border-radius:20px;color:var(--muted);font-family:var(--fm);}
 
-/* PROGRESS */
-.prog-wrap{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.75rem;text-align:center;margin-top:1rem;}
-.prog-wrap h4{font-size:.875rem;color:var(--press);margin-bottom:1rem;}
-.prog-bar{height:4px;background:var(--rule);border-radius:2px;overflow:hidden;}
-.prog-fill{height:100%;background:var(--orange);border-radius:2px;transition:width .3s ease;}
+/* ── PROGRESS ── */
+.prog-wrap{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2rem;text-align:center;margin-top:1rem;box-shadow:var(--sh);}
+.prog-wrap h4{font-size:.9rem;color:var(--press);margin-bottom:1.1rem;font-weight:600;}
+.prog-track{height:6px;background:var(--rule);border-radius:3px;overflow:hidden;position:relative;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--orange),#f5883f);border-radius:3px;transition:width .4s ease;}
+.prog-fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:40px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4));animation:shine 1.2s ease-in-out infinite;}
+@keyframes shine{0%,100%{opacity:0}50%{opacity:1}}
 
-/* CODE SUCCESS */
-.code-box{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2.25rem;text-align:center;margin-top:1rem;box-shadow:var(--sh);}
-.ck-ico{width:52px;height:52px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
-.ck-ico svg{width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.code-box h3{font-family:var(--fd);font-size:1.05rem;color:var(--press);margin-bottom:.4rem;}
-.code-box .csub{font-size:.84rem;color:var(--muted);margin-bottom:1.25rem;}
-.code-disp{display:inline-flex;align-items:center;gap:6px;background:var(--press);color:var(--paper);font-family:var(--fm);font-size:2.4rem;font-weight:500;letter-spacing:.22em;padding:.7rem 1.75rem;border-radius:var(--r);margin-bottom:1.25rem;}
-.cd{display:inline-block;animation:pop .3s ease backwards;}
-@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
-.code-note{background:var(--cream);border:1px solid var(--rule);border-radius:var(--r);padding:.65rem 1rem;font-size:.78rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;}
-.code-note svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+/* ── CODE SUCCESS ── */
+.code-box{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2.5rem 2rem;text-align:center;margin-top:1rem;box-shadow:var(--shl);}
+.ck-ico{width:56px;height:56px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;box-shadow:0 4px 14px rgba(45,125,70,.15);}
+.ck-ico svg{width:26px;height:26px;stroke:var(--green);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.code-box h3{font-family:var(--fd);font-size:1.1rem;color:var(--press);margin-bottom:.45rem;}
+.code-box .csub{font-size:.84rem;color:var(--muted);margin-bottom:1.4rem;}
+.code-disp{display:inline-flex;align-items:center;gap:10px;background:var(--press);color:var(--paper);font-family:var(--fm);font-size:2.6rem;font-weight:500;letter-spacing:.28em;padding:.8rem 2rem;border-radius:var(--r);margin-bottom:1.4rem;box-shadow:0 6px 24px rgba(0,0,0,.18);}
+.cd{display:inline-block;animation:pop .35s ease backwards;}
+@keyframes pop{from{opacity:0;transform:scale(.35) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.code-note{background:var(--cream);border:1px solid var(--rule);border-radius:var(--r);padding:.75rem 1.1rem;font-size:.8rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:7px;}
+.code-note svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
 
-/* ERROR */
-.err{background:var(--red-pale);border:1px solid #e8a5a0;border-radius:var(--r);padding:.7rem 1rem;font-size:.84rem;color:var(--red);display:flex;align-items:center;gap:8px;margin-top:.75rem;}
-.err svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+/* ── ERROR ── */
+.err{background:var(--red-pale);border:1px solid #e8a5a0;border-radius:var(--r);padding:.75rem 1.1rem;font-size:.84rem;color:var(--red);display:flex;align-items:center;gap:9px;margin-top:.8rem;}
+.err svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
 
-/* CODE ENTRY */
-.code-form{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2.25rem;max-width:420px;margin:0 auto;box-shadow:var(--sh);}
-.code-form h3{font-family:var(--fd);font-size:1.1rem;color:var(--press);margin-bottom:.4rem;}
-.code-form .cfsub{font-size:.84rem;color:var(--muted);margin-bottom:1.4rem;}
-.digits{display:flex;gap:10px;justify-content:center;margin-bottom:1.25rem;}
-.dig{width:58px;height:66px;text-align:center;font-size:1.75rem;font-family:var(--fm);font-weight:500;border:2px solid var(--rule);border-radius:var(--r);background:var(--cream);color:var(--press);outline:none;transition:border-color .15s;}
-.dig:focus{border-color:var(--orange);background:var(--paper);}
+/* ── CODE ENTRY ── */
+.code-form{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2.5rem;max-width:440px;margin:0 auto;box-shadow:var(--shl);}
+.code-form-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:1.6rem;}
+.code-form-icon{width:56px;height:56px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;border:1.5px solid rgba(232,98,26,.2);}
+.code-form-icon svg{width:26px;height:26px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.code-form h3{font-family:var(--fd);font-size:1.25rem;color:var(--press);margin-bottom:.4rem;}
+.code-form .cfsub{font-size:.84rem;color:var(--muted);line-height:1.6;}
+.digits{display:flex;gap:12px;justify-content:center;margin-bottom:1.4rem;}
+.dig{width:62px;height:70px;text-align:center;font-size:1.85rem;font-family:var(--fm);font-weight:600;border:2px solid var(--rule);border-radius:var(--r);background:var(--cream);color:var(--press);outline:none;transition:all .18s;box-shadow:inset 0 2px 4px rgba(0,0,0,.04);}
+.dig:focus{border-color:var(--orange);background:var(--paper);box-shadow:0 0 0 3px rgba(232,98,26,.12),inset 0 2px 4px rgba(0,0,0,.04);}
 .dig.bad{border-color:var(--red);background:var(--red-pale);}
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:.65rem 1.4rem;border-radius:var(--r);font-size:.875rem;font-weight:600;cursor:pointer;border:none;font-family:var(--fb);transition:all .15s;-webkit-tap-highlight-color:transparent;}
-.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.btn-pri{background:var(--orange);color:white;}
-.btn-pri:hover{background:var(--orange-d);transform:translateY(-1px);}
-.btn-pri:active{transform:none;}
-.btn-pri:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:.7rem 1.5rem;border-radius:var(--r);font-size:.9rem;font-weight:600;cursor:pointer;border:none;font-family:var(--fb);transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.btn-pri{background:var(--orange);color:white;box-shadow:0 3px 12px rgba(232,98,26,.28);}
+.btn-pri:hover{background:var(--orange-d);transform:translateY(-1px);box-shadow:0 5px 18px rgba(232,98,26,.35);}
+.btn-pri:active{transform:none;box-shadow:none;}
+.btn-pri:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none;}
 .btn-out{background:transparent;color:var(--ink);border:1.5px solid var(--rule);}
 .btn-out:hover{border-color:var(--ink);background:var(--cream);}
 .btn-full{width:100%;}
 
-/* FILE BAR */
-.fbar{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1rem 1.25rem;display:flex;align-items:center;gap:.875rem;margin-bottom:1.25rem;box-shadow:var(--sh);}
-.fbar-ico{width:42px;height:42px;background:var(--orange-pale);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+/* ── FILE BAR ── */
+.fbar{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.1rem 1.35rem;display:flex;align-items:center;gap:.9rem;margin-bottom:1.35rem;box-shadow:var(--sh);}
+.fbar-ico{width:44px;height:44px;background:linear-gradient(135deg,var(--orange-pale),#fbe8d5);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(232,98,26,.2);}
 .fbar-ico svg{width:20px;height:20px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-.fbar-name{font-weight:600;font-size:.875rem;color:var(--press);margin-bottom:2px;}
+.fbar-name{font-weight:600;font-size:.9rem;color:var(--press);margin-bottom:2px;}
 .fbar-meta{font-size:.75rem;color:var(--muted);}
-.fbar-code{margin-left:auto;font-family:var(--fm);font-size:1rem;font-weight:500;background:var(--press);color:#f5883f;padding:4px 11px;border-radius:var(--r);letter-spacing:.1em;white-space:nowrap;}
+.fbar-code{margin-left:auto;font-family:var(--fm);font-size:1rem;font-weight:700;background:var(--press);color:#f5883f;padding:5px 13px;border-radius:var(--r);letter-spacing:.12em;white-space:nowrap;}
 
-/* SELECTION PANEL */
-.sel-panel{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);overflow:hidden;margin-bottom:1.25rem;}
-.sel-head{background:var(--press);color:var(--paper);padding:.65rem 1.1rem;display:flex;align-items:center;justify-content:space-between;}
-.sel-head-title{font-size:.84rem;font-weight:600;letter-spacing:.03em;}
-.sel-head-count{font-size:.75rem;color:#a09080;}
-.page-grid{display:flex;flex-wrap:wrap;gap:7px;padding:.875rem 1.1rem;}
-.pchip{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--rule);border-radius:var(--r);font-size:.82rem;font-family:var(--fm);cursor:pointer;transition:all .12s;background:var(--cream);color:var(--muted);user-select:none;-webkit-tap-highlight-color:transparent;}
+/* ── SELECTION PANEL ── */
+.sel-panel{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);overflow:hidden;margin-bottom:1.35rem;box-shadow:var(--sh);}
+.sel-head{background:var(--press);color:var(--paper);padding:.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;}
+.sel-head-title{font-size:.84rem;font-weight:700;letter-spacing:.04em;}
+.sel-head-count{font-size:.75rem;background:rgba(245,136,63,.2);color:#f5883f;padding:2px 9px;border-radius:12px;font-weight:600;}
+.page-grid{display:flex;flex-wrap:wrap;gap:8px;padding:.9rem 1.2rem;}
+.pchip{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--rule);border-radius:var(--r);font-size:.82rem;font-family:var(--fm);cursor:pointer;transition:all .15s;background:var(--cream);color:var(--muted);user-select:none;-webkit-tap-highlight-color:transparent;font-weight:500;}
 .pchip:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-pale);}
-.pchip.sel{background:var(--orange);border-color:var(--orange);color:white;font-weight:600;}
-.sel-btns{padding:.5rem 1.1rem .75rem;display:flex;gap:7px;border-top:1px solid var(--rule);}
-.sbtn{display:inline-flex;align-items:center;padding:.35rem .85rem;border-radius:var(--r);font-size:.75rem;font-weight:600;cursor:pointer;background:transparent;color:var(--ink);border:1.5px solid var(--rule);font-family:var(--fb);transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.pchip.sel{background:var(--orange);border-color:var(--orange);color:white;font-weight:700;box-shadow:0 2px 8px rgba(232,98,26,.3);}
+.sel-btns{padding:.55rem 1.2rem .8rem;display:flex;gap:8px;border-top:1px solid var(--rule);}
+.sbtn{display:inline-flex;align-items:center;padding:.38rem .9rem;border-radius:var(--r);font-size:.76rem;font-weight:600;cursor:pointer;background:transparent;color:var(--ink);border:1.5px solid var(--rule);font-family:var(--fb);transition:all .15s;-webkit-tap-highlight-color:transparent;}
 .sbtn:hover{border-color:var(--ink);background:var(--cream);}
 
-/* PRINT MODE */
-.mode-panel{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);overflow:hidden;margin-bottom:1.25rem;}
-.mode-head{background:var(--press);color:var(--paper);padding:.65rem 1.1rem;display:flex;align-items:center;justify-content:space-between;}
-.mode-head-title{font-size:.84rem;font-weight:600;letter-spacing:.03em;}
-.mode-head-rate{font-size:.75rem;color:#a09080;}
-.mode-cards{display:flex;gap:.875rem;padding:1rem 1.1rem;}
-@media(max-width:460px){.mode-cards{flex-direction:column;}}
-.mcard{flex:1;border:2px solid var(--rule);border-radius:var(--rl);padding:.95rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.875rem;background:var(--cream);transition:all .18s;-webkit-tap-highlight-color:transparent;user-select:none;}
-.mcard:hover{border-color:var(--muted);background:var(--paper);}
-.mcard.bw-on{border-color:var(--orange);background:var(--orange-pale);}
-.mcard.col-on{border-color:var(--purple);background:var(--purple-pale);}
-.mico{width:42px;height:42px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
-.mico.bw{background:#e0e0e0;}
-.mico.col{background:linear-gradient(135deg,#f87171,#fbbf24,#34d399,#60a5fa);}
-.minfo{flex:1;}
-.mname{font-weight:600;font-size:.875rem;color:var(--press);margin-bottom:2px;}
-.mrate{font-size:.75rem;color:var(--muted);}
-.mrate strong{color:var(--press);}
-.mcheck{width:20px;height:20px;border-radius:50%;border:2px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
-.mcard.bw-on .mcheck{border-color:var(--orange);background:var(--orange);}
-.mcard.col-on .mcheck{border-color:var(--purple);background:var(--purple);}
-.mcheck svg{width:10px;height:10px;stroke:white;fill:none;stroke-width:3;display:none;}
-.mcard.bw-on .mcheck svg,.mcard.col-on .mcheck svg{display:block;}
+/* ── COPIES PANEL ── */
+.copies-row{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;padding:.5rem 0;border-bottom:1px solid rgba(212,207,198,.5);}
+.copies-row:last-child{border-bottom:none;}
+.copies-pg-label{font-size:.82rem;color:var(--press);min-width:56px;font-family:var(--fm);font-weight:700;background:var(--cream);padding:3px 8px;border-radius:5px;border:1px solid var(--rule);}
+.mode-toggle{display:flex;border:1.5px solid var(--rule);border-radius:6px;overflow:hidden;}
+.mt-btn{padding:4px 11px;font-size:.72rem;font-weight:700;cursor:pointer;border:none;font-family:var(--fb);transition:all .15s;background:var(--cream);color:var(--muted);}
+.mt-btn.active-bw{background:var(--press);color:white;}
+.mt-btn.active-col{background:var(--purple);color:white;}
+.copies-ctrl{display:flex;align-items:center;gap:4px;}
+.cp-btn{width:30px;height:30px;border:1.5px solid var(--rule);border-radius:5px;background:var(--cream);font-size:1rem;cursor:pointer;font-weight:700;color:var(--press);display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.cp-btn:hover{border-color:var(--orange);background:var(--orange-pale);color:var(--orange);}
+.cp-inp{width:48px;height:30px;text-align:center;font-size:.9rem;font-family:var(--fm);font-weight:700;border:1.5px solid var(--rule);border-radius:5px;background:var(--paper);color:var(--press);outline:none;}
+.cp-inp:focus{border-color:var(--orange);}
+.copies-label{font-size:.72rem;color:var(--muted);}
 
-/* PDF VIEWER */
-.viewer{background:#3a3530;border-radius:var(--rl);overflow:hidden;margin-bottom:1.25rem;}
-.viewer-bar{background:#2a2520;padding:.55rem 1rem;display:flex;align-items:center;gap:7px;}
+/* ── PDF VIEWER ── */
+.viewer{background:#3a3530;border-radius:var(--rl);overflow:hidden;margin-bottom:1.35rem;box-shadow:var(--shl);}
+.viewer-bar{background:#2a2520;padding:.6rem 1.1rem;display:flex;align-items:center;gap:8px;}
 .viewer-bar svg{width:13px;height:13px;stroke:#a09080;fill:none;stroke-width:2;}
 .viewer-bar span{color:#a09080;font-size:.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.viewer-pages{padding:1.25rem;max-height:460px;overflow-x:auto;overflow-y:hidden;display:flex;gap:1rem;scroll-behavior:smooth;}
+.viewer-pages{padding:1.35rem;max-height:480px;overflow-x:auto;overflow-y:hidden;display:flex;gap:1.1rem;scroll-behavior:smooth;}
 .viewer-pages::-webkit-scrollbar{height:5px;}
 .viewer-pages::-webkit-scrollbar-track{background:#2a2520;}
 .viewer-pages::-webkit-scrollbar-thumb{background:#5a5046;border-radius:3px;}
-.pg-wrap{position:relative;cursor:pointer;border:3px solid transparent;border-radius:var(--r);transition:border-color .15s;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
-.pg-wrap.sel{border-color:var(--orange);}
-.pg-wrap canvas,.pg-wrap img{display:block;border-radius:2px;}
-.pg-badge{position:absolute;bottom:0;left:50%;transform:translateX(-50%);background:var(--press);color:var(--paper);font-size:.65rem;padding:2px 7px;border-radius:0 0 3px 3px;font-family:var(--fm);white-space:nowrap;}
-.pg-check{position:absolute;top:5px;right:5px;width:19px;height:19px;background:var(--orange);border-radius:50%;display:none;align-items:center;justify-content:center;}
+.pg-wrap{position:relative;cursor:pointer;border:3px solid transparent;border-radius:var(--r);transition:all .18s;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.pg-wrap:hover{border-color:rgba(232,98,26,.5);}
+.pg-wrap.sel{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange);}
+.pg-wrap canvas,.pg-wrap img{display:block;border-radius:3px;}
+.pg-badge{position:absolute;bottom:0;left:50%;transform:translateX(-50%);background:rgba(26,22,18,.85);color:var(--paper);font-size:.65rem;padding:2px 8px;border-radius:0 0 4px 4px;font-family:var(--fm);white-space:nowrap;backdrop-filter:blur(4px);}
+.pg-check{position:absolute;top:5px;right:5px;width:20px;height:20px;background:var(--orange);border-radius:50%;display:none;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.3);}
 .pg-wrap.sel .pg-check{display:flex;}
 .pg-check svg{width:10px;height:10px;stroke:white;fill:none;stroke-width:3;}
-.spin-wrap{display:flex;flex-direction:column;align-items:center;padding:2.5rem;color:#a09080;gap:.875rem;}
+.spin-wrap{display:flex;flex-direction:column;align-items:center;padding:2.75rem;color:#a09080;gap:.9rem;}
 .spinner{width:28px;height:28px;border:2px solid #5a5046;border-top-color:var(--orange);border-radius:50%;animation:sp .8s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg)}}
 
-/* PRICE PANEL */
-.price-panel{background:var(--press);color:var(--paper);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
-.price-row{display:flex;justify-content:space-between;align-items:center;font-size:.84rem;padding:.35rem 0;}
+/* ── PRICE PANEL ── */
+.price-panel{background:var(--press);color:var(--paper);border-radius:var(--rl);padding:1.35rem 1.6rem;margin-bottom:1.35rem;box-shadow:var(--shl);}
+.price-panel-title{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:#7a7068;margin-bottom:.75rem;font-weight:600;}
+.price-row{display:flex;justify-content:space-between;align-items:center;font-size:.84rem;padding:.32rem 0;}
 .price-row .lbl{color:#a09080;}
-.price-row .val{font-family:var(--fm);}
-.price-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #3a3530;margin-top:.65rem;padding-top:.65rem;}
+.price-row .val{font-family:var(--fm);color:var(--paper);}
+.price-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #3a3530;margin-top:.75rem;padding-top:.75rem;}
 .price-total .lbl{font-size:.84rem;color:#d0c8c0;font-weight:600;}
-.price-total .amt{font-family:var(--fd);font-size:1.9rem;font-weight:700;color:#f5883f;}
+.price-total .amt{font-family:var(--fd);font-size:2rem;font-weight:700;color:#f5883f;}
 .price-total .amt small{font-size:.95rem;vertical-align:super;margin-right:2px;font-family:var(--fb);}
+.price-panel .savings-note{margin-top:.65rem;padding:.5rem .8rem;background:rgba(45,125,70,.15);border:1px solid rgba(45,125,70,.25);border-radius:6px;font-size:.75rem;color:#6dcf8a;display:flex;align-items:center;gap:6px;}
 
-/* PAYMENT */
-.pay-card{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.75rem;max-width:460px;margin:0 auto;text-align:center;box-shadow:var(--shl);}
-.pay-card h3{font-family:var(--fd);font-size:1.2rem;color:var(--press);margin-bottom:.3rem;}
-.pay-sub{font-size:.84rem;color:var(--muted);margin-bottom:1.25rem;}
-.amt-badge{background:var(--press);color:#f5883f;font-family:var(--fm);font-size:1.4rem;font-weight:500;padding:.45rem 1.4rem;border-radius:var(--r);display:inline-block;margin-bottom:1.1rem;letter-spacing:.05em;}
-.qr-box{background:white;border:1.5px solid var(--rule);border-radius:var(--r);padding:1rem;display:inline-block;margin-bottom:1rem;}
-.upi-line{font-size:.78rem;color:var(--muted);margin-bottom:1.1rem;}
-.upi-line strong{color:var(--press);font-family:var(--fm);}
-.divider{display:flex;align-items:center;gap:.875rem;margin-bottom:1.1rem;}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--rule);}
-.divider span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
-.timer-row{display:flex;align-items:center;justify-content:center;gap:5px;font-size:.78rem;color:var(--muted);margin-bottom:1rem;}
-.timer-row svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
-.tc{font-family:var(--fm);color:var(--orange);font-weight:600;}
+/* ── PAYMENT ── */
+.pay-card{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2rem;max-width:500px;margin:0 auto;box-shadow:var(--shl);}
+.pay-header{display:flex;align-items:center;gap:.875rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--rule);}
+.pay-header-ico{width:48px;height:48px;background:linear-gradient(135deg,var(--orange-pale),#fbe8d5);border-radius:var(--r);display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(232,98,26,.2);flex-shrink:0;}
+.pay-header-ico svg{width:22px;height:22px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.pay-header-info h3{font-family:var(--fd);font-size:1.2rem;color:var(--press);margin-bottom:.2rem;}
+.pay-header-info p{font-size:.8rem;color:var(--muted);}
+.pay-summary{background:var(--cream);border:1px solid var(--rule);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1.35rem;}
+.pay-summary-row{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;padding:.3rem 0;}
+.pay-summary-row .lbl{color:var(--muted);}
+.pay-summary-row .val{font-family:var(--fm);color:var(--press);font-weight:600;}
+.pay-summary-total{border-top:1px solid var(--rule);margin-top:.5rem;padding-top:.6rem!important;font-weight:700;}
+.amt-big{font-family:var(--fd);font-size:1.6rem;font-weight:700;color:var(--orange);}
+.qr-section{margin-bottom:1.35rem;text-align:center;}
+.qr-label{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--press);margin-bottom:.85rem;letter-spacing:.05em;text-transform:uppercase;background:var(--cream);padding:4px 12px;border-radius:20px;border:1px solid var(--rule);}
+.qr-box{background:white;border:2px solid var(--rule);border-radius:var(--r);padding:1.1rem;display:inline-block;margin-bottom:.85rem;box-shadow:var(--sh);}
+.upi-id-line{display:flex;align-items:center;justify-content:center;gap:5px;font-size:.78rem;color:var(--muted);margin-bottom:.65rem;}
+.upi-id-line strong{color:var(--press);font-family:var(--fm);}
+.upi-apps-row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:.25rem;}
+.upi-app{font-size:.68rem;font-weight:700;padding:4px 11px;border-radius:20px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+.pay-divider{display:flex;align-items:center;gap:.875rem;margin:1.25rem 0;}
+.pay-divider::before,.pay-divider::after{content:'';flex:1;height:1px;background:var(--rule);}
+.pay-divider span{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;white-space:nowrap;}
+.timer-row{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.78rem;color:var(--muted);margin:.9rem 0 .75rem;}
+.tc{font-family:var(--fm);color:var(--orange);font-weight:700;font-size:.9rem;}
+.confirm-btn{background:linear-gradient(135deg,var(--green),#3a9a58);color:white;border:none;border-radius:var(--r);padding:.8rem 1.5rem;font-size:.92rem;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--fb);transition:all .2s;box-shadow:0 4px 16px rgba(45,125,70,.3);}
+.confirm-btn:hover{background:linear-gradient(135deg,#236338,var(--green));transform:translateY(-1px);box-shadow:0 6px 20px rgba(45,125,70,.35);}
+.confirm-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;}
 
-/* SUCCESS */
-.success-scr{text-align:center;padding:2.5rem 1.5rem;}
-.s-anim{width:72px;height:72px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;animation:pulse .5s ease;}
-@keyframes pulse{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
-.s-anim svg{width:32px;height:32px;stroke:var(--green);fill:none;stroke-width:2;}
-.success-scr h2{font-family:var(--fd);font-size:1.65rem;color:var(--press);margin-bottom:.65rem;}
-.success-scr .ssub{font-size:.9rem;color:var(--muted);max-width:340px;margin:0 auto 1.75rem;line-height:1.7;}
-.ps-card{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.25rem 1.5rem;max-width:360px;margin:0 auto 1.75rem;text-align:left;}
-.ps-row{display:flex;align-items:center;gap:.65rem;font-size:.84rem;padding:.35rem 0;}
-.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+/* ── SUCCESS ── */
+.success-scr{text-align:center;padding:2.75rem 1.5rem;}
+.s-anim{width:78px;height:78px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.35rem;animation:pulse .55s ease;border:2px solid rgba(45,125,70,.2);box-shadow:0 8px 28px rgba(45,125,70,.2);}
+@keyframes pulse{0%{transform:scale(.35);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.s-anim svg{width:34px;height:34px;stroke:var(--green);fill:none;stroke-width:2.2;}
+.success-scr h2{font-family:var(--fd);font-size:1.8rem;color:var(--press);margin-bottom:.65rem;}
+.success-scr .ssub{font-size:.9rem;color:var(--muted);max-width:360px;margin:0 auto 2rem;line-height:1.75;}
+.ps-card{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.35rem 1.6rem;max-width:380px;margin:0 auto 2rem;text-align:left;box-shadow:var(--sh);}
+.ps-card-title{font-size:.65rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:700;margin-bottom:.85rem;padding-bottom:.65rem;border-bottom:1px solid var(--rule);}
+.ps-row{display:flex;align-items:center;gap:.7rem;font-size:.84rem;padding:.38rem 0;}
+.sdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .sdot.done{background:var(--green);}
 .sdot.active{background:var(--orange);animation:blink 1s ease-in-out infinite;}
 .sdot.wait{background:var(--rule);}
-@keyframes blink{50%{opacity:.25}}
-.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+@keyframes blink{50%{opacity:.2}}
+.act-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
 
-/* FOOTER */
-footer{background:var(--press);color:#6a6460;text-align:center;padding:1rem;font-size:.72rem;border-top:1px solid #3a3530;letter-spacing:.04em;}
+/* ── HOME QR ── */
+.qr-card{margin-top:2rem;text-align:center;padding:2.25rem 1.5rem;background:var(--paper);border-radius:var(--rl);border:1.5px solid var(--rule);box-shadow:var(--sh);}
+.qr-card-title{font-size:.65rem;font-weight:700;color:var(--press);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.85rem;display:flex;align-items:center;justify-content:center;gap:6px;}
+.qr-card-title svg{width:13px;height:13px;stroke:var(--orange);fill:none;stroke-width:2;}
+.qr-card p{font-size:.75rem;color:var(--muted);margin-top:.65rem;}
+.qr-card #home-qr-url{font-size:.7rem;color:var(--orange);font-family:var(--fm);margin-top:.4rem;word-break:break-all;}
+
+/* ── CAMERA MODAL ── */
+#cam-modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:1rem;}
+#cam-modal.open{display:flex;}
+.cam-box{background:#1a1612;border-radius:var(--rl);width:100%;max-width:480px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.6);}
+.cam-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;background:#111;border-bottom:1px solid #333;}
+.cam-title{display:flex;align-items:center;gap:7px;font-size:.84rem;font-weight:600;color:var(--paper);}
+.cam-close{background:none;border:none;cursor:pointer;color:#a09080;padding:4px;border-radius:4px;display:flex;align-items:center;transition:color .15s;}
+.cam-close:hover{color:white;}
+.cam-close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;}
+.cam-video-wrap{position:relative;background:#000;min-height:260px;display:flex;align-items:center;justify-content:center;}
+#cam-video{width:100%;max-height:360px;object-fit:cover;display:block;}
+#cam-preview{width:100%;max-height:360px;object-fit:contain;display:block;}
+.cam-controls{display:flex;align-items:center;justify-content:center;gap:.75rem;padding:1rem;background:#111;flex-wrap:wrap;}
+.cam-btn{display:inline-flex;align-items:center;gap:6px;padding:.55rem 1.1rem;border-radius:var(--r);font-size:.84rem;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .15s;border:none;-webkit-tap-highlight-color:transparent;}
+.cam-btn svg{width:15px;height:15px;}
+.cam-btn-capture{background:var(--orange);color:white;}
+.cam-btn-capture:hover{background:var(--orange-d);}
+.cam-btn-use{background:var(--green);color:white;}
+.cam-btn-use:hover{background:#236338;}
+.cam-btn-out{background:transparent;color:#a09080;border:1px solid #3a3530;}
+.cam-btn-out:hover{color:white;border-color:#666;}
+
+/* ── FOOTER ── */
+footer{background:var(--press);color:#5a5450;text-align:center;padding:1.1rem;font-size:.72rem;border-top:1px solid #2a2520;letter-spacing:.05em;}
 footer span{color:var(--orange);}
+
+/* ── INFO BANNER ── */
+.info-banner{display:flex;align-items:center;gap:10px;background:#fef9ec;border:1px solid #fbbf24;border-radius:var(--r);padding:.65rem 1rem;font-size:.78rem;color:#92400e;margin-bottom:1.1rem;}
+.info-banner.success{background:#f0fdf4;border-color:#86efac;color:#166534;}
+.info-banner svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -250,26 +321,42 @@ footer span{color:var(--orange);}
     <div class="logo-icon">
       <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
     </div>
-    <div>
-      <div class="logo-name">SmartPrint</div>
-      <div class="logo-sub">Document Print System</div>
-    </div>
   </div>
-  <div class="hbadge">v3.0 · Secure Print</div>
+  <div class="header-right">
+    <!-- ★ PAGE COUNTER BADGE ★ -->
+    <div class="page-counter" id="page-counter" title="Remaining print pages">
+      <div class="pc-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="pc-info">
+        <span class="pc-label">Pages Left</span>
+        <span class="pc-num" id="pc-num">500</span>
+        <span class="pc-sub">of 500 total</span>
+      </div>
+      <div class="pc-bar-wrap">
+        <div class="pc-bar" id="pc-bar" style="width:100%"></div>
+      </div>
+    </div>
+    <div class="hbadge">v3.1</div>
+  </div>
 </header>
 
 <div class="wrap">
 
   <!-- ═══ HOME ═══ -->
   <div class="scr on" id="scr-home">
-    <div style="padding-top:1.5rem;"></div>
+    <div id="fb-status" class="info-banner">
+      <div class="spinner" style="width:14px;height:14px;border-width:2px;border-color:#fbbf24;border-top-color:#92400e;flex-shrink:0;"></div>
+      Cloud connect ho raha hai… please wait
+    </div>
+
     <div class="home-grid">
       <div class="hcard" onclick="show('scr-upload')">
         <div class="hcard-ico">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </div>
         <h2>Upload a File</h2>
-        <p>Upload your PDF, document or image and get a unique 4-digit print code.</p>
+        <p>Upload your PDF, document or image and get a unique 4-digit print code instantly.</p>
         <div class="hcard-link">Upload now <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </div>
       <div class="hcard" onclick="show('scr-code')">
@@ -277,9 +364,19 @@ footer span{color:var(--orange);}
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10h3v7M7 10v1M14 10h3v3h-3v4h3M10 14h1"/></svg>
         </div>
         <h2>Enter a Code</h2>
-        <p>Already have a 4-digit print code? Enter it to retrieve and print your file.</p>
+        <p>Already have a 4-digit print code? Enter it to retrieve and print your document.</p>
         <div class="hcard-link">Enter code <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
       </div>
+    </div>
+
+    <div class="qr-card">
+      <div class="qr-card-title">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M17 17h3v3M14 20h3"/></svg>
+        Scan to Open on Any Device
+      </div>
+      <div id="home-qr" style="display:inline-block;background:white;padding:1rem;border-radius:var(--r);border:1.5px solid var(--rule);"></div>
+      <p>Google Lens ya Camera app se scan karo</p>
+      <p id="home-qr-url"></p>
     </div>
   </div>
 
@@ -290,37 +387,69 @@ footer span{color:var(--orange);}
       <div class="stitle">Upload Your File</div>
     </div>
 
-    <!-- Hidden real inputs — triggered ONLY by their <label> -->
     <input type="file" id="fi-main" class="real-inp"
       accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.bmp,.webp,.tiff,.tif,.heic,.heif"/>
-    <input type="file" id="fi-cam" class="real-inp"
-      accept="image/*" capture="environment"/>
 
     <div class="dropzone" id="dropzone">
       <div class="dz-icon">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       </div>
       <h3>Upload your file</h3>
-      <p class="dz-sub">Tap a button below to choose a file from your device</p>
+      <p class="dz-sub">Choose a file from your device or use the camera to scan a document</p>
       <div class="up-btns">
         <label for="fi-main" class="up-lbl up-pri">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           Choose File
         </label>
-        <label for="fi-cam" class="up-lbl up-sec">
-          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Camera
-        </label>
       </div>
-      <div class="drag-hint">or drag &amp; drop here (desktop only)</div>
+      <div class="drag-hint">or drag &amp; drop here (desktop)</div>
       <div class="tbadges">
         <span class="tb">PDF</span><span class="tb">DOC</span><span class="tb">DOCX</span>
         <span class="tb">TXT</span><span class="tb">JPG</span><span class="tb">PNG</span>
         <span class="tb">WEBP</span><span class="tb">GIF</span>
+        <span class="tb">Max 1 GB</span>
       </div>
     </div>
-
     <div id="upload-result"></div>
+  </div>
+
+  <!-- ═══ CAMERA MODAL ═══ -->
+  <div id="cam-modal">
+    <div class="cam-box">
+      <div class="cam-header">
+        <span class="cam-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Camera Capture
+        </span>
+        <button class="cam-close" onclick="closeCamera()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="cam-video-wrap">
+        <video id="cam-video" autoplay playsinline muted></video>
+        <canvas id="cam-canvas" style="display:none;"></canvas>
+        <div id="cam-preview-wrap" style="display:none;"><img id="cam-preview" alt="Captured"/></div>
+      </div>
+      <div class="cam-controls">
+        <button class="cam-btn cam-btn-out" id="btn-switch-cam" onclick="switchCamera()" title="Switch Camera">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>
+          Switch
+        </button>
+        <button class="cam-btn cam-btn-capture" id="btn-capture" onclick="capturePhoto()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
+          Capture
+        </button>
+        <button class="cam-btn cam-btn-out" id="btn-retake" onclick="retakePhoto()" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          Retake
+        </button>
+        <button class="cam-btn cam-btn-use" id="btn-use" onclick="usePhoto()" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><polyline points="20 6 9 17 4 12"/></svg>
+          Use Photo
+        </button>
+      </div>
+      <div id="cam-err" style="font-size:.78rem;color:#f87171;text-align:center;padding:.5rem 1rem;display:none;"></div>
+    </div>
   </div>
 
   <!-- ═══ CODE ENTRY ═══ -->
@@ -330,16 +459,21 @@ footer span{color:var(--orange);}
       <div class="stitle">Enter Print Code</div>
     </div>
     <div class="code-form">
-      <h3>Enter your 4-digit code</h3>
-      <p class="cfsub">Enter the code you received after uploading your file.</p>
+      <div class="code-form-header">
+        <div class="code-form-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10h3v7M7 10v1M14 10h3v3h-3v4h3M10 14h1"/></svg>
+        </div>
+        <h3>Enter Your 4-Digit Code</h3>
+        <p class="cfsub">Enter the code you received after uploading your file. It is valid for 24 hours.</p>
+      </div>
       <div class="digits">
-        <input class="dig" id="d0" type="text" inputmode="numeric" maxlength="1" autocomplete="off"/>
-        <input class="dig" id="d1" type="text" inputmode="numeric" maxlength="1" autocomplete="off"/>
-        <input class="dig" id="d2" type="text" inputmode="numeric" maxlength="1" autocomplete="off"/>
-        <input class="dig" id="d3" type="text" inputmode="numeric" maxlength="1" autocomplete="off"/>
+        <input class="dig" id="d0" type="text" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="·"/>
+        <input class="dig" id="d1" type="text" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="·"/>
+        <input class="dig" id="d2" type="text" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="·"/>
+        <input class="dig" id="d3" type="text" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="·"/>
       </div>
       <div id="code-err"></div>
-      <button class="btn btn-pri btn-full" onclick="validateCode()" style="margin-top:.5rem;">
+      <button class="btn btn-pri btn-full" onclick="validateCode()" style="margin-top:.75rem;">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Retrieve Document
       </button>
@@ -355,7 +489,7 @@ footer span{color:var(--orange);}
     <div class="steps">
       <div class="step done"><span class="step-n">01</span>Upload</div>
       <div class="step done"><span class="step-n">02</span>Retrieve</div>
-      <div class="step active"><span class="step-n">03</span>Select Pages</div>
+      <div class="step active"><span class="step-n">03</span>Pages</div>
       <div class="step"><span class="step-n">04</span>Payment</div>
       <div class="step"><span class="step-n">05</span>Print</div>
     </div>
@@ -364,38 +498,20 @@ footer span{color:var(--orange);}
 
     <div class="sel-panel">
       <div class="sel-head">
-        <div class="sel-head-title">Page Selection</div>
-        <span class="sel-head-count" id="sel-count">No pages selected</span>
+        <div class="sel-head-title">📄 Page Selection</div>
+        <span class="sel-head-count" id="sel-count">None selected</span>
       </div>
       <div class="page-grid" id="page-grid"></div>
       <div class="sel-btns">
-        <button class="sbtn" onclick="selAll()">Select All</button>
-        <button class="sbtn" onclick="selNone()">Clear</button>
+        <button class="sbtn" onclick="selAll()">✓ Select All</button>
+        <button class="sbtn" onclick="selNone()">✕ Clear All</button>
       </div>
-    </div>
-
-    <div class="mode-panel">
-      <div class="mode-head">
-        <div class="mode-head-title">Print Type</div>
-        <span class="mode-head-rate" id="mode-rate-lbl">₹4 / page</span>
-      </div>
-      <div class="mode-cards">
-        <div class="mcard bw-on" id="mc-bw" onclick="setMode('bw')">
-          <div class="mico bw">⬛</div>
-          <div class="minfo">
-            <div class="mname">Black &amp; White</div>
-            <div class="mrate">Rate: <strong>₹4</strong> per page</div>
-          </div>
-          <div class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div id="copies-panel" style="display:none;border-top:1px solid var(--rule);padding:.9rem 1.2rem;">
+        <div style="font-size:.72rem;font-weight:700;color:var(--press);margin-bottom:.85rem;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+          Copies & Print Type per Page
         </div>
-        <div class="mcard" id="mc-col" onclick="setMode('color')">
-          <div class="mico col">🎨</div>
-          <div class="minfo">
-            <div class="mname">Colour Print</div>
-            <div class="mrate">Rate: <strong>₹8</strong> per page</div>
-          </div>
-          <div class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        </div>
+        <div id="copies-grid" style="display:flex;flex-direction:column;gap:.3rem;"></div>
       </div>
     </div>
 
@@ -405,21 +521,22 @@ footer span{color:var(--orange);}
         <span id="viewer-name">Document Preview</span>
       </div>
       <div class="viewer-pages" id="viewer-pages">
-        <div class="spin-wrap"><div class="spinner"></div><span style="font-size:.78rem;">Loading…</span></div>
+        <div class="spin-wrap"><div class="spinner"></div><span style="font-size:.78rem;">Loading preview…</span></div>
       </div>
     </div>
 
     <div class="price-panel">
+      <div class="price-panel-title">💰 Price Breakdown</div>
       <div class="price-row"><span class="lbl">Pages selected</span><span class="val" id="pp-pages">0</span></div>
-      <div class="price-row"><span class="lbl">Print type</span><span class="val" id="pp-mode">Black &amp; White</span></div>
-      <div class="price-row"><span class="lbl">Rate per page</span><span class="val" id="pp-rate">₹4.00</span></div>
+      <div class="price-row"><span class="lbl">B&amp;W copies × ₹4</span><span class="val" id="pp-bw-copies">0</span></div>
+      <div class="price-row"><span class="lbl">Colour copies × ₹8</span><span class="val" id="pp-col-copies">0</span></div>
       <div class="price-total">
-        <span class="lbl">Total</span>
+        <span class="lbl">Total Amount</span>
         <span class="amt"><small>₹</small><span id="pp-total">0</span></span>
       </div>
     </div>
 
-    <button class="btn btn-pri btn-full" id="pay-btn" onclick="goPayment()" disabled>
+    <button class="btn btn-pri btn-full" id="pay-btn" onclick="goPayment()" disabled style="font-size:.95rem;padding:.85rem 1.5rem;">
       <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
       Proceed to Payment
     </button>
@@ -434,53 +551,175 @@ footer span{color:var(--orange);}
     <div class="steps">
       <div class="step done"><span class="step-n">01</span>Upload</div>
       <div class="step done"><span class="step-n">02</span>Retrieve</div>
-      <div class="step done"><span class="step-n">03</span>Select Pages</div>
+      <div class="step done"><span class="step-n">03</span>Pages</div>
       <div class="step active"><span class="step-n">04</span>Payment</div>
       <div class="step"><span class="step-n">05</span>Print</div>
     </div>
+
     <div class="pay-card">
-      <h3>Scan &amp; Pay via UPI</h3>
-      <p class="pay-sub">Use GPay, PhonePe, Paytm, or any UPI app to scan and pay</p>
-      <div class="amt-badge" id="pay-amt">₹0</div><br/>
-      <div class="qr-box"><div id="qr-div"></div></div>
-      <div class="upi-line">Pay to: <strong>8077271230@pthdfc</strong></div>
-      <div class="timer-row" id="timer-row">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Session expires in <span class="tc" id="tc">05:00</span>
+      <div class="pay-header">
+        <div class="pay-header-ico">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M17 17h3v3M14 20h3"/></svg>
+        </div>
+        <div class="pay-header-info">
+          <h3>Scan &amp; Pay via UPI</h3>
+          <p>GPay, PhonePe, Paytm, BHIM — koi bhi UPI app chalega</p>
+        </div>
       </div>
-      <div class="divider"><span>or confirm manually below</span></div>
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:.875rem;">After paying, click Confirm Payment</p>
-      <button class="btn btn-pri btn-full" onclick="confirmPay()">
+
+      <div class="pay-summary">
+        <div class="pay-summary-row"><span class="lbl">Pages</span><span class="val" id="rzp-pages">—</span></div>
+        <div class="pay-summary-row"><span class="lbl">Print type</span><span class="val" id="rzp-mode">—</span></div>
+        <div class="pay-summary-row pay-summary-total">
+          <span>Total Amount</span>
+          <span class="amt-big" id="rzp-total">₹0</span>
+        </div>
+      </div>
+
+      <div class="qr-section">
+        <div class="qr-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M17 17h3v3M14 20h3"/></svg>
+          Scan QR to Pay
+        </div>
+        <div class="qr-box"><div id="qr-div"></div></div>
+        <div class="upi-id-line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          UPI ID: <strong>8077271230@pthdfc</strong>
+        </div>
+        <div class="upi-apps-row">
+          <span class="upi-app">GPay</span>
+          <span class="upi-app">PhonePe</span>
+          <span class="upi-app">Paytm</span>
+          <span class="upi-app">BHIM</span>
+        </div>
+      </div>
+
+      <div class="timer-row" id="timer-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        QR expires in <span class="tc" id="tc">10:00</span>
+      </div>
+
+      <div class="pay-divider"><span>Payment karne ke baad neeche fill karo</span></div>
+
+      <!-- Amount Entry -->
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:.78rem;font-weight:700;color:var(--press);display:block;margin-bottom:.4rem;">💰 Aapne kitne Rs. pay kiye?</label>
+        <input id="user-paid-amount" type="number" min="1" placeholder="e.g. 20"
+          style="width:100%;padding:.65rem .9rem;border:2px solid var(--rule);border-radius:var(--r);font-size:1rem;font-family:var(--fm);font-weight:700;color:var(--press);background:var(--cream);outline:none;"
+          onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--rule)'"/>
+      </div>
+      <div style="margin-bottom:1.1rem;">
+        <label style="font-size:.78rem;font-weight:700;color:var(--press);display:block;margin-bottom:.4rem;">🧾 UTR / Transaction ID <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+        <input id="user-utr" type="text" placeholder="e.g. 426819XXXXXX"
+          style="width:100%;padding:.65rem .9rem;border:2px solid var(--rule);border-radius:var(--r);font-size:.88rem;font-family:var(--fm);color:var(--press);background:var(--cream);outline:none;"
+          onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--rule)'"/>
+      </div>
+      <div id="pay-amount-err"></div>
+
+      <button class="confirm-btn" onclick="userSubmitPayment()">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-        Confirm Payment
+        ✅ Submit — Owner ko Notify Karo
       </button>
     </div>
   </div>
 
-  <!-- ═══ SUCCESS ═══ -->
+  <!-- ═══ WAITING FOR OWNER CONFIRM ═══ -->
+  <div class="scr" id="scr-waiting">
+    <div class="steps">
+      <div class="step done"><span class="step-n">01</span>Upload</div>
+      <div class="step done"><span class="step-n">02</span>Retrieve</div>
+      <div class="step done"><span class="step-n">03</span>Pages</div>
+      <div class="step done"><span class="step-n">04</span>Payment</div>
+      <div class="step active"><span class="step-n">05</span>Print</div>
+    </div>
+    <div style="text-align:center;padding:3rem 1.5rem;">
+      <div style="width:80px;height:80px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;border:2px solid rgba(232,98,26,.2);box-shadow:0 8px 28px rgba(232,98,26,.15);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:36px;height:36px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h2 style="font-family:var(--fd);font-size:1.6rem;color:var(--press);margin-bottom:.65rem;">Payment Submitted! ⏳</h2>
+      <p style="font-size:.9rem;color:var(--muted);max-width:340px;margin:0 auto 2rem;line-height:1.75;">
+        Owner ko notification bhej di gayi hai. Thodi der mein confirm hoga aur print start ho jaayega<span id="waiting-dots">...</span>
+      </p>
+      <!-- Animated waiting indicator -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:2rem;">
+        <div style="width:10px;height:10px;background:var(--orange);border-radius:50%;animation:blink 1s ease-in-out infinite;"></div>
+        <div style="width:10px;height:10px;background:var(--orange);border-radius:50%;animation:blink 1s ease-in-out .3s infinite;"></div>
+        <div style="width:10px;height:10px;background:var(--orange);border-radius:50%;animation:blink 1s ease-in-out .6s infinite;"></div>
+      </div>
+      <div style="background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.25rem 1.5rem;max-width:360px;margin:0 auto;text-align:left;">
+        <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin-bottom:.75rem;">Status</div>
+        <div style="display:flex;align-items:center;gap:.65rem;font-size:.84rem;padding:.3rem 0;">
+          <div class="sdot done"></div><span>Payment info submit ho gayi ✓</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.65rem;font-size:.84rem;padding:.3rem 0;">
+          <div class="sdot active"></div><span>Owner verification ka wait kar rahe hain…</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.65rem;font-size:.84rem;padding:.3rem 0;">
+          <div class="sdot wait"></div><span style="color:var(--muted);">Print start hoga</span>
+        </div>
+      </div>
+      <p style="font-size:.75rem;color:var(--muted);margin-top:1.5rem;">Page band mat karo — confirm hone pe automatically aage jayega</p>
+    </div>
+  </div>
+
+  <!-- ═══ ADMIN PANEL ═══ -->
+  <div class="scr" id="scr-admin">
+    <div class="shead">
+      <button class="back" onclick="goHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Home</button>
+      <div class="stitle">🔐 Admin Panel</div>
+    </div>
+    <!-- Password gate -->
+    <div id="admin-login" style="max-width:400px;margin:0 auto;">
+      <div style="background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2rem;text-align:center;box-shadow:var(--shl);">
+        <div style="width:56px;height:56px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <h3 style="font-family:var(--fd);font-size:1.15rem;color:var(--press);margin-bottom:.4rem;">Admin Login</h3>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:1.25rem;">Password daalo admin panel access karne ke liye</p>
+        <input id="admin-pass-inp" type="password" placeholder="Password"
+          style="width:100%;padding:.65rem .9rem;border:2px solid var(--rule);border-radius:var(--r);font-size:1rem;font-family:var(--fm);color:var(--press);background:var(--cream);outline:none;margin-bottom:.75rem;text-align:center;letter-spacing:.15em;"
+          onkeydown="if(event.key==='Enter') checkAdminPass()"/>
+        <button class="btn btn-pri btn-full" onclick="checkAdminPass()">Login</button>
+        <div id="admin-pass-err" style="margin-top:.5rem;"></div>
+      </div>
+    </div>
+    <!-- Admin dashboard -->
+    <div id="admin-dashboard" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.5rem;">
+        <div style="font-size:.78rem;color:var(--muted);">Pending payments neeche hain — Confirm ya Reject karo</div>
+        <button class="btn btn-out" onclick="loadPendingPayments()" style="font-size:.78rem;padding:.4rem .9rem;">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div id="pending-payments-list">
+        <div style="text-align:center;padding:2rem;color:var(--muted);font-size:.84rem;">Loading...</div>
+      </div>
+    </div>
+  </div>
+
   <div class="scr" id="scr-done">
     <div class="steps">
       <div class="step done"><span class="step-n">01</span>Upload</div>
       <div class="step done"><span class="step-n">02</span>Retrieve</div>
-      <div class="step done"><span class="step-n">03</span>Select Pages</div>
+      <div class="step done"><span class="step-n">03</span>Pages</div>
       <div class="step done"><span class="step-n">04</span>Payment</div>
       <div class="step active"><span class="step-n">05</span>Print</div>
     </div>
     <div class="success-scr">
       <div class="s-anim"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <h2>Payment Successful!</h2>
-      <p class="ssub">Your payment is confirmed. Document is being sent to the printer.</p>
+      <h2>Payment Successful! 🎉</h2>
+      <p class="ssub">Your payment is confirmed. Document is being sent to the printer right now.</p>
       <div class="ps-card">
-        <div class="ps-row"><div class="sdot done"></div><span>Payment verified</span></div>
+        <div class="ps-card-title">Print Job Status</div>
+        <div class="ps-row"><div class="sdot done"></div><span>Payment verified ✓</span></div>
         <div class="ps-row"><div class="sdot done"></div><span>Pages: <strong id="done-pages"></strong></span></div>
         <div class="ps-row"><div class="sdot done"></div><span>Type: <strong id="done-mode"></strong></span></div>
         <div class="ps-row"><div class="sdot active"></div><span id="ps-txt">Sending to printer…</span></div>
         <div class="ps-row"><div class="sdot wait" id="sdot-last"></div><span id="ps-last" style="color:var(--muted)">Awaiting completion</span></div>
       </div>
       <div class="act-row">
-        <button class="btn btn-pri" onclick="window.print()">
+        <button class="btn btn-pri" onclick="directPrint()">
           <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
-          Print Now
+          🖨️ Direct Print Karo
         </button>
         <button class="btn btn-out" onclick="goHome()">
           <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
@@ -490,9 +729,12 @@ footer span{color:var(--orange);}
     </div>
   </div>
 
-</div><!-- /wrap -->
+</div>
 
-<footer>SmartPrint System &copy; 2025 &nbsp;·&nbsp; <span>Files stored in session memory — do not refresh</span></footer>
+<footer>SmartPrint System &copy; 2025 &nbsp;·&nbsp; <span>Secure Print</span> &nbsp;·&nbsp; v3.1</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" onerror="fbLoadFailed()"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" onerror="fbLoadFailed()"></script>
 
 <script>
 // ── PDF.js worker ──
@@ -502,15 +744,209 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 // ── Constants ──
 const RATE_BW = 4, RATE_COL = 8;
 const UPI_ID  = '8077271230@pthdfc';
-const MAX_MB  = 20;
+const MAX_MB  = 1024;
+const CHUNK_SIZE = 600 * 1024;
+const TTL_MS = 24 * 60 * 60 * 1000;
+const TOTAL_PAGES_QUOTA = 500; // ★ Total page quota
 
-// ── In-memory file store ──
+// ════════════════════════════════════
+//  ★ PAGE COUNTER SYSTEM ★
+// ════════════════════════════════════
+const PC_STORAGE_KEY = 'smartprint_pages_remaining';
+
+function getPagesRemaining() {
+  var stored = localStorage.getItem(PC_STORAGE_KEY);
+  if (stored === null) {
+    localStorage.setItem(PC_STORAGE_KEY, TOTAL_PAGES_QUOTA);
+    return TOTAL_PAGES_QUOTA;
+  }
+  return Math.max(0, parseInt(stored) || 0);
+}
+
+function setPagesRemaining(n) {
+  n = Math.max(0, n);
+  localStorage.setItem(PC_STORAGE_KEY, n);
+}
+
+function updateCounterUI(animate) {
+  var remaining = getPagesRemaining();
+  var numEl = document.getElementById('pc-num');
+  var barEl = document.getElementById('pc-bar');
+  if (!numEl || !barEl) return;
+
+  numEl.textContent = remaining;
+  var pct = (remaining / TOTAL_PAGES_QUOTA) * 100;
+  barEl.style.width = pct + '%';
+
+  // Color coding
+  if (remaining <= 50) {
+    barEl.style.background = 'var(--red)';
+    numEl.style.color = '#ff6b6b';
+  } else if (remaining <= 150) {
+    barEl.style.background = '#f59e0b';
+    numEl.style.color = '#fbbf24';
+  } else {
+    barEl.style.background = 'var(--orange)';
+    numEl.style.color = '#f5883f';
+  }
+
+  if (animate) {
+    numEl.classList.remove('bump');
+    void numEl.offsetWidth; // reflow
+    numEl.classList.add('bump');
+  }
+}
+
+function deductPages(count) {
+  var current = getPagesRemaining();
+  var newVal = Math.max(0, current - count);
+  setPagesRemaining(newVal);
+  updateCounterUI(true);
+  return newVal;
+}
+
+// Init counter on load
+updateCounterUI(false);
+
+// ════════════════════════════════════
+//  Firebase Setup
+// ════════════════════════════════════
+let fsdb = null, firebaseReady = false;
+const pendingOps = [];
+
+function fbLoadFailed() {
+  var el = document.getElementById('fb-status');
+  if (el) {
+    el.className = 'info-banner';
+    el.style.background = '#fef2f2'; el.style.borderColor = '#fca5a5'; el.style.color = '#991b1b';
+    el.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Cloud connect nahi hua. Internet check karo.';
+  }
+}
+
+function runWhenReady(fn) {
+  if (firebaseReady) fn();
+  else pendingOps.push(fn);
+}
+
+window.addEventListener('load', function() {
+  try {
+    var firebaseConfig = {
+      apiKey:"AIzaSyBJ6DthZOKbk0l3HGem1unTUAdBQrHKnKg",
+      authDomain:"smartprint-12caa.firebaseapp.com",
+      projectId:"smartprint-12caa",
+      storageBucket:"smartprint-12caa.firebasestorage.app",
+      messagingSenderId:"433851951637",
+      appId:"1:433851951637:web:e0453eb9882bc9b0db3c1c"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    fsdb = firebase.firestore();
+    firebaseReady = true;
+
+    var el = document.getElementById('fb-status');
+    if (el) {
+      el.className = 'info-banner success';
+      el.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Cloud connected — ready to use!';
+      setTimeout(function(){ if(el) el.style.display='none'; }, 2500);
+    }
+    pendingOps.forEach(function(fn){ fn(); });
+    pendingOps.length = 0;
+  } catch(e) { fbLoadFailed(); }
+});
+
+// ── Home QR ──
+window.addEventListener('load', function() {
+  var url = window.location.href;
+  if (url.startsWith('file://')) url = 'https://YOUR-WEBSITE-URL.com';
+  var qrEl = document.getElementById('home-qr');
+  var urlEl = document.getElementById('home-qr-url');
+  if (qrEl) {
+    qrEl.innerHTML = '';
+    new QRCode(qrEl, { text:url, width:160, height:160, colorDark:'#1a1612', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M });
+  }
+  if (urlEl) urlEl.textContent = url;
+});
+
+// ── Runtime cache ──
 const STORE = {};
 
+// ── Unique 4-digit code ──
+async function mkCode() {
+  let c, t = 0;
+  do {
+    c = String(Math.floor(1000 + Math.random() * 9000));
+    t++;
+    try { var doc = await fsdb.collection('files').doc(c).get(); if (!doc.exists) break; } catch(e) { break; }
+  } while (t < 200);
+  return c;
+}
+
+// ── Save to Firestore ──
+async function saveFileToFirebase(code, file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = async function(e) {
+      try {
+        var base64 = e.target.result;
+        var totalChunks = Math.ceil(base64.length / CHUNK_SIZE);
+        var batch = fsdb.batch();
+        var metaRef = fsdb.collection('files').doc(code);
+        batch.set(metaRef, {
+          fileName: file.name, fileSize: file.size, fileType: file.type || '',
+          totalChunks: totalChunks,
+          uploadedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          expiresAt: new Date(Date.now() + TTL_MS)
+        });
+        await batch.commit();
+        for (var i = 0; i < totalChunks; i++) {
+          var chunk = base64.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+          await fsdb.collection('files').doc(code).collection('chunks').doc(String(i)).set({ data: chunk });
+          var pct = Math.round(((i + 1) / totalChunks) * 100);
+          var bar = document.getElementById('pbar'); if (bar) bar.style.width = pct + '%';
+          var lbl = document.getElementById('pbar-lbl'); if (lbl) lbl.textContent = pct + '%';
+        }
+        resolve(code);
+      } catch(err) { reject(err); }
+    };
+    reader.onerror = function(){ reject(new Error('File read failed')); };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── Load from Firestore ──
+async function loadFileFromFirebase(code) {
+  try {
+    var metaDoc = await fsdb.collection('files').doc(code).get();
+    if (!metaDoc.exists) return null;
+    var meta = metaDoc.data();
+    if (meta.expiresAt && meta.expiresAt.toDate && meta.expiresAt.toDate() < new Date()) {
+      await deleteFileFromFirebase(code, meta.totalChunks);
+      return null;
+    }
+    var totalChunks = meta.totalChunks || 1, parts = [];
+    for (var i = 0; i < totalChunks; i++) {
+      var chunkDoc = await fsdb.collection('files').doc(code).collection('chunks').doc(String(i)).get();
+      if (!chunkDoc.exists) throw new Error('Chunk ' + i + ' missing');
+      parts.push(chunkDoc.data().data);
+    }
+    return { fileName: meta.fileName, fileSize: meta.fileSize, fileType: meta.fileType, downloadURL: parts.join('') };
+  } catch(e) { console.error('Firestore load error:', e); return null; }
+}
+
+async function deleteFileFromFirebase(code, totalChunks) {
+  try {
+    var batch = fsdb.batch();
+    for (var i = 0; i < (totalChunks || 1); i++)
+      batch.delete(fsdb.collection('files').doc(code).collection('chunks').doc(String(i)));
+    batch.delete(fsdb.collection('files').doc(code));
+    await batch.commit();
+  } catch(e) { console.warn('Delete failed:', e); }
+}
+
 // ── App state ──
-let fileData = null, fileName = null, fileCode = null;
-let totalPgs = 0, selPgs = new Set(), printMode = 'bw';
-let pdfDoc = null, payTimer = null, printTimer = null;
+let fileData=null, fileName=null, fileCode=null;
+let totalPgs=0, selPgs=new Set();
+let pageCopies={}, pageMode={};
+let pdfDoc=null, payTimer=null, printTimer=null;
 
 // ════════════════════════════════════
 //  Navigation
@@ -518,38 +954,22 @@ let pdfDoc = null, payTimer = null, printTimer = null;
 function show(id) {
   document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
 
 function goHome() {
-  clearInterval(payTimer);
-  clearInterval(printTimer);
-  printMode = 'bw';
-  fileData = null; fileName = null; fileCode = null;
+  clearInterval(payTimer); clearInterval(printTimer);
+  fileData=null; fileName=null; fileCode=null;
   document.getElementById('upload-result').innerHTML = '';
-  ['d0','d1','d2','d3'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) { el.value = ''; el.classList.remove('bad'); }
+  ['d0','d1','d2','d3'].forEach(function(id){
+    var el=document.getElementById(id); if(el){el.value='';el.classList.remove('bad');}
   });
   document.getElementById('code-err').innerHTML = '';
   show('scr-home');
 }
 
-// ════════════════════════════════════
-//  Helpers
-// ════════════════════════════════════
-function mkCode() {
-  let c, t = 0;
-  do { c = String(Math.floor(1000 + Math.random() * 9000)); t++; }
-  while (STORE[c] && t < 200);
-  return c;
-}
-
 function errHtml(msg) {
-  return `<div class="err">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <span>${msg}</span>
-  </div>`;
+  return '<div class="err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>' + msg + '</span></div>';
 }
 
 // ════════════════════════════════════
@@ -557,114 +977,64 @@ function errHtml(msg) {
 // ════════════════════════════════════
 const dropzone = document.getElementById('dropzone');
 const fiMain   = document.getElementById('fi-main');
-const fiCam    = document.getElementById('fi-cam');
 
-// Drag & drop (desktop)
-dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('over'); });
-dropzone.addEventListener('dragleave', e => { if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('over'); });
-dropzone.addEventListener('drop', e => {
-  e.preventDefault();
-  dropzone.classList.remove('over');
-  const f = e.dataTransfer && e.dataTransfer.files[0];
-  if (f) processFile(f);
+dropzone.addEventListener('dragover', function(e){ e.preventDefault(); dropzone.classList.add('over'); });
+dropzone.addEventListener('dragleave', function(e){ if(!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('over'); });
+dropzone.addEventListener('drop', function(e){
+  e.preventDefault(); dropzone.classList.remove('over');
+  var f = e.dataTransfer && e.dataTransfer.files[0]; if(f) processFile(f);
 });
+fiMain.addEventListener('change', function(){ if(this.files&&this.files[0]){ processFile(this.files[0]); this.value=''; } });
 
-// File picker (mobile + desktop) — triggered by <label for="fi-main">
-fiMain.addEventListener('change', function() {
-  if (this.files && this.files[0]) {
-    processFile(this.files[0]);
-    this.value = '';
-  }
-});
-
-// Camera (mobile) — triggered by <label for="fi-cam">
-fiCam.addEventListener('change', function() {
-  if (this.files && this.files[0]) {
-    processFile(this.files[0]);
-    this.value = '';
-  }
-});
-
-const ALLOWED_TYPES = new Set([
-  'application/pdf','application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'text/plain',
-  'image/jpeg','image/jpg','image/png','image/gif',
-  'image/bmp','image/webp','image/tiff','image/heic','image/heif'
-]);
+const ALLOWED_TYPES = new Set(['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','text/plain','image/jpeg','image/jpg','image/png','image/gif','image/bmp','image/webp','image/tiff','image/heic','image/heif']);
 const ALLOWED_EXT = /\.(pdf|doc|docx|txt|jpg|jpeg|png|gif|bmp|webp|tiff|tif|heic|heif)$/i;
 
 function processFile(file) {
-  const res = document.getElementById('upload-result');
-
+  var res = document.getElementById('upload-result');
   if (!ALLOWED_TYPES.has(file.type) && !ALLOWED_EXT.test(file.name)) {
-    res.innerHTML = errHtml('Unsupported file type. Please upload PDF, DOC, DOCX, TXT, or an image.');
-    return;
+    res.innerHTML = errHtml('Unsupported file type. Please upload PDF, DOC, DOCX, TXT, or an image.'); return;
   }
   if (file.size > MAX_MB * 1024 * 1024) {
-    res.innerHTML = errHtml('File too large. Maximum size is ' + MAX_MB + ' MB.');
-    return;
+    res.innerHTML = errHtml('File too large. Maximum size is ' + MAX_MB + ' MB.'); return;
   }
-
-  // Show progress bar
-  res.innerHTML = `<div class="prog-wrap">
-    <h4>Uploading your file…</h4>
-    <div class="prog-bar"><div class="prog-fill" id="pbar" style="width:0%"></div></div>
-  </div>`;
-
-  let w = 0;
-  const iv = setInterval(() => {
-    w = Math.min(w + Math.random() * 22, 88);
-    const b = document.getElementById('pbar');
-    if (b) b.style.width = w + '%';
-    if (w >= 88) clearInterval(iv);
-  }, 80);
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    clearInterval(iv);
-    const bar = document.getElementById('pbar');
-    if (bar) bar.style.width = '100%';
-
-    fileData = e.target.result;
-    fileName = file.name;
-    const code = mkCode();
-    fileCode = code;
-    STORE[code] = { data: fileData, name: fileName, at: Date.now() };
-
-    setTimeout(function() { showUploadSuccess(code, file.name, file.size); }, 500);
-  };
-  reader.onerror = function() {
-    clearInterval(iv);
-    res.innerHTML = errHtml('Could not read the file. Please try again.');
-  };
-  reader.readAsDataURL(file);
+  res.innerHTML = '<div class="prog-wrap"><h4>Uploading to cloud… <span id="pbar-lbl" style="color:var(--orange);font-family:var(--fm);">0%</span></h4><div class="prog-track"><div class="prog-fill" id="pbar" style="width:0%"></div></div><p style="font-size:.75rem;color:var(--muted);margin-top:.75rem;">Please wait, do not close this tab</p></div>';
+  if (!firebaseReady) { res.innerHTML = errHtml('Cloud connect nahi hua. Internet check karo aur page reload karo.'); return; }
+  mkCode().then(async function(code) {
+    fileCode = code; fileName = file.name;
+    try {
+      await saveFileToFirebase(code, file);
+      STORE[code] = { fileName: file.name, fileSize: file.size, fileType: file.type };
+      showUploadSuccess(code, file.name, file.size);
+    } catch(err) {
+      console.error('Upload error:', err);
+      res.innerHTML = errHtml('Upload failed: ' + (err.message || 'Please try again.'));
+    }
+  });
 }
 
 function showUploadSuccess(code, name, size) {
-  const digits = code.split('').map(function(d, i) {
-    return '<span class="cd" style="animation-delay:' + (i * 0.1) + 's">' + d + '</span>';
+  var digits = code.split('').map(function(d,i){
+    return '<span class="cd" style="animation-delay:'+(i*0.1)+'s">'+d+'</span>';
   }).join('');
-  const kb = (size / 1024).toFixed(1);
+  var kb = (size/1024).toFixed(1);
   document.getElementById('upload-result').innerHTML =
-    '<div class="code-box">' +
-      '<div class="ck-ico"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' +
-      '<h3>File uploaded successfully!</h3>' +
-      '<p class="csub">Save this code — you need it to print your file.</p>' +
-      '<div class="code-disp">' + digits + '</div>' +
-      '<p style="font-size:.78rem;color:var(--muted);margin-bottom:1rem;">' +
-        '<strong style="color:var(--press);">' + name + '</strong> &middot; ' + kb + ' KB' +
-      '</p>' +
-      '<div class="code-note">' +
-        '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
-        'Code works in this tab only — do not refresh the page.' +
-      '</div>' +
-      '<div style="margin-top:1.1rem;">' +
-        '<button class="btn btn-pri" onclick="openPreview(\'' + code + '\')">' +
-          '<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
-          'Continue to Print' +
-        '</button>' +
-      '</div>' +
+    '<div class="code-box">'+
+      '<div class="ck-ico"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>'+
+      '<h3>File Uploaded Successfully!</h3>'+
+      '<p class="csub">Save this code — you need it to print your file at the counter.</p>'+
+      '<div class="code-disp">'+digits+'</div>'+
+      '<p style="font-size:.8rem;color:var(--muted);margin-bottom:1.1rem;">'+
+        '<strong style="color:var(--press);">'+name+'</strong> &middot; '+kb+' KB'+
+      '</p>'+
+      '<div class="code-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'+
+        'Valid for 24 hours. Enter this code on any device to retrieve your file.'+
+      '</div>'+
+      '<div style="margin-top:1.25rem;">'+
+        '<button class="btn btn-pri" onclick="openPreview(\''+code+'\')">'+
+          '<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>'+
+          'Continue to Select Pages'+
+        '</button>'+
+      '</div>'+
     '</div>';
 }
 
@@ -672,357 +1042,767 @@ function showUploadSuccess(code, name, size) {
 //  Code Entry
 // ════════════════════════════════════
 var digIds = ['d0','d1','d2','d3'];
-
-digIds.forEach(function(id, i) {
+digIds.forEach(function(id,i){
   var el = document.getElementById(id);
-  el.addEventListener('input', function() {
-    this.value = this.value.replace(/\D/g, '').slice(-1);
-    if (this.value && i < 3) document.getElementById(digIds[i + 1]).focus();
+  el.addEventListener('input', function(){
+    this.value = this.value.replace(/\D/g,'').slice(-1);
+    if(this.value && i<3) document.getElementById(digIds[i+1]).focus();
   });
-  el.addEventListener('keydown', function(e) {
-    if (e.key === 'Backspace' && !this.value && i > 0) document.getElementById(digIds[i - 1]).focus();
-    if (e.key === 'Enter') validateCode();
+  el.addEventListener('keydown', function(e){
+    if(e.key==='Backspace'&&!this.value&&i>0) document.getElementById(digIds[i-1]).focus();
+    if(e.key==='Enter') validateCode();
   });
-  el.addEventListener('paste', function(e) {
+  el.addEventListener('paste', function(e){
     e.preventDefault();
-    var pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 4);
-    pasted.split('').forEach(function(ch, j) {
-      var t = document.getElementById(digIds[j]);
-      if (t) t.value = ch;
-    });
-    if (pasted.length === 4) document.getElementById(digIds[3]).focus();
+    var pasted=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,4);
+    pasted.split('').forEach(function(ch,j){ var t=document.getElementById(digIds[j]); if(t) t.value=ch; });
+    if(pasted.length===4) document.getElementById(digIds[3]).focus();
   });
 });
 
 function validateCode() {
-  var code = digIds.map(function(id) { return document.getElementById(id).value; }).join('');
+  var code = digIds.map(function(id){ return document.getElementById(id).value; }).join('');
   var errEl = document.getElementById('code-err');
-  digIds.forEach(function(id) { document.getElementById(id).classList.remove('bad'); });
+  digIds.forEach(function(id){ document.getElementById(id).classList.remove('bad'); });
   errEl.innerHTML = '';
-
-  if (code.length < 4) {
-    digIds.forEach(function(id) {
-      var el = document.getElementById(id);
-      if (!el.value) el.classList.add('bad');
-    });
-    errEl.innerHTML = errHtml('Please enter all 4 digits.');
-    return;
+  if(code.length<4){
+    digIds.forEach(function(id){ var el=document.getElementById(id); if(!el.value) el.classList.add('bad'); });
+    errEl.innerHTML = errHtml('Please enter all 4 digits.'); return;
   }
-
-  var rec = STORE[code];
-  if (!rec) {
-    digIds.forEach(function(id) { document.getElementById(id).classList.add('bad'); });
-    errEl.innerHTML = errHtml('Code <strong>' + code + '</strong> not found. Upload and enter code in the same tab — do not refresh.');
-    return;
-  }
-
-  fileData = rec.data;
-  fileName = rec.name;
-  fileCode = code;
-  openPreview(code);
+  errEl.innerHTML = '<div style="font-size:.82rem;color:var(--muted);padding:.5rem 0;display:flex;align-items:center;gap:8px;"><div class="spinner" style="width:16px;height:16px;border-width:2px;"></div> Cloud se file dhundh raha hai…</div>';
+  if(!firebaseReady){ errEl.innerHTML=errHtml('Firebase load nahi hua. Internet check karo.'); return; }
+  if(STORE[code]&&STORE[code].downloadURL){ errEl.innerHTML=''; fileCode=code; fileName=STORE[code].fileName; openPreview(code); return; }
+  loadFileFromFirebase(code).then(function(rec){
+    errEl.innerHTML='';
+    if(!rec){
+      digIds.forEach(function(id){ document.getElementById(id).classList.add('bad'); });
+      errEl.innerHTML=errHtml('Code <strong>'+code+'</strong> nahi mila ya 24 ghante mein expire ho gaya.'); return;
+    }
+    STORE[code]=rec; fileCode=code; fileName=rec.fileName; openPreview(code);
+  }).catch(function(err){ errEl.innerHTML=errHtml('Firebase error: '+err.message); });
 }
 
 // ════════════════════════════════════
-//  Preview Screen
+//  Preview
 // ════════════════════════════════════
 function openPreview(code) {
   var rec = STORE[code];
-  if (!rec) { alert('File not found. Please upload again.'); return; }
+  if(rec&&rec.downloadURL){ _loadAndRender(code,rec); return; }
+  loadFileFromFirebase(code).then(function(fbRec){
+    if(!fbRec){ alert('File nahi mili. Dobara upload karo.'); return; }
+    STORE[code]=fbRec; _loadAndRender(code,fbRec);
+  });
+}
 
-  fileData = rec.data;
-  fileName = rec.name;
-  fileCode = code;
-  selPgs = new Set();
-  totalPgs = 0;
-  pdfDoc = null;
-  printMode = 'bw';
+function _loadAndRender(code, rec) {
+  fileCode=code; fileName=rec.fileName;
+  selPgs=new Set(); pageCopies={}; pageMode={}; totalPgs=0; pdfDoc=null;
 
-  // Reset mode buttons
-  document.getElementById('mc-bw').className  = 'mcard bw-on';
-  document.getElementById('mc-col').className = 'mcard';
-  document.getElementById('mode-rate-lbl').textContent = '₹4 / page';
-
-  // File info bar
   document.getElementById('fbar').innerHTML =
-    '<div class="fbar">' +
-      '<div class="fbar-ico">' +
-        '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
-      '</div>' +
-      '<div>' +
-        '<div class="fbar-name">' + fileName + '</div>' +
-        '<div class="fbar-meta">Ready to print</div>' +
-      '</div>' +
-      '<div class="fbar-code">' + fileCode + '</div>' +
+    '<div class="fbar">'+
+      '<div class="fbar-ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>'+
+      '<div><div class="fbar-name">'+fileName+'</div><div class="fbar-meta">Loading from cloud…</div></div>'+
+      '<div class="fbar-code">'+fileCode+'</div>'+
     '</div>';
 
   show('scr-preview');
   buildPageGrid(1);
   updatePrice();
 
-  var isPDF = fileData.startsWith('data:application/pdf') ||
-              fileData.startsWith('data:application/octet-stream') ||
-              fileName.toLowerCase().endsWith('.pdf');
-
-  var isImg = fileData.startsWith('data:image/') ||
-              /\.(jpg|jpeg|png|gif|bmp|webp|tiff|tif|heic|heif)$/i.test(fileName);
+  var dataURL = rec.downloadURL;
+  var isPDF = (rec.fileType&&rec.fileType==='application/pdf')||fileName.toLowerCase().endsWith('.pdf');
+  var isImg = (rec.fileType&&rec.fileType.startsWith('image/'))||/\.(jpg|jpeg|png|gif|bmp|webp|tiff|tif|heic|heif)$/i.test(fileName);
 
   document.getElementById('viewer-name').textContent = fileName;
   var vp = document.getElementById('viewer-pages');
   vp.innerHTML = '<div class="spin-wrap"><div class="spinner"></div><span style="font-size:.78rem;">Loading preview…</span></div>';
 
-  if (isPDF) {
-    renderPDF();
-  } else if (isImg) {
-    renderImage();
-  } else {
-    vp.innerHTML =
-      '<div class="spin-wrap" style="color:#a09080;">' +
-        '<svg style="width:26px;height:26px;stroke:#a09080;fill:none;stroke-width:1.5;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>' +
-        '<span style="font-size:.78rem;">No preview available.<br/>Use the page numbers above to select pages.</span>' +
-      '</div>';
-    totalPgs = 5;
-    buildPageGrid(5);
-  }
-}
-
-// ── PDF Rendering ──
-async function renderPDF() {
-  var vp = document.getElementById('viewer-pages');
-  try {
-    var b64  = fileData.split(',')[1];
-    var bin  = atob(b64);
-    var u8   = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-
-    var task = pdfjsLib.getDocument({ data: u8 });
-    pdfDoc   = await task.promise;
-    totalPgs = pdfDoc.numPages;
-    buildPageGrid(totalPgs);
-    vp.innerHTML = '';
-
-    for (var p = 1; p <= totalPgs; p++) {
-      // Placeholder
-      var ph = document.createElement('div');
-      ph.className = 'pg-wrap';
-      ph.style.cssText = 'min-width:160px;min-height:220px;display:flex;align-items:center;justify-content:center;';
-      ph.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;"></div>';
-      vp.appendChild(ph);
-
-      var page = await pdfDoc.getPage(p);
-      var viewport = page.getViewport({ scale: 0.62 });
-      var canvas = document.createElement('canvas');
-      canvas.width  = viewport.width;
-      canvas.height = viewport.height;
-      await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
-
-      var wrap = makePgWrap(p, canvas, null);
-      vp.replaceChild(wrap, ph);
+  if(isPDF){
+    try{
+      var b64=dataURL.split(',')[1], binary=atob(b64), u8=new Uint8Array(binary.length);
+      for(var i=0;i<binary.length;i++) u8[i]=binary.charCodeAt(i);
+      fileData=u8.buffer; renderPDF(u8.buffer);
+    }catch(e){
+      vp.innerHTML='<div class="spin-wrap" style="color:var(--orange);"><span style="font-size:.78rem;">PDF load failed. Use page chips to select pages.</span></div>';
+      totalPgs=10; buildPageGrid(10);
     }
-  } catch(err) {
-    console.error('PDF render error:', err);
-    vp.innerHTML =
-      '<div class="spin-wrap" style="color:var(--orange);">' +
-        '<svg style="width:26px;height:26px;stroke:var(--orange);fill:none;stroke-width:1.5;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>' +
-        '<span style="font-size:.78rem;">PDF preview failed. Use the page chips above to select pages.<br/><small style="color:#6a6460;">' + (err.message || '') + '</small></span>' +
-      '</div>';
-    if (!totalPgs) { totalPgs = 10; buildPageGrid(10); }
+  }else if(isImg){
+    fileData=dataURL; renderImageFromURL(dataURL);
+  }else{
+    vp.innerHTML='<div class="spin-wrap" style="color:#a09080;"><span style="font-size:.78rem;">No preview available. Use page chips above.</span></div>';
+    totalPgs=5; buildPageGrid(5);
+  }
+
+  var metaEl = document.querySelector('.fbar-meta');
+  if(metaEl) metaEl.textContent = 'Ready to print';
+}
+
+async function renderPDF(buffer) {
+  var vp = document.getElementById('viewer-pages');
+  try{
+    var task=pdfjsLib.getDocument({data:buffer}); pdfDoc=await task.promise;
+    totalPgs=pdfDoc.numPages; buildPageGrid(totalPgs); vp.innerHTML='';
+    for(var p=1;p<=totalPgs;p++){
+      var ph=document.createElement('div'); ph.className='pg-wrap';
+      ph.style.cssText='min-width:160px;min-height:220px;display:flex;align-items:center;justify-content:center;';
+      ph.innerHTML='<div class="spinner" style="width:18px;height:18px;border-width:2px;"></div>';
+      vp.appendChild(ph);
+      var page=await pdfDoc.getPage(p);
+      var viewport=page.getViewport({scale:0.62});
+      var canvas=document.createElement('canvas');
+      canvas.width=viewport.width; canvas.height=viewport.height;
+      await page.render({canvasContext:canvas.getContext('2d'),viewport:viewport}).promise;
+      var wrap=makePgWrap(p,canvas,null); vp.replaceChild(wrap,ph);
+    }
+  }catch(err){
+    console.error('PDF render error:',err);
+    vp.innerHTML='<div class="spin-wrap" style="color:var(--orange);"><span style="font-size:.78rem;">PDF preview failed. Use page chips.<br/><small style="color:#6a6460;">'+(err.message||'')+'</small></span></div>';
+    if(!totalPgs){totalPgs=10;buildPageGrid(10);}
   }
 }
 
-// ── Image Rendering ──
-function renderImage() {
-  var vp = document.getElementById('viewer-pages');
-  vp.innerHTML = '';
-  var img = document.createElement('img');
-  img.src = fileData;
-  img.style.cssText = 'max-width:320px;max-height:420px;width:auto;height:auto;border-radius:2px;';
-  img.alt = fileName;
-  var wrap = makePgWrap(1, null, img);
-  vp.appendChild(wrap);
-  // Auto-select page 1 for images
-  selPgs.add(1);
-  wrap.classList.add('sel');
-  totalPgs = 1;
-  buildPageGrid(1);
-  updatePrice();
+function renderImageFromURL(url) {
+  var vp=document.getElementById('viewer-pages'); vp.innerHTML='';
+  var img=document.createElement('img');
+  img.src=url; img.crossOrigin='anonymous';
+  img.style.cssText='max-width:320px;max-height:420px;width:auto;height:auto;border-radius:3px;';
+  img.alt=fileName;
+  var wrap=makePgWrap(1,null,img); vp.appendChild(wrap);
+  selPgs.add(1); wrap.classList.add('sel'); pageCopies[1]=1; pageMode[1]='bw';
+  totalPgs=1; buildPageGrid(1); updateCopiesPanel(); updatePrice();
 }
 
-// ── Page Wrapper ──
-function makePgWrap(n, canvas, img) {
-  var w = document.createElement('div');
-  w.className = 'pg-wrap';
-  w.dataset.page = n;
-
-  if (canvas) w.appendChild(canvas);
-  if (img)    w.appendChild(img);
-
-  var chk = document.createElement('div');
-  chk.className = 'pg-check';
-  chk.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
-
-  var badge = document.createElement('div');
-  badge.className = 'pg-badge';
-  badge.textContent = 'Page ' + n;
-
-  w.appendChild(chk);
-  w.appendChild(badge);
-
-  if (selPgs.has(n)) w.classList.add('sel');
-
-  w.addEventListener('click', function() { togglePgWrap(n, w); });
+function makePgWrap(n,canvas,img){
+  var w=document.createElement('div'); w.className='pg-wrap'; w.dataset.page=n;
+  if(canvas) w.appendChild(canvas); if(img) w.appendChild(img);
+  var chk=document.createElement('div'); chk.className='pg-check';
+  chk.innerHTML='<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+  var badge=document.createElement('div'); badge.className='pg-badge'; badge.textContent='Page '+n;
+  w.appendChild(chk); w.appendChild(badge);
+  if(selPgs.has(n)) w.classList.add('sel');
+  w.addEventListener('click',function(){ togglePgWrap(n,w); });
   return w;
 }
 
-function togglePgWrap(n, w) {
-  if (selPgs.has(n)) { selPgs.delete(n); w.classList.remove('sel'); }
-  else               { selPgs.add(n);    w.classList.add('sel'); }
-  syncChips();
-  updatePrice();
+function togglePgWrap(n,w){
+  if(selPgs.has(n)){ selPgs.delete(n); w.classList.remove('sel'); delete pageCopies[n]; }
+  else{ selPgs.add(n); w.classList.add('sel'); pageCopies[n]=1; }
+  syncChips(); updateCopiesPanel(); updatePrice();
 }
 
 // ════════════════════════════════════
 //  Page Grid
 // ════════════════════════════════════
-function buildPageGrid(count) {
-  totalPgs = count;
-  var g = document.getElementById('page-grid');
-  g.innerHTML = '';
-  for (var i = 1; i <= count; i++) {
-    (function(n) {
-      var c = document.createElement('div');
-      c.className = 'pchip' + (selPgs.has(n) ? ' sel' : '');
-      c.textContent = n;
-      c.dataset.page = n;
-      c.addEventListener('click', function() { toggleChip(n, c); });
-      g.appendChild(c);
+function buildPageGrid(count){
+  totalPgs=count; var g=document.getElementById('page-grid'); g.innerHTML='';
+  for(var i=1;i<=count;i++){
+    (function(n){
+      var c=document.createElement('div');
+      c.className='pchip'+(selPgs.has(n)?' sel':''); c.textContent=n; c.dataset.page=n;
+      c.addEventListener('click',function(){ toggleChip(n,c); }); g.appendChild(c);
     })(i);
   }
   updateSelLabel();
 }
 
-function toggleChip(n, c) {
-  if (selPgs.has(n)) { selPgs.delete(n); c.classList.remove('sel'); }
-  else               { selPgs.add(n);    c.classList.add('sel'); }
-  syncWrappers();
-  updatePrice();
+function toggleChip(n,c){
+  if(selPgs.has(n)){ selPgs.delete(n); c.classList.remove('sel'); delete pageCopies[n]; }
+  else{ selPgs.add(n); c.classList.add('sel'); pageCopies[n]=1; }
+  syncWrappers(); updateCopiesPanel(); updatePrice();
 }
 
-function syncChips() {
-  document.querySelectorAll('.pchip').forEach(function(c) {
-    c.classList.toggle('sel', selPgs.has(Number(c.dataset.page)));
-  });
+function syncChips(){
+  document.querySelectorAll('.pchip').forEach(function(c){ c.classList.toggle('sel',selPgs.has(Number(c.dataset.page))); });
   updateSelLabel();
 }
+function syncWrappers(){
+  document.querySelectorAll('.pg-wrap').forEach(function(w){ w.classList.toggle('sel',selPgs.has(Number(w.dataset.page))); });
+}
+function selAll(){
+  for(var i=1;i<=totalPgs;i++){ selPgs.add(i); if(!pageCopies[i]) pageCopies[i]=1; }
+  syncChips(); syncWrappers(); updateCopiesPanel(); updatePrice();
+}
+function selNone(){ selPgs.clear(); pageCopies={}; syncChips(); syncWrappers(); updateCopiesPanel(); updatePrice(); }
+function updateSelLabel(){
+  var n=selPgs.size;
+  document.getElementById('sel-count').textContent = n===0?'None selected':n===1?'1 page selected':n+' pages selected';
+}
 
-function syncWrappers() {
-  document.querySelectorAll('.pg-wrap').forEach(function(w) {
-    w.classList.toggle('sel', selPgs.has(Number(w.dataset.page)));
+// ── Copies Panel ──
+function updateCopiesPanel(){
+  var panel=document.getElementById('copies-panel'), grid=document.getElementById('copies-grid');
+  var pages=Array.from(selPgs).sort(function(a,b){return a-b;});
+  if(pages.length===0){panel.style.display='none';return;}
+  panel.style.display='block'; grid.innerHTML='';
+  pages.forEach(function(n){
+    if(!pageCopies[n]) pageCopies[n]=1;
+    if(!pageMode[n])   pageMode[n]='bw';
+    var row=document.createElement('div'); row.className='copies-row';
+
+    var lbl=document.createElement('span'); lbl.className='copies-pg-label'; lbl.textContent='P'+n;
+
+    // Mode toggle
+    var tog=document.createElement('div'); tog.className='mode-toggle';
+    var btnBW=document.createElement('button'); btnBW.className='mt-btn'+(pageMode[n]==='bw'?' active-bw':''); btnBW.textContent='⬛ B&W';
+    var btnCol=document.createElement('button'); btnCol.className='mt-btn'+(pageMode[n]==='color'?' active-col':''); btnCol.textContent='🎨 Colour';
+    tog.appendChild(btnBW); tog.appendChild(btnCol);
+
+    btnBW.onclick=(function(pg,bBtn,cBtn){return function(){
+      pageMode[pg]='bw'; bBtn.className='mt-btn active-bw'; cBtn.className='mt-btn';
+      applyPageFilter(pg,'bw'); updatePrice(); updateChipColor(pg,'bw');
+    };})(n,btnBW,btnCol);
+    btnCol.onclick=(function(pg,bBtn,cBtn){return function(){
+      pageMode[pg]='color'; cBtn.className='mt-btn active-col'; bBtn.className='mt-btn';
+      applyPageFilter(pg,'color'); updatePrice(); updateChipColor(pg,'color');
+    };})(n,btnBW,btnCol);
+
+    // Copies control
+    var ctrl=document.createElement('div'); ctrl.className='copies-ctrl';
+    var minus=document.createElement('button'); minus.className='cp-btn'; minus.textContent='−';
+    var inp=document.createElement('input'); inp.type='number'; inp.min=1; inp.max=99; inp.value=pageCopies[n]; inp.className='cp-inp';
+    var plus=document.createElement('button'); plus.className='cp-btn'; plus.textContent='+';
+    var clbl=document.createElement('span'); clbl.className='copies-label'; clbl.textContent='copies';
+    minus.onclick=(function(pg,i){return function(){ if(pageCopies[pg]>1){pageCopies[pg]--;i.value=pageCopies[pg];updatePrice();} };})(n,inp);
+    plus.onclick=(function(pg,i){return function(){ if(pageCopies[pg]<99){pageCopies[pg]++;i.value=pageCopies[pg];updatePrice();} };})(n,inp);
+    inp.oninput=(function(pg){return function(){var v=parseInt(this.value)||1;v=Math.max(1,Math.min(99,v));pageCopies[pg]=v;updatePrice();};})(n);
+    ctrl.appendChild(minus); ctrl.appendChild(inp); ctrl.appendChild(plus);
+
+    row.appendChild(lbl); row.appendChild(tog); row.appendChild(ctrl); row.appendChild(clbl);
+    grid.appendChild(row);
+    applyPageFilter(n, pageMode[n]);
   });
 }
 
-function selAll() {
-  for (var i = 1; i <= totalPgs; i++) selPgs.add(i);
-  syncChips(); syncWrappers(); updatePrice();
+function applyModeBtn(btn,active){/* legacy, kept for safety */}
+function applyPageFilter(pg,mode){
+  var wrap=document.querySelector('.pg-wrap[data-page="'+pg+'"]');
+  if(wrap){var media=wrap.querySelector('canvas')||wrap.querySelector('img'); if(media) media.style.filter=mode==='bw'?'grayscale(100%)':'none';}
 }
-
-function selNone() {
-  selPgs.clear(); syncChips(); syncWrappers(); updatePrice();
-}
-
-function updateSelLabel() {
-  var n = selPgs.size;
-  document.getElementById('sel-count').textContent =
-    n === 0 ? 'No pages selected' : n === 1 ? '1 page selected' : n + ' pages selected';
-}
-
-// ════════════════════════════════════
-//  Print Mode
-// ════════════════════════════════════
-function setMode(m) {
-  printMode = m;
-  document.getElementById('mc-bw').className  = 'mcard' + (m === 'bw'    ? ' bw-on'  : '');
-  document.getElementById('mc-col').className = 'mcard' + (m === 'color' ? ' col-on' : '');
-  document.getElementById('mode-rate-lbl').textContent = m === 'color' ? '₹8 / page' : '₹4 / page';
-  updatePrice();
+function updateChipColor(pg,mode){
+  var chip=document.querySelector('.pchip[data-page="'+pg+'"]');
+  if(chip&&chip.classList.contains('sel')){
+    chip.style.background=mode==='color'?'var(--purple)':'';
+    chip.style.borderColor=mode==='color'?'var(--purple)':'';
+  }
 }
 
 // ════════════════════════════════════
 //  Price Panel
 // ════════════════════════════════════
-function updatePrice() {
-  var n    = selPgs.size;
-  var rate = printMode === 'color' ? RATE_COL : RATE_BW;
-  document.getElementById('pp-pages').textContent = n;
-  document.getElementById('pp-mode').textContent  = printMode === 'color' ? 'Colour Print' : 'Black & White';
-  document.getElementById('pp-rate').textContent  = '₹' + rate + '.00';
-  document.getElementById('pp-total').textContent = n * rate;
+function updatePrice(){
+  var n=selPgs.size, bwCopies=0, colCopies=0;
+  selPgs.forEach(function(pg){ var c=pageCopies[pg]||1; if(pageMode[pg]==='color') colCopies+=c; else bwCopies+=c; });
+  var total=(bwCopies*RATE_BW)+(colCopies*RATE_COL);
+  document.getElementById('pp-pages').textContent=n;
+  document.getElementById('pp-bw-copies').textContent=bwCopies;
+  document.getElementById('pp-col-copies').textContent=colCopies;
+  document.getElementById('pp-total').textContent=total;
   updateSelLabel();
-  document.getElementById('pay-btn').disabled = (n === 0);
+  document.getElementById('pay-btn').disabled=(n===0);
 }
+
+// ════════════════════════════════════
+//  ★ OWNER CONFIG — APNA NUMBER DAALO ★
+// ════════════════════════════════════
+var OWNER_WHATSAPP = '918077271230'; // ← Apna WhatsApp number (91 + number, no spaces)
 
 // ════════════════════════════════════
 //  Payment
 // ════════════════════════════════════
-function goPayment() {
-  if (selPgs.size === 0) return;
-  var rate  = printMode === 'color' ? RATE_COL : RATE_BW;
-  var total = selPgs.size * rate;
+function goPayment(){
+  if(selPgs.size===0) return;
+  var bwCopies=0,colCopies=0;
+  selPgs.forEach(function(pg){ var c=pageCopies[pg]||1; if(pageMode[pg]==='color') colCopies+=c; else bwCopies+=c; });
+  var total=(bwCopies*RATE_BW)+(colCopies*RATE_COL);
 
-  document.getElementById('pay-amt').textContent = '₹' + total;
+  var pagesSummary=Array.from(selPgs).sort(function(a,b){return a-b;}).map(function(pg){
+    var c=pageCopies[pg]||1, m=pageMode[pg]==='color'?'🎨':'⬛';
+    return m+'P'+pg+(c>1?'×'+c:'');
+  }).join(', ');
+  var modeSummary=(bwCopies>0&&colCopies>0)?'Mixed (B&W + Colour)':(colCopies>0?'Colour Print':'Black & White');
 
-  var upiUrl = 'upi://pay?pa=' + UPI_ID + '&pn=SmartPrint&am=' + total +
-               '&cu=INR&tn=Print-' + fileCode + '-' + (printMode === 'color' ? 'COL' : 'BW');
-  var qDiv = document.getElementById('qr-div');
-  qDiv.innerHTML = '';
-  new QRCode(qDiv, {
-    text: upiUrl, width: 156, height: 156,
-    colorDark: '#1a1612', colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
-  });
+  document.getElementById('rzp-pages').textContent=pagesSummary;
+  document.getElementById('rzp-mode').textContent=modeSummary;
+  document.getElementById('rzp-total').textContent='₹'+total;
 
-  var secs = 300;
-  clearInterval(payTimer);
-  payTimer = setInterval(function() {
+  // Amount input field mein expected amount set karo
+  var amtInp = document.getElementById('user-paid-amount');
+  if(amtInp) amtInp.placeholder = 'e.g. '+total;
+
+  var upiUrl='upi://pay?pa='+UPI_ID+'&pn=SmartPrint&am='+total+'&cu=INR&tn=Print-'+fileCode;
+  var qDiv=document.getElementById('qr-div'); qDiv.innerHTML='';
+  new QRCode(qDiv,{text:upiUrl,width:168,height:168,colorDark:'#1a1612',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+
+  var secs=600; clearInterval(payTimer);
+  payTimer=setInterval(function(){
     secs--;
-    var m = String(Math.floor(secs / 60)).padStart(2, '0');
-    var s = String(secs % 60).padStart(2, '0');
-    var el = document.getElementById('tc');
-    if (el) el.textContent = m + ':' + s;
-    if (secs <= 0) {
+    var m=String(Math.floor(secs/60)).padStart(2,'0'), s=String(secs%60).padStart(2,'0');
+    var el=document.getElementById('tc'); if(el) el.textContent=m+':'+s;
+    if(secs<=0){
       clearInterval(payTimer);
-      var tr = document.getElementById('timer-row');
-      if (tr) tr.innerHTML = '<span style="color:var(--red);font-size:.78rem;">Session expired. Please go back and try again.</span>';
+      var tr=document.getElementById('timer-row');
+      if(tr) tr.innerHTML='<span style="color:var(--red);font-size:.78rem;">⏰ QR expired. Please go back and try again.</span>';
     }
-  }, 1000);
+  },1000);
+
+  // Browser notification permission maango
+  requestBrowserNotificationPermission();
 
   show('scr-pay');
 }
 
-function confirmPay() {
-  clearInterval(payTimer);
-  var pages = Array.from(selPgs).sort(function(a, b) { return a - b; }).join(', ');
-  document.getElementById('done-pages').textContent = pages;
-  document.getElementById('done-mode').textContent  = printMode === 'color' ? 'Colour Print' : 'Black & White';
-  show('scr-done');
-
-  var steps = ['Sending to printer…', 'Processing pages…', 'Printing in progress…'];
-  var si = 0;
-  clearInterval(printTimer);
-  printTimer = setInterval(function() {
-    var pst  = document.getElementById('ps-txt');
-    var psl  = document.getElementById('ps-last');
-    var sdot = document.getElementById('sdot-last');
-    if (si < steps.length) {
-      if (pst) pst.textContent = steps[si];
-      si++;
-    } else {
-      clearInterval(printTimer);
-      if (pst)  { pst.textContent = 'Print job completed!'; pst.style.color = 'var(--green)'; }
-      if (sdot) { sdot.className = 'sdot done'; }
-      if (psl)  { psl.textContent = 'Collect your printout'; psl.style.color = 'var(--green)'; }
-    }
-  }, 1800);
+// ── Browser Notification Permission ──
+function requestBrowserNotificationPermission(){
+  if('Notification' in window && Notification.permission === 'default'){
+    Notification.requestPermission();
+  }
 }
+
+// ── Send Browser Notification (Owner ke liye) ──
+function sendBrowserNotification(title, body){
+  if('Notification' in window && Notification.permission === 'granted'){
+    new Notification(title, {
+      body: body,
+      icon: 'https://cdn-icons-png.flaticon.com/512/1584/1584892.png'
+    });
+  }
+}
+
+// ── User ne amount enter kiya aur submit kiya ──
+function userSubmitPayment(){
+  var amtInp  = document.getElementById('user-paid-amount');
+  var utrInp  = document.getElementById('user-utr');
+  var errEl   = document.getElementById('pay-amount-err');
+  var amount  = amtInp ? amtInp.value.trim() : '';
+  var utr     = utrInp ? utrInp.value.trim() : '';
+
+  if(!amount || isNaN(amount) || Number(amount) <= 0){
+    errEl.innerHTML = '<div class="err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Paid amount enter karo</div>';
+    return;
+  }
+  errEl.innerHTML = '';
+
+  // Expected amount
+  var bwC=0,colC=0;
+  selPgs.forEach(function(pg){ var c=pageCopies[pg]||1; if(pageMode[pg]==='color') colC+=c; else bwC+=c; });
+  var expected = (bwC*RATE_BW)+(colC*RATE_COL);
+  var paid     = Number(amount);
+
+  var pagesSummary=Array.from(selPgs).sort(function(a,b){return a-b;}).map(function(pg){
+    var c=pageCopies[pg]||1, m=pageMode[pg]==='color'?'Colour':'B&W';
+    return 'P'+pg+'('+m+(c>1?'×'+c:'')+')';
+  }).join(', ');
+
+  // Firestore mein pending payment save karo
+  var orderId = 'Print-'+fileCode+'-'+Date.now();
+  if(firebaseReady){
+    fsdb.collection('payments').doc(orderId).set({
+      orderId:    orderId,
+      printCode:  fileCode,
+      fileName:   fileName,
+      pages:      pagesSummary,
+      expected:   expected,
+      paid:       paid,
+      utr:        utr || 'N/A',
+      status:     'PENDING_CONFIRM',
+      submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }
+
+  // ── Browser Notification ──
+  sendBrowserNotification(
+    '💰 New Payment — ₹'+paid,
+    'File: '+fileName+' | Code: '+fileCode+' | Pages: '+pagesSummary
+  );
+
+  // ── Waiting screen dikhao user ko ──
+  show('scr-waiting');
+  startWaitingForConfirm(orderId, pagesSummary);
+}
+
+// ── Waiting Screen — Firestore se real-time confirm wait ──
+var confirmListener = null;
+function startWaitingForConfirm(orderId, pagesSummary){
+  if(!firebaseReady) return;
+  var dots = 0;
+  var dotTimer = setInterval(function(){
+    dots = (dots+1)%4;
+    var el = document.getElementById('waiting-dots');
+    if(el) el.textContent = '.'.repeat(dots+1);
+  }, 600);
+
+  confirmListener = fsdb.collection('payments').doc(orderId)
+    .onSnapshot(function(doc){
+      if(!doc.exists) return;
+      var data = doc.data();
+      if(data.status === 'CONFIRMED'){
+        clearInterval(dotTimer);
+        if(confirmListener){ confirmListener(); confirmListener=null; }
+        triggerPrintSuccess(pagesSummary);
+      } else if(data.status === 'REJECTED'){
+        clearInterval(dotTimer);
+        if(confirmListener){ confirmListener(); confirmListener=null; }
+        show('scr-pay');
+        document.getElementById('pay-amount-err').innerHTML =
+          '<div class="err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Payment reject ho gayi. Dobara try karo ya counter pe baat karo.</div>';
+      }
+    });
+}
+
+// ── Owner Confirm karta hai (Admin Panel se) ──
+function ownerConfirmPayment(orderId){
+  if(!firebaseReady) return;
+  fsdb.collection('payments').doc(orderId).update({
+    status: 'CONFIRMED',
+    confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  // Page counter bhi update karo
+  fsdb.collection('payments').doc(orderId).get().then(function(doc){
+    if(doc.exists){
+      var data = doc.data();
+      if(data.printCode){
+        fsdb.collection('files').doc(data.printCode).update({
+          paymentStatus: 'PAID',
+          paidAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+    }
+  });
+}
+
+function ownerRejectPayment(orderId){
+  if(!firebaseReady) return;
+  fsdb.collection('payments').doc(orderId).update({
+    status: 'REJECTED',
+    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+// ── Print Success Screen ──
+function triggerPrintSuccess(pagesSummary){
+  clearInterval(payTimer);
+
+  var totalPrinted = 0;
+  selPgs.forEach(function(pg){ totalPrinted += (pageCopies[pg]||1); });
+  deductPages(totalPrinted);
+
+  var bwC=0,colC=0;
+  selPgs.forEach(function(pg){ var c=pageCopies[pg]||1; if(pageMode[pg]==='color') colC+=c; else bwC+=c; });
+  var modeSummary=(bwC>0&&colC>0)?'Mixed (B&W + Colour)':(colC>0?'Colour Print':'Black & White');
+
+  document.getElementById('done-pages').textContent = pagesSummary;
+  document.getElementById('done-mode').textContent  = modeSummary;
+  show('scr-done');
+  startPrintStatus();
+
+  // Browser notification — user ko
+  sendBrowserNotification('✅ Print Confirm!', 'Aapka print shuru ho gaya! Printout collect karo.');
+}
+
+// ── Legacy confirm (direct, bina owner approval) ──
+function confirmPayment(){
+  userSubmitPayment();
+}
+
+function startPrintStatus(){
+  var steps=['Sending to printer…','Processing pages…','Printing in progress…'];
+  var si=0; clearInterval(printTimer);
+  printTimer=setInterval(function(){
+    var pst=document.getElementById('ps-txt'), psl=document.getElementById('ps-last'), sdot=document.getElementById('sdot-last');
+    if(si<steps.length){ if(pst) pst.textContent=steps[si]; si++; }
+    else{
+      clearInterval(printTimer);
+      if(pst){pst.textContent='Print job completed! ✓';pst.style.color='var(--green)';}
+      if(sdot) sdot.className='sdot done';
+      if(psl){psl.textContent='Please collect your printout';psl.style.color='var(--green)';}
+    }
+  },1800);
+}
+
+// ════════════════════════════════════
+//  Camera
+// ════════════════════════════════════
+var camStream=null, camFacingMode='environment', capturedBlob=null;
+
+function openCamera(){
+  var modal=document.getElementById('cam-modal'); modal.classList.add('open');
+  capturedBlob=null;
+  document.getElementById('cam-video').style.display='block';
+  document.getElementById('cam-preview-wrap').style.display='none';
+  document.getElementById('btn-capture').style.display='inline-flex';
+  document.getElementById('btn-switch-cam').style.display='inline-flex';
+  document.getElementById('btn-retake').style.display='none';
+  document.getElementById('btn-use').style.display='none';
+  document.getElementById('cam-err').style.display='none';
+  startCamStream();
+}
+
+function startCamStream(){
+  stopCamStream();
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    showCamErr('Camera API not supported. Use Chrome or Safari.'); return;
+  }
+  navigator.mediaDevices.getUserMedia({video:{facingMode:camFacingMode,width:{ideal:1280},height:{ideal:720}},audio:false})
+    .then(function(stream){ camStream=stream; var v=document.getElementById('cam-video'); v.srcObject=stream; v.play(); document.getElementById('cam-err').style.display='none'; })
+    .catch(function(err){
+      var msg='';
+      if(err.name==='NotAllowedError'||err.name==='PermissionDeniedError') msg='Camera permission denied. Please allow camera access in browser settings.';
+      else if(err.name==='NotFoundError') msg='No camera found on this device.';
+      else if(err.name==='NotReadableError') msg='Camera is in use by another app.';
+      else msg='Could not access camera: '+err.message;
+      showCamErr(msg);
+    });
+}
+
+function stopCamStream(){ if(camStream){ camStream.getTracks().forEach(function(t){t.stop();}); camStream=null; } }
+function switchCamera(){ camFacingMode=camFacingMode==='environment'?'user':'environment'; startCamStream(); }
+
+function capturePhoto(){
+  var video=document.getElementById('cam-video'), canvas=document.getElementById('cam-canvas');
+  canvas.width=video.videoWidth||1280; canvas.height=video.videoHeight||720;
+  var ctx=canvas.getContext('2d');
+  if(camFacingMode==='user'){ctx.translate(canvas.width,0);ctx.scale(-1,1);}
+  ctx.drawImage(video,0,0,canvas.width,canvas.height);
+  canvas.toBlob(function(blob){
+    capturedBlob=blob; var url=URL.createObjectURL(blob);
+    var preview=document.getElementById('cam-preview'); preview.src=url;
+    document.getElementById('cam-video').style.display='none';
+    document.getElementById('cam-preview-wrap').style.display='block';
+    document.getElementById('btn-capture').style.display='none';
+    document.getElementById('btn-switch-cam').style.display='none';
+    document.getElementById('btn-retake').style.display='inline-flex';
+    document.getElementById('btn-use').style.display='inline-flex';
+  },'image/jpeg',0.92);
+}
+
+function retakePhoto(){
+  capturedBlob=null;
+  document.getElementById('cam-video').style.display='block';
+  document.getElementById('cam-preview-wrap').style.display='none';
+  document.getElementById('btn-capture').style.display='inline-flex';
+  document.getElementById('btn-switch-cam').style.display='inline-flex';
+  document.getElementById('btn-retake').style.display='none';
+  document.getElementById('btn-use').style.display='none';
+}
+
+function usePhoto(){
+  if(!capturedBlob) return;
+  closeCamera();
+  var timestamp=new Date().toISOString().replace(/[:.]/g,'-');
+  var file=new File([capturedBlob],'camera-capture-'+timestamp+'.jpg',{type:'image/jpeg'});
+  processFile(file);
+}
+
+function closeCamera(){ stopCamStream(); document.getElementById('cam-modal').classList.remove('open'); capturedBlob=null; }
+function showCamErr(msg){ var el=document.getElementById('cam-err'); el.textContent=msg; el.style.display='block'; }
+
+document.getElementById('cam-modal').addEventListener('click',function(e){ if(e.target===this) closeCamera(); });
+
+// ════════════════════════════════════
+//  ★ DIRECT PRINT FUNCTION ★
+// ════════════════════════════════════
+function directPrint() {
+  // Agar file PDF hai toh direct print karo
+  if (!fileData && !STORE[fileCode]) {
+    alert('File data nahi mila. Dobara try karo.');
+    return;
+  }
+
+  var rec = STORE[fileCode];
+  if (!rec) { window.print(); return; }
+
+  var isPDF = (rec.fileType && rec.fileType === 'application/pdf') ||
+              (fileName && fileName.toLowerCase().endsWith('.pdf'));
+  var isImg = (rec.fileType && rec.fileType.startsWith('image/')) ||
+              /\.(jpg|jpeg|png|gif|bmp|webp|tiff|tif|heic|heif)$/i.test(fileName||'');
+
+  // Selected pages aur print settings
+  var pages     = Array.from(selPgs).sort(function(a,b){return a-b;});
+  var dataURL   = rec.downloadURL;
+
+  if (isPDF) {
+    printPDFPages(dataURL, pages);
+  } else if (isImg) {
+    printImageDirect(dataURL);
+  } else {
+    // Fallback — browser print
+    window.print();
+  }
+}
+
+// ── PDF Pages Direct Print ──
+function printPDFPages(dataURL, pages) {
+  var btn = document.querySelector('.act-row .btn-pri');
+  if (btn) { btn.textContent = '⏳ Preparing...'; btn.disabled = true; }
+
+  // Hidden iframe mein PDF load karo aur print karo
+  var existingFrame = document.getElementById('print-frame');
+  if (existingFrame) existingFrame.remove();
+
+  var iframe = document.createElement('iframe');
+  iframe.id = 'print-frame';
+  iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;';
+  document.body.appendChild(iframe);
+
+  // PDF blob banao
+  try {
+    var b64    = dataURL.split(',')[1];
+    var binary = atob(b64);
+    var u8     = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) u8[i] = binary.charCodeAt(i);
+    var blob   = new Blob([u8], { type: 'application/pdf' });
+    var blobUrl = URL.createObjectURL(blob);
+
+    iframe.src = blobUrl;
+    iframe.onload = function() {
+      setTimeout(function() {
+        try {
+          // Print settings apply karo
+          iframe.contentWindow.focus();
+
+          // Page mode check — B&W ya Colour
+          var allBW = true;
+          selPgs.forEach(function(pg){ if(pageMode[pg]==='color') allBW=false; });
+
+          iframe.contentWindow.print();
+
+          // Button restore karo
+          setTimeout(function(){
+            if (btn) { btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg> 🖨️ Direct Print Karo'; btn.disabled=false; }
+            URL.revokeObjectURL(blobUrl);
+          }, 3000);
+        } catch(e) {
+          console.error('Print error:', e);
+          window.print();
+        }
+      }, 800);
+    };
+  } catch(e) {
+    console.error('PDF print error:', e);
+    window.print();
+    if (btn) { btn.innerHTML = '🖨️ Direct Print Karo'; btn.disabled = false; }
+  }
+}
+
+// ── Image Direct Print ──
+function printImageDirect(dataURL) {
+  var existingFrame = document.getElementById('print-frame');
+  if (existingFrame) existingFrame.remove();
+
+  var iframe = document.createElement('iframe');
+  iframe.id = 'print-frame';
+  iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;';
+  document.body.appendChild(iframe);
+
+  var doc = iframe.contentWindow.document;
+  doc.open();
+  doc.write(
+    '<!DOCTYPE html><html><head><style>' +
+    'body{margin:0;padding:0;}' +
+    'img{max-width:100%;height:auto;display:block;}' +
+    '@media print{body{margin:0;}img{max-width:100%;}}' +
+    '</style></head><body>' +
+    '<img src="' + dataURL + '" onload="window.print();"/>' +
+    '</body></html>'
+  );
+  doc.close();
+}
+
+
+var ADMIN_PASSWORD = '1234'; // ← Apna password yahan badlo
+
+// Header pe logo icon pe 5 baar click karne se admin panel khulega
+var logoClickCount = 0, logoClickTimer = null;
+document.querySelector('.logo-icon').addEventListener('click', function(){
+  logoClickCount++;
+  clearTimeout(logoClickTimer);
+  if(logoClickCount >= 5){
+    logoClickCount = 0;
+    show('scr-admin');
+  } else {
+    logoClickTimer = setTimeout(function(){ logoClickCount = 0; }, 2000);
+  }
+});
+
+function checkAdminPass(){
+  var inp = document.getElementById('admin-pass-inp');
+  var err = document.getElementById('admin-pass-err');
+  if(inp.value === ADMIN_PASSWORD){
+    document.getElementById('admin-login').style.display    = 'none';
+    document.getElementById('admin-dashboard').style.display = 'block';
+    loadPendingPayments();
+  } else {
+    err.innerHTML = '<div class="err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Galat password!</div>';
+    inp.value = '';
+  }
+}
+
+function loadPendingPayments(){
+  var list = document.getElementById('pending-payments-list');
+  if(!firebaseReady){ list.innerHTML='<div style="color:var(--red);font-size:.84rem;text-align:center;padding:1rem;">Firebase connected nahi hai</div>'; return; }
+  list.innerHTML = '<div style="text-align:center;padding:2rem;"><div class="spinner"></div></div>';
+
+  fsdb.collection('payments')
+    .where('status','==','PENDING_CONFIRM')
+    .orderBy('submittedAt','desc')
+    .limit(20)
+    .get()
+    .then(function(snap){
+      if(snap.empty){
+        list.innerHTML='<div style="text-align:center;padding:2.5rem;color:var(--muted);font-size:.84rem;">✅ Koi pending payment nahi hai</div>';
+        return;
+      }
+      list.innerHTML = '';
+      snap.forEach(function(doc){
+        var d = doc.data();
+        var time = d.submittedAt ? new Date(d.submittedAt.toDate()).toLocaleTimeString('en-IN') : 'N/A';
+        var card = document.createElement('div');
+        card.style.cssText = 'background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-bottom:.875rem;box-shadow:var(--sh);';
+        card.innerHTML =
+          '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;">'
+            +'<div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--press);">₹'+d.paid+'</div>'
+            +'<div style="font-size:.68rem;background:var(--orange-pale);color:var(--orange);padding:3px 10px;border-radius:12px;font-weight:700;">PENDING</div>'
+          +'</div>'
+          +'<div style="font-size:.8rem;color:var(--muted);margin-bottom:.2rem;">📄 <strong style="color:var(--press);">'+d.fileName+'</strong></div>'
+          +'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">🔑 Code: <strong style="font-family:var(--fm);color:var(--press);">'+d.printCode+'</strong></div>'
+          +'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">📋 Pages: '+d.pages+'</div>'
+          +'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">💰 Expected: ₹'+d.expected+' &nbsp;|&nbsp; Paid: ₹'+d.paid+'</div>'
+          +(d.utr&&d.utr!=='N/A'?'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">🧾 UTR: <strong style="font-family:var(--fm);">'+d.utr+'</strong></div>':'')
+          +'<div style="font-size:.72rem;color:var(--muted);margin-bottom:.875rem;">🕐 '+time+'</div>'
+          +'<div style="display:flex;gap:.65rem;">'
+            +'<button onclick="adminConfirm(\''+doc.id+'\')" style="flex:1;padding:.6rem;background:var(--green);color:white;border:none;border-radius:var(--r);font-size:.84rem;font-weight:700;cursor:pointer;font-family:var(--fb);">✅ Confirm Print</button>'
+            +'<button onclick="adminReject(\''+doc.id+'\')" style="flex:1;padding:.6rem;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:.84rem;font-weight:700;cursor:pointer;font-family:var(--fb);">❌ Reject</button>'
+          +'</div>';
+        list.appendChild(card);
+      });
+    })
+    .catch(function(err){
+      list.innerHTML='<div style="color:var(--red);font-size:.84rem;text-align:center;padding:1rem;">Error: '+err.message+'</div>';
+    });
+}
+
+function adminConfirm(orderId){
+  if(!confirm('Payment confirm karo aur print start karo?')) return;
+  fsdb.collection('payments').doc(orderId).update({
+    status: 'CONFIRMED',
+    confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function(){
+    // Browser notification
+    sendBrowserNotification('✅ Payment Confirmed!', 'Print job start ho gayi');
+    loadPendingPayments();
+  });
+}
+
+function adminReject(orderId){
+  if(!confirm('Payment reject karo?')) return;
+  fsdb.collection('payments').doc(orderId).update({
+    status: 'REJECTED',
+    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function(){
+    loadPendingPayments();
+  });
+}
+
 </script>
 </body>
 </html>
