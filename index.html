@@ -1360,20 +1360,34 @@ function initiateUPIGatewayPayment() {
   // Production mein ek backend proxy use karo.
 
   // Method 1: Direct API call (agar gateway CORS allow kare)
-  fetch('https://merchant.upigateway.com/api/create_order', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      key: UPIGATEWAY_MERCHANT_KEY,
-      client_txn_id: orderId,
-      amount: String(total),
-      p_info: 'SmartPrint-' + fileCode + '-' + selPgs.size + 'pages',
-      customer_name: 'SmartPrint Customer',
-      customer_email: 'customer@smartprint.com',
-      customer_mobile: '9999999999',
-      redirect_url: redirectUrl
-    })
+ fetch('/.netlify/functions/payment', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    orderId: orderId,
+    amount: String(total),
+    info: 'SmartPrint-' + fileCode + '-' + selPgs.size + 'pages',
+    name: 'SmartPrint Customer',
+    redirectUrl: redirectUrl
   })
+})
+.then(res => res.json())
+.then(data => {
+  console.log("Response:", data);
+
+  // 👉 Payment redirect
+  if (data.payment_url) {
+    window.location.href = data.payment_url;
+  } else {
+    alert("Payment create failed");
+  }
+})
+.catch(err => {
+  console.error("Error:", err);
+  alert("Something went wrong");
+});
   .then(function(res){ return res.json(); })
   .then(function(data){
     console.log('UPIGateway response:', data);
