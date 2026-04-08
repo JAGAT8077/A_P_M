@@ -227,9 +227,8 @@ header{background:var(--press);display:flex;align-items:center;justify-content:s
 .price-total .lbl{font-size:.84rem;color:#d0c8c0;font-weight:600;}
 .price-total .amt{font-family:var(--fd);font-size:2rem;font-weight:700;color:#f5883f;}
 .price-total .amt small{font-size:.95rem;vertical-align:super;margin-right:2px;font-family:var(--fb);}
-.price-panel .savings-note{margin-top:.65rem;padding:.5rem .8rem;background:rgba(45,125,70,.15);border:1px solid rgba(45,125,70,.25);border-radius:6px;font-size:.75rem;color:#6dcf8a;display:flex;align-items:center;gap:6px;}
 
-/* ── PAYMENT ── */
+/* ── PAYMENT SCREEN ── */
 .pay-card{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2rem;max-width:500px;margin:0 auto;box-shadow:var(--shl);}
 .pay-header{display:flex;align-items:center;gap:.875rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--rule);}
 .pay-header-ico{width:48px;height:48px;background:linear-gradient(135deg,var(--orange-pale),#fbe8d5);border-radius:var(--r);display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(232,98,26,.2);flex-shrink:0;}
@@ -242,21 +241,15 @@ header{background:var(--press);display:flex;align-items:center;justify-content:s
 .pay-summary-row .val{font-family:var(--fm);color:var(--press);font-weight:600;}
 .pay-summary-total{border-top:1px solid var(--rule);margin-top:.5rem;padding-top:.6rem!important;font-weight:700;}
 .amt-big{font-family:var(--fd);font-size:1.6rem;font-weight:700;color:var(--orange);}
-.qr-section{margin-bottom:1.35rem;text-align:center;}
-.qr-label{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--press);margin-bottom:.85rem;letter-spacing:.05em;text-transform:uppercase;background:var(--cream);padding:4px 12px;border-radius:20px;border:1px solid var(--rule);}
-.qr-box{background:white;border:2px solid var(--rule);border-radius:var(--r);padding:1.1rem;display:inline-block;margin-bottom:.85rem;box-shadow:var(--sh);}
-.upi-id-line{display:flex;align-items:center;justify-content:center;gap:5px;font-size:.78rem;color:var(--muted);margin-bottom:.65rem;}
-.upi-id-line strong{color:var(--press);font-family:var(--fm);}
-.upi-apps-row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:.25rem;}
+
+/* ── UPIGATEWAY PAY BUTTON ── */
+.upi-gw-btn{display:flex;align-items:center;justify-content:center;gap:12px;background:linear-gradient(135deg,#1a5f3f,#2d7d46);color:white;border:none;border-radius:var(--r);padding:1rem 1.5rem;font-size:1rem;font-weight:700;cursor:pointer;width:100%;font-family:var(--fb);transition:all .2s;box-shadow:0 4px 16px rgba(45,125,70,.35);margin-bottom:.75rem;}
+.upi-gw-btn:hover{background:linear-gradient(135deg,#236338,#2d7d46);transform:translateY(-1px);box-shadow:0 6px 22px rgba(45,125,70,.4);}
+.upi-gw-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.upi-gw-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;}
+.upi-apps-row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;}
 .upi-app{font-size:.68rem;font-weight:700;padding:4px 11px;border-radius:20px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
-.pay-divider{display:flex;align-items:center;gap:.875rem;margin:1.25rem 0;}
-.pay-divider::before,.pay-divider::after{content:'';flex:1;height:1px;background:var(--rule);}
-.pay-divider span{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;white-space:nowrap;}
-.timer-row{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.78rem;color:var(--muted);margin:.9rem 0 .75rem;}
-.tc{font-family:var(--fm);color:var(--orange);font-weight:700;font-size:.9rem;}
-.confirm-btn{background:linear-gradient(135deg,var(--green),#3a9a58);color:white;border:none;border-radius:var(--r);padding:.8rem 1.5rem;font-size:.92rem;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--fb);transition:all .2s;box-shadow:0 4px 16px rgba(45,125,70,.3);}
-.confirm-btn:hover{background:linear-gradient(135deg,#236338,var(--green));transform:translateY(-1px);box-shadow:0 6px 20px rgba(45,125,70,.35);}
-.confirm-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;}
+.pay-note{font-size:.75rem;color:var(--muted);text-align:center;margin-top:.5rem;line-height:1.6;}
 
 /* ── SUCCESS ── */
 .success-scr{text-align:center;padding:2.75rem 1.5rem;}
@@ -312,6 +305,9 @@ footer span{color:var(--orange);}
 .info-banner{display:flex;align-items:center;gap:10px;background:#fef9ec;border:1px solid #fbbf24;border-radius:var(--r);padding:.65rem 1rem;font-size:.78rem;color:#92400e;margin-bottom:1.1rem;}
 .info-banner.success{background:#f0fdf4;border-color:#86efac;color:#166534;}
 .info-banner svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+
+/* ── WAITING SCREEN ── */
+.wait-card{background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.25rem 1.5rem;max-width:360px;margin:0 auto;text-align:left;}
 </style>
 </head>
 <body>
@@ -323,7 +319,6 @@ footer span{color:var(--orange);}
     </div>
   </div>
   <div class="header-right">
-    <!-- ★ PAGE COUNTER BADGE ★ -->
     <div class="page-counter" id="page-counter" title="Remaining print pages">
       <div class="pc-icon">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -337,7 +332,7 @@ footer span{color:var(--orange);}
         <div class="pc-bar" id="pc-bar" style="width:100%"></div>
       </div>
     </div>
-    <div class="hbadge">v3.1</div>
+    <div class="hbadge">v3.2</div>
   </div>
 </header>
 
@@ -439,14 +434,8 @@ footer span{color:var(--orange);}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
           Capture
         </button>
-        <button class="cam-btn cam-btn-out" id="btn-retake" onclick="retakePhoto()" style="display:none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-          Retake
-        </button>
-        <button class="cam-btn cam-btn-use" id="btn-use" onclick="usePhoto()" style="display:none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><polyline points="20 6 9 17 4 12"/></svg>
-          Use Photo
-        </button>
+        <button class="cam-btn cam-btn-out" id="btn-retake" onclick="retakePhoto()" style="display:none;">Retake</button>
+        <button class="cam-btn cam-btn-use" id="btn-use" onclick="usePhoto()" style="display:none;">Use Photo</button>
       </div>
       <div id="cam-err" style="font-size:.78rem;color:#f87171;text-align:center;padding:.5rem 1rem;display:none;"></div>
     </div>
@@ -509,7 +498,7 @@ footer span{color:var(--orange);}
       <div id="copies-panel" style="display:none;border-top:1px solid var(--rule);padding:.9rem 1.2rem;">
         <div style="font-size:.72rem;font-weight:700;color:var(--press);margin-bottom:.85rem;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
-          Copies & Print Type per Page
+          Copies &amp; Print Type per Page
         </div>
         <div id="copies-grid" style="display:flex;flex-direction:column;gap:.3rem;"></div>
       </div>
@@ -559,11 +548,11 @@ footer span{color:var(--orange);}
     <div class="pay-card">
       <div class="pay-header">
         <div class="pay-header-ico">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M17 17h3v3M14 20h3"/></svg>
+          <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         </div>
         <div class="pay-header-info">
-          <h3>Scan &amp; Pay via UPI</h3>
-          <p>GPay, PhonePe, Paytm, BHIM — koi bhi UPI app chalega</p>
+          <h3>UPI Payment</h3>
+          <p>GPay, PhonePe, Paytm, BHIM — koi bhi UPI app</p>
         </div>
       </div>
 
@@ -576,54 +565,58 @@ footer span{color:var(--orange);}
         </div>
       </div>
 
-      <div class="qr-section">
-        <div class="qr-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M17 17h3v3M14 20h3"/></svg>
-          Scan QR to Pay
-        </div>
-        <div class="qr-box"><div id="qr-div"></div></div>
-        <div class="upi-id-line">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          UPI ID: <strong>8077271230@pthdfc</strong>
-        </div>
+      <!-- ★★★ NEW: UPIGateway Pay Button ★★★ -->
+      <div style="margin-bottom:1.1rem;">
+        <button class="upi-gw-btn" id="upi-gw-btn" onclick="initiateUPIGatewayPayment()">
+          <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          💳 Pay via UPIGateway — Dynamic QR
+        </button>
         <div class="upi-apps-row">
           <span class="upi-app">GPay</span>
           <span class="upi-app">PhonePe</span>
           <span class="upi-app">Paytm</span>
           <span class="upi-app">BHIM</span>
+          <span class="upi-app">Any UPI App</span>
         </div>
+        <p class="pay-note">
+          ⬆️ Button dabao → Aapko UPIGateway ke payment page pe le jaayega jahan Dynamic QR dikhega.<br/>
+          Payment karne ke baad automatically wapas aayenge.
+        </p>
       </div>
 
+      <div id="pay-gw-status"></div>
+
+      <!-- ─────────────────────────────────────────
+           OLD UPI QR + MANUAL FLOW — COMMENTED OUT
+           (Aapne kaha tha purana comment karo)
+      ─────────────────────────────────────────
+      <div class="qr-section">
+        <div class="qr-label">Scan QR to Pay</div>
+        <div class="qr-box"><div id="qr-div"></div></div>
+        <div class="upi-id-line">UPI ID: <strong>8077271230@pthdfc</strong></div>
+      </div>
       <div class="timer-row" id="timer-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         QR expires in <span class="tc" id="tc">10:00</span>
       </div>
-
       <div class="pay-divider"><span>Payment karne ke baad neeche fill karo</span></div>
-
-      <!-- Amount Entry -->
       <div style="margin-bottom:1rem;">
-        <label style="font-size:.78rem;font-weight:700;color:var(--press);display:block;margin-bottom:.4rem;">💰 Aapne kitne Rs. pay kiye?</label>
-        <input id="user-paid-amount" type="number" min="1" placeholder="e.g. 20"
-          style="width:100%;padding:.65rem .9rem;border:2px solid var(--rule);border-radius:var(--r);font-size:1rem;font-family:var(--fm);font-weight:700;color:var(--press);background:var(--cream);outline:none;"
-          onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--rule)'"/>
+        <label>💰 Aapne kitne Rs. pay kiye?</label>
+        <input id="user-paid-amount" type="number" min="1" placeholder="e.g. 20"/>
       </div>
       <div style="margin-bottom:1.1rem;">
-        <label style="font-size:.78rem;font-weight:700;color:var(--press);display:block;margin-bottom:.4rem;">🧾 UTR / Transaction ID <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-        <input id="user-utr" type="text" placeholder="e.g. 426819XXXXXX"
-          style="width:100%;padding:.65rem .9rem;border:2px solid var(--rule);border-radius:var(--r);font-size:.88rem;font-family:var(--fm);color:var(--press);background:var(--cream);outline:none;"
-          onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--rule)'"/>
+        <label>🧾 UTR / Transaction ID</label>
+        <input id="user-utr" type="text" placeholder="e.g. 426819XXXXXX"/>
       </div>
       <div id="pay-amount-err"></div>
-
       <button class="confirm-btn" onclick="userSubmitPayment()">
-        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
         ✅ Submit — Owner ko Notify Karo
       </button>
+      ───────────────────────────────────────── -->
+
     </div>
   </div>
 
-  <!-- ═══ WAITING FOR OWNER CONFIRM ═══ -->
+  <!-- ═══ WAITING FOR PAYMENT CONFIRM ═══ -->
   <div class="scr" id="scr-waiting">
     <div class="steps">
       <div class="step done"><span class="step-n">01</span>Upload</div>
@@ -638,27 +631,27 @@ footer span{color:var(--orange);}
       </div>
       <h2 style="font-family:var(--fd);font-size:1.6rem;color:var(--press);margin-bottom:.65rem;">Payment Submitted! ⏳</h2>
       <p style="font-size:.9rem;color:var(--muted);max-width:340px;margin:0 auto 2rem;line-height:1.75;">
-        Owner ko notification bhej di gayi hai. Thodi der mein confirm hoga aur print start ho jaayega<span id="waiting-dots">...</span>
+        UPIGateway se payment status check ho raha hai. Thodi der mein confirm hoga<span id="waiting-dots">...</span>
       </p>
-      <!-- Animated waiting indicator -->
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:2rem;">
         <div style="width:10px;height:10px;background:var(--orange);border-radius:50%;animation:blink 1s ease-in-out infinite;"></div>
         <div style="width:10px;height:10px;background:var(--orange);border-radius:50%;animation:blink 1s ease-in-out .3s infinite;"></div>
         <div style="width:10px;height:10px;background:var(--orange);border-radius:50%;animation:blink 1s ease-in-out .6s infinite;"></div>
       </div>
-      <div style="background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.25rem 1.5rem;max-width:360px;margin:0 auto;text-align:left;">
+      <div class="wait-card">
         <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin-bottom:.75rem;">Status</div>
         <div style="display:flex;align-items:center;gap:.65rem;font-size:.84rem;padding:.3rem 0;">
-          <div class="sdot done"></div><span>Payment info submit ho gayi ✓</span>
+          <div class="sdot done"></div><span>UPIGateway pe redirect kiya ✓</span>
         </div>
         <div style="display:flex;align-items:center;gap:.65rem;font-size:.84rem;padding:.3rem 0;">
-          <div class="sdot active"></div><span>Owner verification ka wait kar rahe hain…</span>
+          <div class="sdot active"></div><span>Payment confirmation ka wait kar rahe hain…</span>
         </div>
         <div style="display:flex;align-items:center;gap:.65rem;font-size:.84rem;padding:.3rem 0;">
           <div class="sdot wait"></div><span style="color:var(--muted);">Print start hoga</span>
         </div>
       </div>
-      <p style="font-size:.75rem;color:var(--muted);margin-top:1.5rem;">Page band mat karo — confirm hone pe automatically aage jayega</p>
+      <p style="font-size:.75rem;color:var(--muted);margin-top:1.5rem;">Page band mat karo — payment confirm hone pe automatically aage jayega</p>
+      <button class="btn btn-out" onclick="show('scr-pay')" style="margin-top:1rem;font-size:.8rem;">← Wapas jaao</button>
     </div>
   </div>
 
@@ -668,7 +661,6 @@ footer span{color:var(--orange);}
       <button class="back" onclick="goHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Home</button>
       <div class="stitle">🔐 Admin Panel</div>
     </div>
-    <!-- Password gate -->
     <div id="admin-login" style="max-width:400px;margin:0 auto;">
       <div style="background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:2rem;text-align:center;box-shadow:var(--shl);">
         <div style="width:56px;height:56px;background:var(--orange-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
@@ -681,10 +673,9 @@ footer span{color:var(--orange);}
         <div id="admin-pass-err" style="margin-top:.5rem;"></div>
       </div>
     </div>
-    <!-- Admin dashboard -->
     <div id="admin-dashboard" style="display:none;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.5rem;">
-        <div style="font-size:.78rem;color:var(--muted);">Pending payments neeche hain — Confirm ya Reject karo</div>
+        <div style="font-size:.78rem;color:var(--muted);">UPIGateway se confirmed payments + pending requests</div>
         <button class="btn btn-out" onclick="loadPendingPayments()" style="font-size:.78rem;padding:.4rem .9rem;">
           <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
           Refresh
@@ -696,6 +687,7 @@ footer span{color:var(--orange);}
     </div>
   </div>
 
+  <!-- ═══ DONE ═══ -->
   <div class="scr" id="scr-done">
     <div class="steps">
       <div class="step done"><span class="step-n">01</span>Upload</div>
@@ -707,7 +699,7 @@ footer span{color:var(--orange);}
     <div class="success-scr">
       <div class="s-anim"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       <h2>Payment Successful! 🎉</h2>
-      <p class="ssub">Your payment is confirmed. Document is being sent to the printer right now.</p>
+      <p class="ssub">Payment confirm ho gayi. Document printer ko bheja ja raha hai.</p>
       <div class="ps-card">
         <div class="ps-card-title">Print Job Status</div>
         <div class="ps-row"><div class="sdot done"></div><span>Payment verified ✓</span></div>
@@ -729,87 +721,69 @@ footer span{color:var(--orange);}
     </div>
   </div>
 
-</div>
+</div><!-- end .wrap -->
 
-<footer>SmartPrint System &copy; 2025 &nbsp;·&nbsp; <span>Secure Print</span> &nbsp;·&nbsp; v3.1</footer>
+<footer>SmartPrint System &copy; 2025 &nbsp;·&nbsp; <span>Powered by UPIGateway</span> &nbsp;·&nbsp; v3.2</footer>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" onerror="fbLoadFailed()"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" onerror="fbLoadFailed()"></script>
 
 <script>
+// ════════════════════════════════════
+//  ★ UPIGATEWAY CONFIG ★
+//  Apni merchant key yahan daalo
+// ════════════════════════════════════
+var UPIGATEWAY_MERCHANT_KEY = '15ff4049-df56-40ce-b9c0-4f7b1d179f7d'; // ← Aapki merchant key
+
+// ★ Redirect URL — Jahan UPIGateway payment ke baad wapas bhejega ★
+// Yeh URL AAPKI website ka URL hona chahiye (localhost kaam nahi karega)
+// Example: 'https://yoursite.com/smartprint.html'
+// Agar local testing: use a public URL (ngrok ya deploy karo)
+var UPIGATEWAY_REDIRECT_URL = window.location.href; // Auto-detect karta hai
+
 // ── PDF.js worker ──
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 // ── Constants ──
 const RATE_BW = 4, RATE_COL = 8;
-const UPI_ID  = '8077271230@pthdfc';
 const MAX_MB  = 1024;
 const CHUNK_SIZE = 600 * 1024;
 const TTL_MS = 24 * 60 * 60 * 1000;
-const TOTAL_PAGES_QUOTA = 500; // ★ Total page quota
+const TOTAL_PAGES_QUOTA = 500;
 
 // ════════════════════════════════════
-//  ★ PAGE COUNTER SYSTEM ★
+//  Page Counter
 // ════════════════════════════════════
 const PC_STORAGE_KEY = 'smartprint_pages_remaining';
 
 function getPagesRemaining() {
   var stored = localStorage.getItem(PC_STORAGE_KEY);
-  if (stored === null) {
-    localStorage.setItem(PC_STORAGE_KEY, TOTAL_PAGES_QUOTA);
-    return TOTAL_PAGES_QUOTA;
-  }
+  if (stored === null) { localStorage.setItem(PC_STORAGE_KEY, TOTAL_PAGES_QUOTA); return TOTAL_PAGES_QUOTA; }
   return Math.max(0, parseInt(stored) || 0);
 }
-
-function setPagesRemaining(n) {
-  n = Math.max(0, n);
-  localStorage.setItem(PC_STORAGE_KEY, n);
-}
-
+function setPagesRemaining(n) { n = Math.max(0, n); localStorage.setItem(PC_STORAGE_KEY, n); }
 function updateCounterUI(animate) {
   var remaining = getPagesRemaining();
-  var numEl = document.getElementById('pc-num');
-  var barEl = document.getElementById('pc-bar');
+  var numEl = document.getElementById('pc-num'), barEl = document.getElementById('pc-bar');
   if (!numEl || !barEl) return;
-
   numEl.textContent = remaining;
   var pct = (remaining / TOTAL_PAGES_QUOTA) * 100;
   barEl.style.width = pct + '%';
-
-  // Color coding
-  if (remaining <= 50) {
-    barEl.style.background = 'var(--red)';
-    numEl.style.color = '#ff6b6b';
-  } else if (remaining <= 150) {
-    barEl.style.background = '#f59e0b';
-    numEl.style.color = '#fbbf24';
-  } else {
-    barEl.style.background = 'var(--orange)';
-    numEl.style.color = '#f5883f';
-  }
-
-  if (animate) {
-    numEl.classList.remove('bump');
-    void numEl.offsetWidth; // reflow
-    numEl.classList.add('bump');
-  }
+  if (remaining <= 50) { barEl.style.background='var(--red)'; numEl.style.color='#ff6b6b'; }
+  else if (remaining <= 150) { barEl.style.background='#f59e0b'; numEl.style.color='#fbbf24'; }
+  else { barEl.style.background='var(--orange)'; numEl.style.color='#f5883f'; }
+  if (animate) { numEl.classList.remove('bump'); void numEl.offsetWidth; numEl.classList.add('bump'); }
 }
-
 function deductPages(count) {
-  var current = getPagesRemaining();
-  var newVal = Math.max(0, current - count);
-  setPagesRemaining(newVal);
-  updateCounterUI(true);
-  return newVal;
+  var newVal = Math.max(0, getPagesRemaining() - count);
+  setPagesRemaining(newVal); updateCounterUI(true); return newVal;
 }
-
-// Init counter on load
 updateCounterUI(false);
 
 // ════════════════════════════════════
-//  Firebase Setup
+//  Firebase
 // ════════════════════════════════════
 let fsdb = null, firebaseReady = false;
 const pendingOps = [];
@@ -818,15 +792,12 @@ function fbLoadFailed() {
   var el = document.getElementById('fb-status');
   if (el) {
     el.className = 'info-banner';
-    el.style.background = '#fef2f2'; el.style.borderColor = '#fca5a5'; el.style.color = '#991b1b';
+    el.style.background='#fef2f2'; el.style.borderColor='#fca5a5'; el.style.color='#991b1b';
     el.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Cloud connect nahi hua. Internet check karo.';
   }
 }
 
-function runWhenReady(fn) {
-  if (firebaseReady) fn();
-  else pendingOps.push(fn);
-}
+function runWhenReady(fn) { if (firebaseReady) fn(); else pendingOps.push(fn); }
 
 window.addEventListener('load', function() {
   try {
@@ -841,7 +812,6 @@ window.addEventListener('load', function() {
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     fsdb = firebase.firestore();
     firebaseReady = true;
-
     var el = document.getElementById('fb-status');
     if (el) {
       el.className = 'info-banner success';
@@ -850,6 +820,10 @@ window.addEventListener('load', function() {
     }
     pendingOps.forEach(function(fn){ fn(); });
     pendingOps.length = 0;
+
+    // ★ URL mein payment callback check karo (UPIGateway redirect ke baad)
+    checkUPIGatewayCallback();
+
   } catch(e) { fbLoadFailed(); }
 });
 
@@ -857,8 +831,7 @@ window.addEventListener('load', function() {
 window.addEventListener('load', function() {
   var url = window.location.href;
   if (url.startsWith('file://')) url = 'https://YOUR-WEBSITE-URL.com';
-  var qrEl = document.getElementById('home-qr');
-  var urlEl = document.getElementById('home-qr-url');
+  var qrEl = document.getElementById('home-qr'), urlEl = document.getElementById('home-qr-url');
   if (qrEl) {
     qrEl.innerHTML = '';
     new QRCode(qrEl, { text:url, width:160, height:160, colorDark:'#1a1612', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M });
@@ -873,8 +846,7 @@ const STORE = {};
 async function mkCode() {
   let c, t = 0;
   do {
-    c = String(Math.floor(1000 + Math.random() * 9000));
-    t++;
+    c = String(Math.floor(1000 + Math.random() * 9000)); t++;
     try { var doc = await fsdb.collection('files').doc(c).get(); if (!doc.exists) break; } catch(e) { break; }
   } while (t < 200);
   return c;
@@ -888,8 +860,7 @@ async function saveFileToFirebase(code, file) {
       try {
         var base64 = e.target.result;
         var totalChunks = Math.ceil(base64.length / CHUNK_SIZE);
-        var batch = fsdb.batch();
-        var metaRef = fsdb.collection('files').doc(code);
+        var batch = fsdb.batch(), metaRef = fsdb.collection('files').doc(code);
         batch.set(metaRef, {
           fileName: file.name, fileSize: file.size, fileType: file.type || '',
           totalChunks: totalChunks,
@@ -900,9 +871,9 @@ async function saveFileToFirebase(code, file) {
         for (var i = 0; i < totalChunks; i++) {
           var chunk = base64.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
           await fsdb.collection('files').doc(code).collection('chunks').doc(String(i)).set({ data: chunk });
-          var pct = Math.round(((i + 1) / totalChunks) * 100);
-          var bar = document.getElementById('pbar'); if (bar) bar.style.width = pct + '%';
-          var lbl = document.getElementById('pbar-lbl'); if (lbl) lbl.textContent = pct + '%';
+          var pct = Math.round(((i+1)/totalChunks)*100);
+          var bar=document.getElementById('pbar'); if(bar) bar.style.width=pct+'%';
+          var lbl=document.getElementById('pbar-lbl'); if(lbl) lbl.textContent=pct+'%';
         }
         resolve(code);
       } catch(err) { reject(err); }
@@ -919,8 +890,7 @@ async function loadFileFromFirebase(code) {
     if (!metaDoc.exists) return null;
     var meta = metaDoc.data();
     if (meta.expiresAt && meta.expiresAt.toDate && meta.expiresAt.toDate() < new Date()) {
-      await deleteFileFromFirebase(code, meta.totalChunks);
-      return null;
+      await deleteFileFromFirebase(code, meta.totalChunks); return null;
     }
     var totalChunks = meta.totalChunks || 1, parts = [];
     for (var i = 0; i < totalChunks; i++) {
@@ -935,7 +905,7 @@ async function loadFileFromFirebase(code) {
 async function deleteFileFromFirebase(code, totalChunks) {
   try {
     var batch = fsdb.batch();
-    for (var i = 0; i < (totalChunks || 1); i++)
+    for (var i=0; i<(totalChunks||1); i++)
       batch.delete(fsdb.collection('files').doc(code).collection('chunks').doc(String(i)));
     batch.delete(fsdb.collection('files').doc(code));
     await batch.commit();
@@ -946,7 +916,11 @@ async function deleteFileFromFirebase(code, totalChunks) {
 let fileData=null, fileName=null, fileCode=null;
 let totalPgs=0, selPgs=new Set();
 let pageCopies={}, pageMode={};
-let pdfDoc=null, payTimer=null, printTimer=null;
+let pdfDoc=null, printTimer=null;
+
+// ── Current order ID (UPIGateway) ──
+var currentOrderId = null;
+var pollTimer = null;
 
 // ════════════════════════════════════
 //  Navigation
@@ -958,8 +932,8 @@ function show(id) {
 }
 
 function goHome() {
-  clearInterval(payTimer); clearInterval(printTimer);
-  fileData=null; fileName=null; fileCode=null;
+  clearInterval(pollTimer);
+  fileData=null; fileName=null; fileCode=null; currentOrderId=null;
   document.getElementById('upload-result').innerHTML = '';
   ['d0','d1','d2','d3'].forEach(function(id){
     var el=document.getElementById(id); if(el){el.value='';el.classList.remove('bad');}
@@ -1211,24 +1185,15 @@ function toggleChip(n,c){
   syncWrappers(); updateCopiesPanel(); updatePrice();
 }
 
-function syncChips(){
-  document.querySelectorAll('.pchip').forEach(function(c){ c.classList.toggle('sel',selPgs.has(Number(c.dataset.page))); });
-  updateSelLabel();
-}
-function syncWrappers(){
-  document.querySelectorAll('.pg-wrap').forEach(function(w){ w.classList.toggle('sel',selPgs.has(Number(w.dataset.page))); });
-}
-function selAll(){
-  for(var i=1;i<=totalPgs;i++){ selPgs.add(i); if(!pageCopies[i]) pageCopies[i]=1; }
-  syncChips(); syncWrappers(); updateCopiesPanel(); updatePrice();
-}
+function syncChips(){ document.querySelectorAll('.pchip').forEach(function(c){ c.classList.toggle('sel',selPgs.has(Number(c.dataset.page))); }); updateSelLabel(); }
+function syncWrappers(){ document.querySelectorAll('.pg-wrap').forEach(function(w){ w.classList.toggle('sel',selPgs.has(Number(w.dataset.page))); }); }
+function selAll(){ for(var i=1;i<=totalPgs;i++){ selPgs.add(i); if(!pageCopies[i]) pageCopies[i]=1; } syncChips(); syncWrappers(); updateCopiesPanel(); updatePrice(); }
 function selNone(){ selPgs.clear(); pageCopies={}; syncChips(); syncWrappers(); updateCopiesPanel(); updatePrice(); }
 function updateSelLabel(){
   var n=selPgs.size;
   document.getElementById('sel-count').textContent = n===0?'None selected':n===1?'1 page selected':n+' pages selected';
 }
 
-// ── Copies Panel ──
 function updateCopiesPanel(){
   var panel=document.getElementById('copies-panel'), grid=document.getElementById('copies-grid');
   var pages=Array.from(selPgs).sort(function(a,b){return a-b;});
@@ -1238,25 +1203,13 @@ function updateCopiesPanel(){
     if(!pageCopies[n]) pageCopies[n]=1;
     if(!pageMode[n])   pageMode[n]='bw';
     var row=document.createElement('div'); row.className='copies-row';
-
     var lbl=document.createElement('span'); lbl.className='copies-pg-label'; lbl.textContent='P'+n;
-
-    // Mode toggle
     var tog=document.createElement('div'); tog.className='mode-toggle';
     var btnBW=document.createElement('button'); btnBW.className='mt-btn'+(pageMode[n]==='bw'?' active-bw':''); btnBW.textContent='⬛ B&W';
     var btnCol=document.createElement('button'); btnCol.className='mt-btn'+(pageMode[n]==='color'?' active-col':''); btnCol.textContent='🎨 Colour';
     tog.appendChild(btnBW); tog.appendChild(btnCol);
-
-    btnBW.onclick=(function(pg,bBtn,cBtn){return function(){
-      pageMode[pg]='bw'; bBtn.className='mt-btn active-bw'; cBtn.className='mt-btn';
-      applyPageFilter(pg,'bw'); updatePrice(); updateChipColor(pg,'bw');
-    };})(n,btnBW,btnCol);
-    btnCol.onclick=(function(pg,bBtn,cBtn){return function(){
-      pageMode[pg]='color'; cBtn.className='mt-btn active-col'; bBtn.className='mt-btn';
-      applyPageFilter(pg,'color'); updatePrice(); updateChipColor(pg,'color');
-    };})(n,btnBW,btnCol);
-
-    // Copies control
+    btnBW.onclick=(function(pg,bBtn,cBtn){return function(){ pageMode[pg]='bw'; bBtn.className='mt-btn active-bw'; cBtn.className='mt-btn'; applyPageFilter(pg,'bw'); updatePrice(); updateChipColor(pg,'bw'); };})(n,btnBW,btnCol);
+    btnCol.onclick=(function(pg,bBtn,cBtn){return function(){ pageMode[pg]='color'; cBtn.className='mt-btn active-col'; bBtn.className='mt-btn'; applyPageFilter(pg,'color'); updatePrice(); updateChipColor(pg,'color'); };})(n,btnBW,btnCol);
     var ctrl=document.createElement('div'); ctrl.className='copies-ctrl';
     var minus=document.createElement('button'); minus.className='cp-btn'; minus.textContent='−';
     var inp=document.createElement('input'); inp.type='number'; inp.min=1; inp.max=99; inp.value=pageCopies[n]; inp.className='cp-inp';
@@ -1266,14 +1219,12 @@ function updateCopiesPanel(){
     plus.onclick=(function(pg,i){return function(){ if(pageCopies[pg]<99){pageCopies[pg]++;i.value=pageCopies[pg];updatePrice();} };})(n,inp);
     inp.oninput=(function(pg){return function(){var v=parseInt(this.value)||1;v=Math.max(1,Math.min(99,v));pageCopies[pg]=v;updatePrice();};})(n);
     ctrl.appendChild(minus); ctrl.appendChild(inp); ctrl.appendChild(plus);
-
     row.appendChild(lbl); row.appendChild(tog); row.appendChild(ctrl); row.appendChild(clbl);
     grid.appendChild(row);
     applyPageFilter(n, pageMode[n]);
   });
 }
 
-function applyModeBtn(btn,active){/* legacy, kept for safety */}
 function applyPageFilter(pg,mode){
   var wrap=document.querySelector('.pg-wrap[data-page="'+pg+'"]');
   if(wrap){var media=wrap.querySelector('canvas')||wrap.querySelector('img'); if(media) media.style.filter=mode==='bw'?'grayscale(100%)':'none';}
@@ -1302,12 +1253,7 @@ function updatePrice(){
 }
 
 // ════════════════════════════════════
-//  ★ OWNER CONFIG — APNA NUMBER DAALO ★
-// ════════════════════════════════════
-var OWNER_WHATSAPP = '918077271230'; // ← Apna WhatsApp number (91 + number, no spaces)
-
-// ════════════════════════════════════
-//  Payment
+//  Payment — Fill summary
 // ════════════════════════════════════
 function goPayment(){
   if(selPgs.size===0) return;
@@ -1324,105 +1270,286 @@ function goPayment(){
   document.getElementById('rzp-pages').textContent=pagesSummary;
   document.getElementById('rzp-mode').textContent=modeSummary;
   document.getElementById('rzp-total').textContent='₹'+total;
-
-  // Amount input field mein expected amount set karo
-  var amtInp = document.getElementById('user-paid-amount');
-  if(amtInp) amtInp.placeholder = 'e.g. '+total;
-
-  var upiUrl='upi://pay?pa='+UPI_ID+'&pn=SmartPrint&am='+total+'&cu=INR&tn=Print-'+fileCode;
-  var qDiv=document.getElementById('qr-div'); qDiv.innerHTML='';
-  new QRCode(qDiv,{text:upiUrl,width:168,height:168,colorDark:'#1a1612',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
-
-  var secs=600; clearInterval(payTimer);
-  payTimer=setInterval(function(){
-    secs--;
-    var m=String(Math.floor(secs/60)).padStart(2,'0'), s=String(secs%60).padStart(2,'0');
-    var el=document.getElementById('tc'); if(el) el.textContent=m+':'+s;
-    if(secs<=0){
-      clearInterval(payTimer);
-      var tr=document.getElementById('timer-row');
-      if(tr) tr.innerHTML='<span style="color:var(--red);font-size:.78rem;">⏰ QR expired. Please go back and try again.</span>';
-    }
-  },1000);
-
-  // Browser notification permission maango
-  requestBrowserNotificationPermission();
+  document.getElementById('pay-gw-status').innerHTML='';
 
   show('scr-pay');
 }
 
-// ── Browser Notification Permission ──
-function requestBrowserNotificationPermission(){
-  if('Notification' in window && Notification.permission === 'default'){
-    Notification.requestPermission();
+// ════════════════════════════════════
+//  ★★★ UPIGATEWAY PAYMENT INTEGRATION ★★★
+// ════════════════════════════════════
+
+/*
+  UPIGateway API — Create Order
+  POST https://merchant.upigateway.com/api/create_order
+  Body (JSON):
+  {
+    key: "MERCHANT_KEY",
+    client_txn_id: "UNIQUE_ORDER_ID",
+    amount: "100",
+    p_info: "SmartPrint - 5 pages",
+    customer_name: "Customer",
+    customer_email: "customer@email.com",
+    customer_mobile: "9999999999",
+    redirect_url: "https://yoursite.com/page?callback=1"
   }
-}
-
-// ── Send Browser Notification (Owner ke liye) ──
-function sendBrowserNotification(title, body){
-  if('Notification' in window && Notification.permission === 'granted'){
-    new Notification(title, {
-      body: body,
-      icon: 'https://cdn-icons-png.flaticon.com/512/1584/1584892.png'
-    });
+  Response:
+  {
+    status: true,
+    msg: "Order Created",
+    data: {
+      order_id: 12345678,
+      payment_url: "https://merchant.upigateway.com/gateway/pay/xxxxx",
+      upi_id_hash: "xxxxx"
+    }
   }
-}
+*/
 
-// ── User ne amount enter kiya aur submit kiya ──
-function userSubmitPayment(){
-  var amtInp  = document.getElementById('user-paid-amount');
-  var utrInp  = document.getElementById('user-utr');
-  var errEl   = document.getElementById('pay-amount-err');
-  var amount  = amtInp ? amtInp.value.trim() : '';
-  var utr     = utrInp ? utrInp.value.trim() : '';
+function initiateUPIGatewayPayment() {
+  var btn = document.getElementById('upi-gw-btn');
+  var statusEl = document.getElementById('pay-gw-status');
 
-  if(!amount || isNaN(amount) || Number(amount) <= 0){
-    errEl.innerHTML = '<div class="err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Paid amount enter karo</div>';
+  // Amount calculate karo
+  var bwCopies=0, colCopies=0;
+  selPgs.forEach(function(pg){ var c=pageCopies[pg]||1; if(pageMode[pg]==='color') colCopies+=c; else bwCopies+=c; });
+  var total = (bwCopies*RATE_BW) + (colCopies*RATE_COL);
+
+  if(total <= 0){
+    statusEl.innerHTML = errHtml('Koi page select nahi hua ya amount 0 hai.');
     return;
   }
-  errEl.innerHTML = '';
 
-  // Expected amount
-  var bwC=0,colC=0;
-  selPgs.forEach(function(pg){ var c=pageCopies[pg]||1; if(pageMode[pg]==='color') colC+=c; else bwC+=c; });
-  var expected = (bwC*RATE_BW)+(colC*RATE_COL);
-  var paid     = Number(amount);
+  var pagesSummary = Array.from(selPgs).sort(function(a,b){return a-b;}).map(function(pg){
+    var c=pageCopies[pg]||1, m=pageMode[pg]==='color'?'Colour':'BW';
+    return 'P'+pg+'('+m+(c>1?'x'+c:'')+')';
+  }).join(',');
 
-  var pagesSummary=Array.from(selPgs).sort(function(a,b){return a-b;}).map(function(pg){
-    var c=pageCopies[pg]||1, m=pageMode[pg]==='color'?'Colour':'B&W';
-    return 'P'+pg+'('+m+(c>1?'×'+c:'')+')';
-  }).join(', ');
+  // Unique order ID banao
+  var orderId = 'SP-' + fileCode + '-' + Date.now();
+  currentOrderId = orderId;
 
-  // Firestore mein pending payment save karo
-  var orderId = 'Print-'+fileCode+'-'+Date.now();
+  // Redirect URL — payment ke baad UPIGateway yahan wapas bhejega
+  // URL mein order ID add karo taaki wapas aa ke identify kar sakein
+  var baseUrl = window.location.href.split('?')[0];
+  var redirectUrl = baseUrl + '?upigw_order=' + encodeURIComponent(orderId) + '&print_code=' + encodeURIComponent(fileCode);
+
+  // ── Loading state ──
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2.5px;border-color:rgba(255,255,255,.4);border-top-color:white;"></div> Payment page prepare ho raha hai…';
+  statusEl.innerHTML = '';
+
+  // ── Firestore mein order save karo (waiting status) ──
   if(firebaseReady){
     fsdb.collection('payments').doc(orderId).set({
-      orderId:    orderId,
-      printCode:  fileCode,
-      fileName:   fileName,
-      pages:      pagesSummary,
-      expected:   expected,
-      paid:       paid,
-      utr:        utr || 'N/A',
-      status:     'PENDING_CONFIRM',
-      submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+      orderId: orderId,
+      printCode: fileCode,
+      fileName: fileName,
+      pages: pagesSummary,
+      bwCopies: bwCopies,
+      colCopies: colCopies,
+      amount: total,
+      status: 'INITIATED',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      redirectUrl: redirectUrl
     });
   }
 
-  // ── Browser Notification ──
-  sendBrowserNotification(
-    '💰 New Payment — ₹'+paid,
-    'File: '+fileName+' | Code: '+fileCode+' | Pages: '+pagesSummary
-  );
+  // ── UPIGateway API call ──
+  // NOTE: Yeh API call CORS-friendly nahi hai directly browser se.
+  // Isliye hum direct redirect URL bana rahe hain.
+  // Production mein ek backend proxy use karo.
 
-  // ── Waiting screen dikhao user ko ──
-  show('scr-waiting');
-  startWaitingForConfirm(orderId, pagesSummary);
+  // Method 1: Direct API call (agar gateway CORS allow kare)
+  fetch('https://merchant.upigateway.com/api/create_order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      key: UPIGATEWAY_MERCHANT_KEY,
+      client_txn_id: orderId,
+      amount: String(total),
+      p_info: 'SmartPrint-' + fileCode + '-' + selPgs.size + 'pages',
+      customer_name: 'SmartPrint Customer',
+      customer_email: 'customer@smartprint.com',
+      customer_mobile: '9999999999',
+      redirect_url: redirectUrl
+    })
+  })
+  .then(function(res){ return res.json(); })
+  .then(function(data){
+    console.log('UPIGateway response:', data);
+    if(data.status === true && data.data && data.data.payment_url){
+      // ── Success: Firestore update ──
+      if(firebaseReady){
+        fsdb.collection('payments').doc(orderId).update({
+          gatewayOrderId: data.data.order_id || '',
+          paymentUrl: data.data.payment_url,
+          status: 'REDIRECT'
+        });
+      }
+      // ── User ko payment URL pe redirect karo ──
+      statusEl.innerHTML = '<div class="info-banner success"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Payment page ready! Redirect ho raha hai…</div>';
+      setTimeout(function(){
+        window.location.href = data.data.payment_url;
+      }, 800);
+    } else {
+      // API error
+      handleUPIGatewayError(btn, statusEl, data.msg || 'Payment initiate karne mein error aaya.');
+    }
+  })
+  .catch(function(err){
+    console.error('UPIGateway fetch error:', err);
+    // ── CORS error aa sakta hai — fallback: show manual instructions ──
+    handleCORSFallback(btn, statusEl, orderId, total, redirectUrl, pagesSummary);
+  });
 }
 
-// ── Waiting Screen — Firestore se real-time confirm wait ──
+// ── Error handler ──
+function handleUPIGatewayError(btn, statusEl, msg) {
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> 💳 Pay via UPIGateway — Dynamic QR';
+  statusEl.innerHTML = errHtml('UPIGateway error: ' + msg + '<br/><small>Check karo ki merchant key sahi hai aur account active hai.</small>');
+}
+
+// ── CORS Fallback ──
+// Jab browser direct API call block kare, tab yeh dikhao
+function handleCORSFallback(btn, statusEl, orderId, total, redirectUrl, pagesSummary) {
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> 💳 Pay via UPIGateway — Dynamic QR';
+
+  statusEl.innerHTML =
+    '<div style="background:#fef9ec;border:1px solid #fbbf24;border-radius:var(--r);padding:1rem;font-size:.82rem;color:#92400e;margin-top:.75rem;">' +
+      '<strong>⚠️ Direct API call block hua (CORS)</strong><br/>' +
+      'Yeh tab hota hai jab page local file se open ho ya server side proxy nahi ho.<br/><br/>' +
+      '<strong>Solution:</strong><br/>' +
+      '1. Apni site ko domain pe host karo (GitHub Pages, Netlify, etc.)<br/>' +
+      '2. Ya ek proxy server banao jo UPIGateway API call kare<br/><br/>' +
+      '<strong>Order ID saved:</strong> <code style="font-family:var(--fm);font-size:.9em;">'+orderId+'</code>' +
+    '</div>' +
+    '<div style="margin-top:.75rem;font-size:.75rem;color:var(--muted);">Amount: ₹'+total+' | Pages: '+pagesSummary+'</div>';
+}
+
+// ════════════════════════════════════
+//  ★★★ UPIGATEWAY CALLBACK HANDLER ★★★
+//  Jab UPIGateway redirect karke wapas aata hai
+// ════════════════════════════════════
+function checkUPIGatewayCallback() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var orderId   = urlParams.get('upigw_order');
+  var printCode = urlParams.get('print_code');
+
+  // UPIGateway ke callback params
+  var status    = urlParams.get('status');       // 'success', 'failed', 'pending'
+  var txnId     = urlParams.get('txn_id') || urlParams.get('client_txn_id') || '';
+  var amount    = urlParams.get('amount') || '';
+
+  if(!orderId) return; // Callback nahi hai
+
+  console.log('UPIGateway callback:', { orderId, printCode, status, txnId, amount });
+
+  // URL clean karo (browser history se params hataao)
+  if(window.history && window.history.replaceState){
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+  if(!printCode){ show('scr-home'); return; }
+
+  // File load karo
+  fileCode = printCode;
+
+  // Status check karo
+  if(status === 'Success' || status === 'success' || status === 'SUCCESS'){
+    // ── Payment Successful ──
+    if(firebaseReady){
+      fsdb.collection('payments').doc(orderId).update({
+        status: 'SUCCESS',
+        gatewayTxnId: txnId,
+        confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(function(e){ console.warn('Firestore update failed:', e); });
+    }
+
+    // Session storage se page info retrieve karo
+    var savedSession = null;
+    try { savedSession = JSON.parse(sessionStorage.getItem('smartprint_session_' + printCode)); } catch(e){}
+
+    if(savedSession){
+      // Restore state
+      selPgs = new Set(savedSession.selPgs);
+      pageCopies = savedSession.pageCopies;
+      pageMode = savedSession.pageMode;
+      fileName = savedSession.fileName;
+
+      // Pages deduct karo
+      var totalPrinted = 0;
+      selPgs.forEach(function(pg){ totalPrinted += (pageCopies[pg]||1); });
+      deductPages(totalPrinted);
+
+      // Success screen dikhao
+      var pagesSummary = Array.from(selPgs).sort(function(a,b){return a-b;}).map(function(pg){
+        var c=pageCopies[pg]||1, m=pageMode[pg]==='color'?'🎨':'⬛';
+        return m+'P'+pg+(c>1?'×'+c:'');
+      }).join(', ');
+      var bwC=0, colC=0;
+      selPgs.forEach(function(pg){ var c=pageCopies[pg]||1; if(pageMode[pg]==='color') colC+=c; else bwC+=c; });
+      var modeSummary = (bwC>0&&colC>0)?'Mixed':(colC>0?'Colour Print':'Black & White');
+
+      document.getElementById('done-pages').textContent = pagesSummary;
+      document.getElementById('done-mode').textContent  = modeSummary;
+      show('scr-done');
+      startPrintStatus();
+
+      // Load file data in background for printing
+      loadFileFromFirebase(printCode).then(function(rec){ if(rec) STORE[printCode]=rec; });
+
+    } else {
+      // Session nahi mila — generic success
+      show('scr-done');
+      document.getElementById('done-pages').textContent = 'See your receipt';
+      document.getElementById('done-mode').textContent  = 'Check printout';
+      startPrintStatus();
+    }
+
+  } else if(status === 'Failed' || status === 'failed' || status === 'FAILED'){
+    // ── Payment Failed ──
+    if(firebaseReady){
+      fsdb.collection('payments').doc(orderId).update({
+        status: 'FAILED',
+        failedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(function(e){});
+    }
+    // Payment screen pe wapas le jao with error
+    loadFileFromFirebase(printCode).then(function(rec){
+      if(rec){ STORE[printCode]=rec; openPreview(printCode); }
+      else show('scr-code');
+    });
+    setTimeout(function(){
+      var statusEl = document.getElementById('pay-gw-status');
+      if(statusEl) statusEl.innerHTML = errHtml('Payment fail ho gayi. Dobara try karo.');
+    }, 500);
+
+  } else {
+    // ── Pending / Unknown — Waiting screen dikhao ──
+    show('scr-waiting');
+    if(firebaseReady && orderId){
+      startFirestoreWaiting(orderId, printCode);
+    }
+  }
+}
+
+// ── Session save karo before redirect ──
+function saveSessionBeforeRedirect(printCode){
+  try {
+    sessionStorage.setItem('smartprint_session_' + printCode, JSON.stringify({
+      selPgs: Array.from(selPgs),
+      pageCopies: pageCopies,
+      pageMode: pageMode,
+      fileName: fileName
+    }));
+  } catch(e){ console.warn('Session save failed:', e); }
+}
+
+// ── Firestore se payment confirm wait karo ──
 var confirmListener = null;
-function startWaitingForConfirm(orderId, pagesSummary){
+function startFirestoreWaiting(orderId, printCode){
   if(!firebaseReady) return;
   var dots = 0;
   var dotTimer = setInterval(function(){
@@ -1435,75 +1562,30 @@ function startWaitingForConfirm(orderId, pagesSummary){
     .onSnapshot(function(doc){
       if(!doc.exists) return;
       var data = doc.data();
-      if(data.status === 'CONFIRMED'){
+      if(data.status === 'SUCCESS' || data.status === 'CONFIRMED'){
         clearInterval(dotTimer);
         if(confirmListener){ confirmListener(); confirmListener=null; }
-        triggerPrintSuccess(pagesSummary);
-      } else if(data.status === 'REJECTED'){
+        show('scr-done'); startPrintStatus();
+      } else if(data.status === 'FAILED' || data.status === 'REJECTED'){
         clearInterval(dotTimer);
         if(confirmListener){ confirmListener(); confirmListener=null; }
         show('scr-pay');
-        document.getElementById('pay-amount-err').innerHTML =
-          '<div class="err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Payment reject ho gayi. Dobara try karo ya counter pe baat karo.</div>';
+        var statusEl = document.getElementById('pay-gw-status');
+        if(statusEl) statusEl.innerHTML = errHtml('Payment reject ho gayi. Dobara try karo.');
       }
     });
 }
 
-// ── Owner Confirm karta hai (Admin Panel se) ──
-function ownerConfirmPayment(orderId){
-  if(!firebaseReady) return;
-  fsdb.collection('payments').doc(orderId).update({
-    status: 'CONFIRMED',
-    confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-  // Page counter bhi update karo
-  fsdb.collection('payments').doc(orderId).get().then(function(doc){
-    if(doc.exists){
-      var data = doc.data();
-      if(data.printCode){
-        fsdb.collection('files').doc(data.printCode).update({
-          paymentStatus: 'PAID',
-          paidAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
-    }
-  });
-}
+// ── Override initiateUPIGatewayPayment to save session first ──
+var _origInitiate = initiateUPIGatewayPayment;
+initiateUPIGatewayPayment = function(){
+  saveSessionBeforeRedirect(fileCode);
+  _origInitiate();
+};
 
-function ownerRejectPayment(orderId){
-  if(!firebaseReady) return;
-  fsdb.collection('payments').doc(orderId).update({
-    status: 'REJECTED',
-    rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-}
-
-// ── Print Success Screen ──
-function triggerPrintSuccess(pagesSummary){
-  clearInterval(payTimer);
-
-  var totalPrinted = 0;
-  selPgs.forEach(function(pg){ totalPrinted += (pageCopies[pg]||1); });
-  deductPages(totalPrinted);
-
-  var bwC=0,colC=0;
-  selPgs.forEach(function(pg){ var c=pageCopies[pg]||1; if(pageMode[pg]==='color') colC+=c; else bwC+=c; });
-  var modeSummary=(bwC>0&&colC>0)?'Mixed (B&W + Colour)':(colC>0?'Colour Print':'Black & White');
-
-  document.getElementById('done-pages').textContent = pagesSummary;
-  document.getElementById('done-mode').textContent  = modeSummary;
-  show('scr-done');
-  startPrintStatus();
-
-  // Browser notification — user ko
-  sendBrowserNotification('✅ Print Confirm!', 'Aapka print shuru ho gaya! Printout collect karo.');
-}
-
-// ── Legacy confirm (direct, bina owner approval) ──
-function confirmPayment(){
-  userSubmitPayment();
-}
-
+// ════════════════════════════════════
+//  Print Success & Status
+// ════════════════════════════════════
 function startPrintStatus(){
   var steps=['Sending to printer…','Processing pages…','Printing in progress…'];
   var si=0; clearInterval(printTimer);
@@ -1539,16 +1621,13 @@ function openCamera(){
 
 function startCamStream(){
   stopCamStream();
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
-    showCamErr('Camera API not supported. Use Chrome or Safari.'); return;
-  }
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ showCamErr('Camera API not supported.'); return; }
   navigator.mediaDevices.getUserMedia({video:{facingMode:camFacingMode,width:{ideal:1280},height:{ideal:720}},audio:false})
     .then(function(stream){ camStream=stream; var v=document.getElementById('cam-video'); v.srcObject=stream; v.play(); document.getElementById('cam-err').style.display='none'; })
     .catch(function(err){
       var msg='';
-      if(err.name==='NotAllowedError'||err.name==='PermissionDeniedError') msg='Camera permission denied. Please allow camera access in browser settings.';
-      else if(err.name==='NotFoundError') msg='No camera found on this device.';
-      else if(err.name==='NotReadableError') msg='Camera is in use by another app.';
+      if(err.name==='NotAllowedError') msg='Camera permission denied.';
+      else if(err.name==='NotFoundError') msg='No camera found.';
       else msg='Could not access camera: '+err.message;
       showCamErr(msg);
     });
@@ -1595,184 +1674,123 @@ function usePhoto(){
 
 function closeCamera(){ stopCamStream(); document.getElementById('cam-modal').classList.remove('open'); capturedBlob=null; }
 function showCamErr(msg){ var el=document.getElementById('cam-err'); el.textContent=msg; el.style.display='block'; }
-
 document.getElementById('cam-modal').addEventListener('click',function(e){ if(e.target===this) closeCamera(); });
 
 // ════════════════════════════════════
-//  ★ DIRECT PRINT FUNCTION ★
+//  Direct Print
 // ════════════════════════════════════
 function directPrint() {
-  // Agar file PDF hai toh direct print karo
-  if (!fileData && !STORE[fileCode]) {
-    alert('File data nahi mila. Dobara try karo.');
-    return;
-  }
-
+  if(!fileCode || !STORE[fileCode]){ window.print(); return; }
   var rec = STORE[fileCode];
-  if (!rec) { window.print(); return; }
-
-  var isPDF = (rec.fileType && rec.fileType === 'application/pdf') ||
-              (fileName && fileName.toLowerCase().endsWith('.pdf'));
-  var isImg = (rec.fileType && rec.fileType.startsWith('image/')) ||
-              /\.(jpg|jpeg|png|gif|bmp|webp|tiff|tif|heic|heif)$/i.test(fileName||'');
-
-  // Selected pages aur print settings
-  var pages     = Array.from(selPgs).sort(function(a,b){return a-b;});
-  var dataURL   = rec.downloadURL;
-
-  if (isPDF) {
-    printPDFPages(dataURL, pages);
-  } else if (isImg) {
-    printImageDirect(dataURL);
-  } else {
-    // Fallback — browser print
-    window.print();
-  }
+  var isPDF = (rec.fileType&&rec.fileType==='application/pdf')||(fileName&&fileName.toLowerCase().endsWith('.pdf'));
+  var isImg = (rec.fileType&&rec.fileType.startsWith('image/'))||/\.(jpg|jpeg|png|gif|bmp|webp|tiff|tif|heic|heif)$/i.test(fileName||'');
+  if(isPDF) printPDFPages(rec.downloadURL, Array.from(selPgs).sort(function(a,b){return a-b;}));
+  else if(isImg) printImageDirect(rec.downloadURL);
+  else window.print();
 }
 
-// ── PDF Pages Direct Print ──
 function printPDFPages(dataURL, pages) {
   var btn = document.querySelector('.act-row .btn-pri');
-  if (btn) { btn.textContent = '⏳ Preparing...'; btn.disabled = true; }
-
-  // Hidden iframe mein PDF load karo aur print karo
-  var existingFrame = document.getElementById('print-frame');
-  if (existingFrame) existingFrame.remove();
-
-  var iframe = document.createElement('iframe');
-  iframe.id = 'print-frame';
-  iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;';
+  if(btn){btn.textContent='⏳ Preparing...';btn.disabled=true;}
+  var existingFrame=document.getElementById('print-frame');
+  if(existingFrame) existingFrame.remove();
+  var iframe=document.createElement('iframe');
+  iframe.id='print-frame';
+  iframe.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;';
   document.body.appendChild(iframe);
-
-  // PDF blob banao
-  try {
-    var b64    = dataURL.split(',')[1];
-    var binary = atob(b64);
-    var u8     = new Uint8Array(binary.length);
-    for (var i = 0; i < binary.length; i++) u8[i] = binary.charCodeAt(i);
-    var blob   = new Blob([u8], { type: 'application/pdf' });
-    var blobUrl = URL.createObjectURL(blob);
-
-    iframe.src = blobUrl;
-    iframe.onload = function() {
-      setTimeout(function() {
-        try {
-          // Print settings apply karo
-          iframe.contentWindow.focus();
-
-          // Page mode check — B&W ya Colour
-          var allBW = true;
-          selPgs.forEach(function(pg){ if(pageMode[pg]==='color') allBW=false; });
-
-          iframe.contentWindow.print();
-
-          // Button restore karo
-          setTimeout(function(){
-            if (btn) { btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg> 🖨️ Direct Print Karo'; btn.disabled=false; }
-            URL.revokeObjectURL(blobUrl);
-          }, 3000);
-        } catch(e) {
-          console.error('Print error:', e);
-          window.print();
-        }
-      }, 800);
+  try{
+    var b64=dataURL.split(',')[1], binary=atob(b64), u8=new Uint8Array(binary.length);
+    for(var i=0;i<binary.length;i++) u8[i]=binary.charCodeAt(i);
+    var blob=new Blob([u8],{type:'application/pdf'}), blobUrl=URL.createObjectURL(blob);
+    iframe.src=blobUrl;
+    iframe.onload=function(){
+      setTimeout(function(){
+        try{ iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch(e){ window.print(); }
+        setTimeout(function(){
+          if(btn){btn.innerHTML='🖨️ Direct Print Karo';btn.disabled=false;}
+          URL.revokeObjectURL(blobUrl);
+        },3000);
+      },800);
     };
-  } catch(e) {
-    console.error('PDF print error:', e);
-    window.print();
-    if (btn) { btn.innerHTML = '🖨️ Direct Print Karo'; btn.disabled = false; }
-  }
+  }catch(e){ window.print(); if(btn){btn.innerHTML='🖨️ Direct Print Karo';btn.disabled=false;} }
 }
 
-// ── Image Direct Print ──
-function printImageDirect(dataURL) {
-  var existingFrame = document.getElementById('print-frame');
-  if (existingFrame) existingFrame.remove();
-
-  var iframe = document.createElement('iframe');
-  iframe.id = 'print-frame';
-  iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;';
+function printImageDirect(dataURL){
+  var existingFrame=document.getElementById('print-frame');
+  if(existingFrame) existingFrame.remove();
+  var iframe=document.createElement('iframe');
+  iframe.id='print-frame';
+  iframe.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;';
   document.body.appendChild(iframe);
-
-  var doc = iframe.contentWindow.document;
+  var doc=iframe.contentWindow.document;
   doc.open();
-  doc.write(
-    '<!DOCTYPE html><html><head><style>' +
-    'body{margin:0;padding:0;}' +
-    'img{max-width:100%;height:auto;display:block;}' +
-    '@media print{body{margin:0;}img{max-width:100%;}}' +
-    '</style></head><body>' +
-    '<img src="' + dataURL + '" onload="window.print();"/>' +
-    '</body></html>'
-  );
+  doc.write('<!DOCTYPE html><html><head><style>body{margin:0;}img{max-width:100%;height:auto;display:block;}@media print{body{margin:0;}</style></head><body><img src="'+dataURL+'" onload="window.print();"/></body></html>');
   doc.close();
 }
 
-
+// ════════════════════════════════════
+//  Admin Panel
+// ════════════════════════════════════
 var ADMIN_PASSWORD = '1234'; // ← Apna password yahan badlo
 
-// Header pe logo icon pe 5 baar click karne se admin panel khulega
 var logoClickCount = 0, logoClickTimer = null;
 document.querySelector('.logo-icon').addEventListener('click', function(){
   logoClickCount++;
   clearTimeout(logoClickTimer);
-  if(logoClickCount >= 5){
-    logoClickCount = 0;
-    show('scr-admin');
-  } else {
-    logoClickTimer = setTimeout(function(){ logoClickCount = 0; }, 2000);
-  }
+  if(logoClickCount >= 5){ logoClickCount=0; show('scr-admin'); }
+  else { logoClickTimer = setTimeout(function(){ logoClickCount=0; }, 2000); }
 });
 
 function checkAdminPass(){
-  var inp = document.getElementById('admin-pass-inp');
-  var err = document.getElementById('admin-pass-err');
-  if(inp.value === ADMIN_PASSWORD){
-    document.getElementById('admin-login').style.display    = 'none';
-    document.getElementById('admin-dashboard').style.display = 'block';
+  var inp=document.getElementById('admin-pass-inp'), err=document.getElementById('admin-pass-err');
+  if(inp.value===ADMIN_PASSWORD){
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-dashboard').style.display='block';
     loadPendingPayments();
   } else {
-    err.innerHTML = '<div class="err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Galat password!</div>';
-    inp.value = '';
+    err.innerHTML=errHtml('Galat password!'); inp.value='';
   }
 }
 
 function loadPendingPayments(){
-  var list = document.getElementById('pending-payments-list');
+  var list=document.getElementById('pending-payments-list');
   if(!firebaseReady){ list.innerHTML='<div style="color:var(--red);font-size:.84rem;text-align:center;padding:1rem;">Firebase connected nahi hai</div>'; return; }
-  list.innerHTML = '<div style="text-align:center;padding:2rem;"><div class="spinner"></div></div>';
+  list.innerHTML='<div style="text-align:center;padding:2rem;"><div class="spinner"></div></div>';
 
+  // UPIGateway se aaye payments + pending ones
   fsdb.collection('payments')
-    .where('status','==','PENDING_CONFIRM')
-    .orderBy('submittedAt','desc')
-    .limit(20)
+    .orderBy('createdAt','desc')
+    .limit(30)
     .get()
     .then(function(snap){
       if(snap.empty){
-        list.innerHTML='<div style="text-align:center;padding:2.5rem;color:var(--muted);font-size:.84rem;">✅ Koi pending payment nahi hai</div>';
+        list.innerHTML='<div style="text-align:center;padding:2.5rem;color:var(--muted);font-size:.84rem;">✅ Koi payment record nahi hai</div>';
         return;
       }
-      list.innerHTML = '';
+      list.innerHTML='';
       snap.forEach(function(doc){
-        var d = doc.data();
-        var time = d.submittedAt ? new Date(d.submittedAt.toDate()).toLocaleTimeString('en-IN') : 'N/A';
-        var card = document.createElement('div');
-        card.style.cssText = 'background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-bottom:.875rem;box-shadow:var(--sh);';
-        card.innerHTML =
+        var d=doc.data();
+        var time=d.createdAt?new Date(d.createdAt.toDate()).toLocaleString('en-IN'):'N/A';
+        var statusColor = d.status==='SUCCESS'||d.status==='CONFIRMED'?'var(--green)':d.status==='FAILED'||d.status==='REJECTED'?'var(--red)':'var(--orange)';
+        var statusLabel = d.status || 'UNKNOWN';
+        var card=document.createElement('div');
+        card.style.cssText='background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-bottom:.875rem;box-shadow:var(--sh);';
+        card.innerHTML=
           '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;">'
-            +'<div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--press);">₹'+d.paid+'</div>'
-            +'<div style="font-size:.68rem;background:var(--orange-pale);color:var(--orange);padding:3px 10px;border-radius:12px;font-weight:700;">PENDING</div>'
+            +'<div style="font-family:var(--fm);font-size:1.1rem;font-weight:700;color:var(--press);">₹'+(d.amount||'?')+'</div>'
+            +'<div style="font-size:.68rem;background:rgba(0,0,0,.06);color:'+statusColor+';padding:3px 10px;border-radius:12px;font-weight:700;border:1px solid '+statusColor+';">'+statusLabel+'</div>'
           +'</div>'
-          +'<div style="font-size:.8rem;color:var(--muted);margin-bottom:.2rem;">📄 <strong style="color:var(--press);">'+d.fileName+'</strong></div>'
-          +'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">🔑 Code: <strong style="font-family:var(--fm);color:var(--press);">'+d.printCode+'</strong></div>'
-          +'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">📋 Pages: '+d.pages+'</div>'
-          +'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">💰 Expected: ₹'+d.expected+' &nbsp;|&nbsp; Paid: ₹'+d.paid+'</div>'
-          +(d.utr&&d.utr!=='N/A'?'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">🧾 UTR: <strong style="font-family:var(--fm);">'+d.utr+'</strong></div>':'')
+          +'<div style="font-size:.8rem;color:var(--muted);margin-bottom:.2rem;">📄 <strong style="color:var(--press);">'+(d.fileName||'—')+'</strong></div>'
+          +'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">🔑 Code: <strong style="font-family:var(--fm);color:var(--press);">'+(d.printCode||'—')+'</strong></div>'
+          +'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">📋 Pages: '+(d.pages||'—')+'</div>'
+          +(d.gatewayTxnId?'<div style="font-size:.78rem;color:var(--muted);margin-bottom:.2rem;">🧾 TXN: <strong style="font-family:var(--fm);">'+d.gatewayTxnId+'</strong></div>':'')
           +'<div style="font-size:.72rem;color:var(--muted);margin-bottom:.875rem;">🕐 '+time+'</div>'
-          +'<div style="display:flex;gap:.65rem;">'
-            +'<button onclick="adminConfirm(\''+doc.id+'\')" style="flex:1;padding:.6rem;background:var(--green);color:white;border:none;border-radius:var(--r);font-size:.84rem;font-weight:700;cursor:pointer;font-family:var(--fb);">✅ Confirm Print</button>'
-            +'<button onclick="adminReject(\''+doc.id+'\')" style="flex:1;padding:.6rem;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:.84rem;font-weight:700;cursor:pointer;font-family:var(--fb);">❌ Reject</button>'
-          +'</div>';
+          // Only show confirm/reject for INITIATED or REDIRECT status
+          + (d.status==='INITIATED'||d.status==='REDIRECT'?
+            '<div style="display:flex;gap:.65rem;">'
+              +'<button onclick="adminConfirm(\''+doc.id+'\')" style="flex:1;padding:.6rem;background:var(--green);color:white;border:none;border-radius:var(--r);font-size:.84rem;font-weight:700;cursor:pointer;font-family:var(--fb);">✅ Manual Confirm</button>'
+              +'<button onclick="adminReject(\''+doc.id+'\')" style="flex:1;padding:.6rem;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:.84rem;font-weight:700;cursor:pointer;font-family:var(--fb);">❌ Reject</button>'
+            +'</div>' : '');
         list.appendChild(card);
       });
     })
@@ -1782,15 +1800,11 @@ function loadPendingPayments(){
 }
 
 function adminConfirm(orderId){
-  if(!confirm('Payment confirm karo aur print start karo?')) return;
+  if(!confirm('Manually confirm karo is payment ko?')) return;
   fsdb.collection('payments').doc(orderId).update({
     status: 'CONFIRMED',
     confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function(){
-    // Browser notification
-    sendBrowserNotification('✅ Payment Confirmed!', 'Print job start ho gayi');
-    loadPendingPayments();
-  });
+  }).then(function(){ loadPendingPayments(); });
 }
 
 function adminReject(orderId){
@@ -1798,11 +1812,8 @@ function adminReject(orderId){
   fsdb.collection('payments').doc(orderId).update({
     status: 'REJECTED',
     rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function(){
-    loadPendingPayments();
-  });
+  }).then(function(){ loadPendingPayments(); });
 }
-
 </script>
 </body>
 </html>
